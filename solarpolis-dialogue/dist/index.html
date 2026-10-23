@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111e23">
+  <meta name="description" content="Explore Solarpolis through three procedural characters with individual beliefs, voices, and changing knowledge.">
+  <title>Solarpolis · The Arrival Commons</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="Solarpolis home"><span class="brand-mark" aria-hidden="true">◎</span> SOLARPOLIS <span class="brand-divider">/</span> <span class="brand-sub">CONVERSATION STUDIES</span></a>
+    <div class="header-actions"><span class="local-status"><i></i> LOCAL CHANNEL</span><button id="guide-open" class="quiet">Field guide ↗</button></div>
+  </header>
+  <main>
+    <section class="scene-heading">
+      <div><div class="eyebrow">01 / THE LONG AFTERNOON OF THRENODY</div><h1>The Arrival Commons<span>.</span></h1><p>Three minds. Different histories. One changing world.</p></div>
+      <div class="scene-clock"><span>HABITAT LOCAL TIME</span><strong id="clock">16:00</strong><small id="save-status">Opening local archive…</small></div>
+    </section>
+    <div class="workspace">
+      <aside class="roster-panel">
+        <div class="panel-label">CHOOSE A CONVERSATION <span>03</span></div>
+        <nav id="roster" aria-label="Characters"></nav>
+        <div class="scene-note"><span class="tiny-orbit" aria-hidden="true">◉</span><p>An acoustic exchange begins at 16:20. Not everyone has read the latest notice.</p><span class="tag addition">SAMPLE SCENARIO</span></div>
+        <section class="world-controls" aria-labelledby="controls-label">
+          <div class="panel-label" id="controls-label">SCENARIO CONTROLS <span>↳</span></div>
+          <p class="muted small">Change the world, then ask again.</p>
+          <button id="move-venue" class="event-button"><span>01</span><div>Amend the venue<small>Only Serein receives the notice</small></div><b>↗</b></button>
+          <button id="move-rill" class="event-button"><span>02</span><div>Let Rill move<small>Presence changes independently</small></div><b>↗</b></button>
+          <button id="send-signal" class="event-button"><span>03</span><div>Send a lunar bulletin<small>12-minute simulated signal delay</small></div><b>↗</b></button>
+          <button id="advance" class="advance">Advance 12 minutes <span>→</span></button>
+          <p id="signal-status" class="small muted">No signals in transit.</p>
+        </section>
+      </aside>
+      <section class="conversation-panel" aria-label="Conversation">
+        <div id="character-heading" class="character-heading"></div>
+        <div class="channel-bar"><span><i></i> <span id="channel-label">LOCAL TEXT CONNECTION</span></span><label id="translation-label" hidden><input type="checkbox" id="expanded"> Expanded translation</label></div>
+        <div id="messages" class="messages" role="log" aria-live="polite" aria-label="Conversation messages"></div>
+        <div class="composer">
+          <div class="composer-top"><div class="mode-switch" role="group" aria-label="Interaction mode"><button id="mode-choices" class="active" aria-pressed="true">Dialogue choices</button><button id="mode-text" aria-pressed="false">Free text</button></div><span class="language-label">ENGLISH / v1</span></div>
+          <div id="suggestions" class="suggestions"></div>
+          <form id="text-form" hidden><label class="sr-only" for="input">Your message</label><textarea id="input" rows="2" maxlength="600" placeholder="Ask about a place, a person, or a belief…"></textarea><div class="input-footer"><span>Try “Where is the exchange?” or “How do you know?”</span><button type="submit" class="send">Send ↑</button></div></form>
+          <div class="conversation-tools"><button id="source-question">↳ How do you know?</button><button id="share-notice" disabled>Show amended notice</button></div>
+        </div>
+      </section>
+      <aside class="inspector-panel">
+        <div class="panel-label">BENEATH THE CONVERSATION <span>⌘</span></div>
+        <div class="inspector-tabs" role="tablist" aria-label="Inspector"><button data-tab="beliefs" role="tab" aria-selected="true">Beliefs</button><button data-tab="meaning" role="tab" aria-selected="false">Meaning</button><button data-tab="world" role="tab" aria-selected="false">World</button><button data-tab="canon" role="tab" aria-selected="false">Canon</button></div>
+        <div id="inspector" class="inspector-content" role="tabpanel"></div>
+      </aside>
+    </div>
+    <footer><span>A symbolic agent sample · no language model or remote AI calls</span><div><button id="export">Export session ↓</button><button id="reset">Reset sample ↺</button></div></footer>
+  </main>
+  <div id="toast" role="status" class="toast" hidden></div>
+  <dialog id="guide"><button id="guide-close" class="dialog-close" aria-label="Close field guide">×</button><div class="eyebrow">A SMALL WORLD, EXPLICITLY MODELED</div><h2>A conversation you can look inside.</h2><p>This is a working procedural sample, with a bounded English grammar. It understands supported subjects and constructions; it does not have a language model’s open-ended fluency.</p><ol><li>Ask each character where the exchange is.</li><li>Amend the venue using the scenario controls.</li><li>Ask again. Only Serein has received the new notice.</li><li>Switch to free text and tell Iona: “The exchange is in Current Court.” Inspect the unverified testimony.</li><li>Show the amended notice to Iona. Ask again, then ask “How do you know?”</li><li>Send a lunar bulletin. Ask about the ship’s slot before and after advancing 12 minutes.</li></ol><p>Rill participates from moving water. Expanded translation adds an authored social layer. Event venue and character location are separate facts.</p><p><strong>Canon boundary:</strong> wider setting facts come from your world bible. All named visitors, local rooms, ship, event, and mutable scenario details are additions. The simulated 12-minute link is illustrative; no canonical orbit is implied.</p><p>The core, Solarpolis data, English interpreter, and IndexedDB adapter are separate modules. The World inspector is a director’s view; NPC answers use personal evidence only.</p></dialog>
+  <noscript>This interactive sample requires JavaScript. It does not require a language-model download.</noscript>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>

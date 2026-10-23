@@ -1,0 +1,11 @@
+solarpolis-world-bible.source.txt
+.site-publish/
+node_modules/
+**/node_modules/
+**/.openai/*.local.*
+**/.openai/site-workflow/
+**/.openai/site-state/
+**/.openai/state/
+*.tar.gz
+*.tgz
+*.log
