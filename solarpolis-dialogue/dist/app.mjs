@@ -9,6 +9,7 @@ const language=new EnglishLanguage(resources,{lexicalPack});
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let storage=new IndexedDBStorage(),persistent=true,session=null,core,view,busy=Promise.resolve(),toastTimer;
+$('save-status').textContent='Restoring saved conversation…';
 try {session=await storage.load();} catch {storage=new MemoryStorage();persistent=false;}
 try {core=new AgentCore(domain,session?.core);} catch {core=new AgentCore(domain);session=null;}
 const freshView=()=>({selected:'serein',mode:'choices',tab:'beliefs',expanded:false,simulations:[],messages:Object.fromEntries(domain.characters.map(c=>[c.id,[{kind:'npc',text:c.introduction,time:0}]])),last:{}});
