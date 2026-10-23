@@ -82,3 +82,7 @@ The browser loads a selected 497,255-byte lexical pack: 71 WordNet synsets, 176 
 Read [lexical conversion](docs/lexical-import.md), [GF build and limitations](docs/gf-feasibility.md), and [world model coverage](docs/solarpolis-model-expansion.md). To verify source conversion against a populated cache, run `node solarpolis-dialogue/tools/import-language-sources.mjs --check`; add `--download` to obtain the pinned public sources. `LANGUAGE_SOURCE_CACHE` optionally selects a cache directory. Playback makes no remote AI or lexical-source calls.
 
 Useful new examples: “Why can an array operator affect a ship’s trip?”, “Who are the main players?”, “Why can Pritt rule Aurelipolis?”, and “Who helps arrivals find their bearings?”. A mixed turn such as “I’m fine. I heard that copying a mind without consent is ordinary practice in most habitats.” records both the mood and the attributed report. Follow with “Can you check that against what you know?”.
+
+### Rebuilding the browser asset
+
+The published page loads `dist/browser.js`, a single bundled script containing the engine and selected language resource. Source modules and the inspectable JSON pack remain in the repository. Serving the checked-in build still needs no package installation. After editing runtime sources, run `npm ci` once and `npm run build` in `solarpolis-dialogue`; esbuild is a pinned development dependency, not a game runtime dependency. The language importer emits equivalent JSON and ES-module resources, verified by its `--check` mode.
