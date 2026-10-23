@@ -1,4 +1,5 @@
 // Solarpolis is replaceable data, never imported by the agent core.
+import {socialProfiles} from './solarpolis-social.mjs';
 const canon = section => ({kind:'canon',source:'SOLARPOLIS — WORLD BIBLE',section});
 const addition = {kind:'sample',source:'Arrival Commons sample additions'};
 const fact = (id,predicate,subject,value,section,extra={}) => ({id,atom:{predicate,args:{subject,...value},polarity:true},validFrom:0,validTo:null,origin:section?canon(section):addition,...extra});
@@ -29,19 +30,19 @@ export const domain = {
   },
   characters:[
     {id:'serein',name:'Serein',initials:'SE',kind:'Born-digital AI',role:'A welcome freely offered',home:'Threnody',
-      introduction:'I help arriving minds find their bearings. By inclination, rather than obligation. What would you like to know?',
+      introduction:'Hello. I’m Serein. I help arriving minds find their bearings, but I’m quite happy to be distracted by a conversation.',
       personality:{detail:3,testimony:'cautious',directness:0.5,affiliation:0.9},
       attitudes:{aurelipolis:'opposed',minds:'protective',liberators:'cautious',enceladus:'cautious',threnody:'supportive'},
       color:'sage',voice:'gentle',location:'Arrival Commons',
       description:'Patient, gently wry, attentive to consent. A separate individual from Threnody’s governing Mind.'},
     {id:'iona',name:'Iona Venn',initials:'IV',kind:'Human · Selenipolis',role:'A collector of good timing',home:'Selenipolis',
-      introduction:'Iona Venn. I study transit calendars. If you have a question, a specific one usually produces a useful answer.',
+      introduction:'Iona Venn. I’m from Selenipolis. I collect transit histories, mostly for the pleasure of getting lost in them.',
       personality:{detail:2,testimony:'strict',directness:0.9,affiliation:0.4},
       attitudes:{arrays:'supportive',selenipolis:'supportive',aurelipolis:'cautious',liberators:'opposed',minds:'protective'},
       color:'amber',voice:'precise',location:'Arrival Commons',
       description:'Exact and courteous, with little patience for avoidable urgency. A visitor pursuing transit history for pleasure.'},
     {id:'rill',name:'Rill',initials:'RI',kind:'Uplifted dolphin · Krillix',role:'A listener who answers',home:'Krillix',
-      introduction:'Rill, approximately. My whistle fits less neatly into letters. I am listening from Flow Chamber. Shall we find a subject worth following?',
+      introduction:'Rill, approximately. My whistle fits less neatly into letters. I’m listening through the text link. What caught your attention?',
       personality:{detail:2,testimony:'provisional',directness:0.65,affiliation:0.95},
       attitudes:{long_song:'supportive',krillix:'supportive',enceladus:'curious',halvorn:'cautious',minds:'protective',aurelipolis:'opposed'},
       color:'blue',voice:'relational',location:'Flow Chamber · local text link',
@@ -84,7 +85,7 @@ export const domain = {
     fact('s-neris','nature','neris',{value:'visiting_ai_conservator'},null)
   ],
   events:{
-    venue:{id:'sample:venue-change',label:'16:01 local venue amendment',origin:addition,
+    venue:{id:'sample:venue-change',label:'16:01 local venue amendment',origin:addition,source:{kind:'publication',shareable:true},
       changes:[{atom:{predicate:'located_at',args:{subject:'exchange',place:'current_court'},polarity:true}}],observers:['serein']},
     rill:{id:'sample:rill-moves',label:'Rill’s local presence update',origin:addition,
       changes:[{atom:{predicate:'located_at',args:{subject:'rill',place:'current_court'},polarity:true}}],observers:['serein','rill']},
@@ -93,6 +94,7 @@ export const domain = {
       observers:[],deliverAfter:12,recipients:['serein','iona','rill']}
   }
 };
+for(const actor of domain.characters)actor.social=socialProfiles[actor.id];
 // Explicit partial knowledge: reference archives are not automatically present in every mind.
 for (const f of domain.facts) {
   if (f.atom.args.subject==='arks') f.knownBy=['serein','iona'];
@@ -106,6 +108,7 @@ export const scenario = {
   delayNote:'12 minutes is an illustrative scenario link budget, not a canonical orbit or calculated ephemeris. No ship travels during this test. The reservation concerns a future journey.',
   starterQueries:[
     {label:'Where is the exchange?',act:{function:'ask',query:{predicate:'located_at',args:{subject:'exchange',place:{$var:'place'}}}}},
+    {label:'How are you today?',act:{function:'social',topic:'wellbeing'}},
     {label:'What is Threnody like?',act:{function:'ask',query:{args:{subject:'threnody'}}}},
     {label:'Are AIs safe in Aurelipolis?',act:{function:'ask',query:{predicate:'rights',args:{subject:'aurelipolis'}}}},
     {label:'Tell me about the Long Song.',act:{function:'ask',query:{args:{subject:'long_song'}}}},

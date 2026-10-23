@@ -66,7 +66,7 @@ test('missing knowledge is unknown and unsupported language triggers repair',()=
   const c=new AgentCore(domain);const result=c.respond('rill',{function:'ask',query:{args:{subject:'arks'}}});
   assert.equal(result.results.length,0);
   assert.equal(english.interpret('Write me a sonnet about the universe').function,'clarify');
-  assert.equal(english.interpret('yes').reason,'no-pending-offer');
+  assert.equal(c.respond('rill',english.interpret('yes')).function,'clarify');
 });
 test('characters express the same evidence differently without changing its meaning',()=>{
   const c=new AgentCore(domain);

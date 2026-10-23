@@ -1,4 +1,5 @@
 // Host-independent semantic engine. No DOM, English, IndexedDB, or Solarpolis imports.
+import {respondSocial} from './social.mjs';
 export const copy = value => structuredClone(value);
 const variable = x => x && typeof x === 'object' && '$var' in x;
 export function matches(atom, query = {}) {
@@ -86,7 +87,7 @@ export class AgentCore {
         const fact = { id: this.next('fact'), atom: copy(change.atom), validFrom: this.state.time,
           validTo: null, origin: copy(event.origin), sourceLabel: event.label };
         this.state.world.push(fact);
-        for (const holder of event.observers ?? []) this.observe(holder, fact, {kind:'observation', label:event.label});
+        for (const holder of event.observers ?? []) this.observe(holder, fact, {...(event.source??{kind:'observation'}), label:event.label});
         if (event.deliverAfter != null) this.state.pending.push({
           id: this.next('delivery'), due: this.state.time + event.deliverAfter,
           holders: event.recipients ?? [], fact: copy(fact), label: event.label, sentAt: this.state.time
@@ -113,6 +114,8 @@ export class AgentCore {
     const actor = this.domain.characters.find(c => c.id === holder);
     if (!actor) throw new Error('Unknown character');
     const context = this.state.contexts[holder];
+    const socialPlan=respondSocial(this,actor,act);
+    if(socialPlan)return socialPlan;
     const plan = { id:this.next('plan'), holder, function:act.function, results:[], time:this.state.time, decision:'' };
     if (act.function === 'assert') {
       this.validate(act.content);

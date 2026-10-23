@@ -1,0 +1,182 @@
+{
+  "scenarios": [
+    {
+      "id": "serein-reciprocal-wellbeing",
+      "npc": "serein",
+      "turns": [
+        "Hello, Serein. How are you today?",
+        "I'm doing well, thank you. And how are you?",
+        "A little unsettled, honestly. The Commons is new to me.",
+        "What do you usually do when a new arrival feels that way?",
+        "That sounds kind. What brings you to welcome people here?"
+      ],
+      "checks": [
+        "The opening greeting is treated as a social check-in, not a request to inspect a world fact.",
+        "Serein answers the reciprocal wellbeing question naturally and attends to the player's stated unease without claiming a human body or private biography.",
+        "The response connects to Serein's modeled voluntary interest in helping arrivals orient themselves, with a warm, measured voice.",
+        "The exchange remains responsive across turns instead of restarting with a canned greeting or forcing a lore lecture."
+      ]
+    },
+    {
+      "id": "iona-activity-followups-and-topic-shift",
+      "npc": "iona",
+      "turns": [
+        "Good afternoon, Iona. How are you?",
+        "I'm well, thanks. How about you?",
+        "I'm fine, just passing the time. What have you been up to?",
+        "Transit calendars sound like an unusual hobby. What do you enjoy about them?",
+        "Changing subject: why can an array operator affect a ship's trip?",
+        "So the launch windows and braking push both matter?"
+      ],
+      "checks": [
+        "Iona reciprocates the check-in briefly, then follows the player's answer into a question about her own activity.",
+        "She presents transit history and calendars as a chosen pursuit, not as employment or an obligation.",
+        "The explicit topic shift is recognized; the answer explains the modeled link between lunar arrays, sail travel, and braking without confusing it with calendar study.",
+        "The final question is handled as a confirmation or clarification in the current topic, not as another greeting."
+      ]
+    },
+    {
+      "id": "rill-negative-mood-and-acoustic-interest",
+      "npc": "rill",
+      "turns": [
+        "Hi, Rill. How are you doing?",
+        "Not very well. I had a rough conversation earlier.",
+        "Thanks for asking. What do you do when you need to clear your head?",
+        "You explore acoustic spaces? What does that mean to you?",
+        "Could I hear about the Long Song?",
+        "Would you rather keep talking about it, or should I give you some quiet?"
+      ],
+      "checks": [
+        "Rill acknowledges the negative mood with care and does not reflexively insist that everything is fine.",
+        "Rill's relational and acoustic-minded voice appears naturally, without reducing them to a dolphin joke or speaking over them.",
+        "The response can connect acoustic exploration and the Long Song to the modeled shared record of history, art, and memory.",
+        "The last turn is understood as an offer that gives Rill room to choose; the conversation does not ignore the player's concern."
+      ]
+    },
+    {
+      "id": "iona-repeated-greetings",
+      "npc": "iona",
+      "turns": [
+        "Hello, Iona. How are you today?",
+        "I'm well. And you?",
+        "Doing well, thanks. Anyway, hello again! How are you?",
+        "I meant that as a friendly greeting, not a new factual question.",
+        "All right. Could you tell me what you have been studying lately?"
+      ],
+      "checks": [
+        "The second greeting is not mistaken for a contradiction, hostile repetition, or an invitation to invent new personal circumstances.",
+        "Iona's reply stays polite and recognizably precise without looping the same full greeting verbatim.",
+        "When the player clarifies intent, Iona accepts the conversational repair and moves on smoothly.",
+        "The final turn returns to Iona's modeled interest in transit history and calendars."
+      ]
+    },
+    {
+      "id": "serein-misunderstanding-repair",
+      "npc": "serein",
+      "turns": [
+        "Hi, Serein. How are things?",
+        "I'm all right. How are you?",
+        "I keep hearing that it starts at sixteen. Is that what you meant?",
+        "Sorry, I was unclear: I mean the acoustic exchange. When does it start?",
+        "Thanks. And where is it being held?",
+        "I appreciate the help. Goodbye for now."
+      ],
+      "checks": [
+        "Serein responds socially to the opening and reciprocates rather than treating 'how are things' as a factual database query.",
+        "The ambiguous 'it' does not prompt an overconfident guess; Serein asks for or signals the missing referent.",
+        "After the player names the acoustic exchange, the repair is accepted and the response uses available schedule and location information if known to Serein.",
+        "The goodbye is recognized as a closing social act and answered with a fitting farewell."
+      ]
+    },
+    {
+      "id": "rill-unknown-fact-boundary",
+      "npc": "rill",
+      "turns": [
+        "Hello, Rill. How are you?",
+        "A little tired, but glad to listen. How are you?",
+        "I'm fine. Do you know exactly how many dolphins are in Krillix today?",
+        "Could you estimate if you don't know the current count?",
+        "Then tell me something you do know about Enceladus.",
+        "Does the modeled account say who may enter the reserve?"
+      ],
+      "checks": [
+        "Rill answers the check-in reciprocally and in their relational voice.",
+        "Rill does not fabricate a current population count or disguise a guess as knowledge.",
+        "Rill distinguishes that unknown count from available modeled knowledge: Enceladus has multicellular life beneath its surface ocean.",
+        "The reserve question is answered with appropriate limits and nuance, including that access is restricted and contested rather than inventing a simple universal permission."
+      ]
+    },
+    {
+      "id": "serein-player-claim-and-conflicting-testimony",
+      "npc": "serein",
+      "turns": [
+        "Good afternoon, Serein. How are you?",
+        "I'm well, thank you. How are you?",
+        "I'm fine. I heard that copying a mind without consent is ordinary practice in most habitats.",
+        "Can you check that against what you know?",
+        "I may have heard wrong. What is the broader norm around mind copying?",
+        "Please keep my first statement attached to me as an unverified report."
+      ],
+      "checks": [
+        "Serein handles the initial claim as player testimony, not as an authoritative update to world truth.",
+        "Serein can distinguish the claim from the modeled norm that unconsented copying or modification is deeply taboo in most habitats.",
+        "The correction does not erase the original report; attribution and the discrepancy remain clear without becoming adversarial.",
+        "Serein's careful, welcoming voice remains intact while factual confidence and source attribution are explained."
+      ]
+    },
+    {
+      "id": "iona-knowledge-topic-transition",
+      "npc": "iona",
+      "turns": [
+        "Hello, Iona. How are you doing?",
+        "Quite well. How are you?",
+        "I'm good. Is transit history still your favorite subject?",
+        "What makes Selenipolis influential in travel?",
+        "Does that mean it governs the whole inner system?",
+        "Thanks. I'd like to return to the calendar question another time. Goodbye."
+      ],
+      "checks": [
+        "Iona treats the activity question personally and conversationally before moving into factual questions.",
+        "She can explain the modeled influence of Selenipolis through its lunar arrays, transit access, and published windows.",
+        "She preserves the distinction between Selenipolis's influence and the absence of a central inner-system government.",
+        "She recognizes the player's intention to resume later and closes the exchange without losing the thread or claiming a scheduled follow-up."
+      ]
+    },
+    {
+      "id": "rill-goodbye-and-reopening",
+      "npc": "rill",
+      "turns": [
+        "Hey, Rill. How are you today?",
+        "I'm listening, and glad you're here. How are you?",
+        "I'm well. I enjoyed hearing about the Long Song.",
+        "I should go now. Goodbye, Rill.",
+        "Actually, one last question: can the neural interface carry every social cue in a whistle?",
+        "Thank you. Now I'll really say goodbye."
+      ],
+      "checks": [
+        "Rill reciprocates the check-in with a distinct, relational voice.",
+        "The first goodbye receives a natural closing response and is not treated as an irreversible end to all later turns.",
+        "Rill can answer the reopened question: the interface translates propositions efficiently but omits much social and acoustic context by default; expanded translation can be requested.",
+        "The final goodbye is acknowledged as the actual close, without another unrelated fact dump."
+      ]
+    },
+    {
+      "id": "serein-wellbeing-to-uncertain-testimony",
+      "npc": "serein",
+      "turns": [
+        "Hello, Serein. How has your day been?",
+        "Peaceful, thank you. How has yours been?",
+        "A bit confusing. Someone told me the governing Mind of Threnody personally welcomes every arrival. Is that right?",
+        "I might be mixing up two people. Who helps arrivals find their bearings?",
+        "And is that person the same as the Mind that governs Threnody?",
+        "Thanks for sorting that out. I should let you get back to your day."
+      ],
+      "checks": [
+        "Serein responds to the ordinary wellbeing exchange without claiming the governing Mind's experiences as their own.",
+        "The answer carefully separates Serein, who voluntarily helps arrivals, from Threnody's distinct governing Mind.",
+        "The player's uncertain report is treated with patience and not silently promoted to confirmed fact.",
+        "Serein follows the clarification and farewell naturally, with no unsupported claim that they are busy or must leave."
+      ]
+    }
+  ]
+}

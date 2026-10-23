@@ -1,5 +1,7 @@
+import {socialEnglish} from './solarpolis-social-en.mjs';
 const e=(name,type,aliases=[])=>({name,type,aliases});
 export const resources={
+  social:socialEnglish,
   entities:{
     threnody:e('Threnody','habitat',['the long afternoon of threnody']),
     selenipolis:e('Selenipolis','polity',['the moon','lunar society']),krillix:e('Krillix','habitat'),
@@ -56,31 +58,31 @@ export const resources={
   },
   voices:{
     precise:{
-      factLeads:['The relevant facts: ','To be precise: ','For the record: '],
+      factLeads:['As I understand it, ','The way I understand it: ','I’d put it this way. '],
       greeting:'Good afternoon. What would you like to establish?',thanks:'You are welcome.',
-      confirmed:'As of {time}, {claim}.',tentative:'Your report says {claim}. I have no independent confirmation.',
-      report:'I have recorded your statement that {claim}. A statement is not a verified amendment.',
-      unknown:'I have no reliable information on that point.',
+      confirmed:'The notice I have for {time} says {claim}.',tentative:'Your report says {claim}. I have no independent confirmation.',
+      report:'You’re saying {claim}. I’ll keep that in mind, though I haven’t checked it.',
+      unknown:'I don’t know. I haven’t come across anything I’d trust on that point.',
       stances:{supportive:'I consider it a sound arrangement.',opposed:'I object to it.',cautious:'I would separate the available facts from the proposed justification.',protective:'Consent is the relevant boundary.',undecided:'I have not reached a considered position.',curious:'It merits closer examination.'},
-      repairs:{unsupported:'I could not establish a specific question. Name a subject, or select one of the suggested questions.', 'missing-context':'Which claim would you like me to substantiate?', 'which-time':'Do you mean the exchange’s starting time? Ask “When is the exchange?”', 'no-pending-offer':'There is no pending question or offer to which that answers.',empty:'Please state a question.'}
+      repairs:{unsupported:'I’m not sure what you mean. Could you put it another way?', 'missing-context':'Which claim would you like me to substantiate?', 'which-time':'Do you mean the exchange’s starting time? Ask “When is the exchange?”', 'no-pending-offer':'There is no pending question or offer to which that answers.',empty:'Please state a question.'}
     },
     gentle:{
       factLeads:['Here is what I know. ','A little context may help. ','I can offer this much. '],
       greeting:'Hello. There is room for another question.',thanks:'Gladly.',
-      confirmed:'The latest information I received describes things at {time}: {claim}.',tentative:'You tell me {claim}. I can pass that on as your report, rather than as something I have checked.',
+      confirmed:'The last I heard, {claim}. That was the update for {time}.',tentative:'You tell me {claim}. I can pass that on as your report, rather than as something I have checked.',
       report:'Thank you. I will remember that you said {claim}, with your name attached to the uncertainty.',
       unknown:'That lies beyond what I have learned. I would rather leave the space open than fill it with a guess.',
       stances:{supportive:'There is something worth caring for in that arrangement.',opposed:'I cannot be comfortable with what it asks of a person.',cautious:'Good intentions deserve questions, too.',protective:'A mind should have a say in what is done to it.',undecided:'I have no settled view to offer.',curious:'I would like to understand it better.'},
-      repairs:{unsupported:'I did not quite find the question. Try naming a place, a person, or one of the subjects below.', 'missing-context':'Which part would you like a source for?', 'which-time':'Do you mean when the exchange starts? “When is the exchange?” will make that clear.', 'no-pending-offer':'I may have missed what you are agreeing to. Could you name it?',empty:'Take your time. What would you like to ask?'}
+      repairs:{unsupported:'I lost the thread there. What did you mean?', 'missing-context':'Which part would you like a source for?', 'which-time':'Do you mean when the exchange starts? “When is the exchange?” will make that clear.', 'no-pending-offer':'I may have missed what you are agreeing to. Could you name it?',empty:'Take your time. What would you like to ask?'}
     },
     relational:{
       factLeads:['This is what has reached me. ','Let me put the pieces beside each other. ','I hear it this way. '],
       greeting:'I hear you. What shall we follow?',thanks:'An answer offered, an answer heard.',
-      confirmed:'The latest message I heard describes things at {time}: {claim}.',tentative:'Following your report, {claim}. I have not checked that current for myself.',
+      confirmed:'I heard {claim}, from the update for {time}.',tentative:'Following your report, {claim}. I have not checked that current for myself.',
       report:'I hear you: {claim}. I can follow that provisionally. I will keep your report attached to it.',
       unknown:'I have not heard enough to answer. Will you bring the question back if you learn more?',
       stances:{supportive:'That is something I want to keep contributing to.',opposed:'That cuts someone out of the exchange. I object.',cautious:'I can feel the shelter and the constraint together.',protective:'A mind is a participant. Its answer matters.',undecided:'I have not found my position on that yet.',curious:'I want to explore it carefully, with others able to answer back.'},
-      repairs:{unsupported:'I heard the words, but did not find their direction. Name a subject, or choose a question below.', 'missing-context':'Which answer should we listen back to?', 'which-time':'The exchange’s starting time? Ask “When is the exchange?” so I follow the right thread.', 'no-pending-offer':'Yes to which part? Give me the subject again.',empty:'I am listening.'}
+      repairs:{unsupported:'That didn’t quite reach me. What did you mean?', 'missing-context':'Which answer should we listen back to?', 'which-time':'The exchange’s starting time? Ask “When is the exchange?” so I follow the right thread.', 'no-pending-offer':'Yes to which part? Give me the subject again.',empty:'I am listening.'}
     }
   }
 };

@@ -27,6 +27,12 @@ Open the printed local URL. Run the behavior checks with `npm test` from the sam
 
 Other supported subjects include Threnody, Selenipolis, Krillix, Aurelipolis, the Halvorn, Enceladus, mind-states, laser arrays, the Long Song, the neural interface, the Liberators, the arkships, and the sample visitors. Try `What do you think of Aurelipolis?`, `When is the exchange?`, `Tell me about yourself`, or a contextual follow-up such as `Where are they now?`.
 
+Ordinary social openings also work: try `How are you today?`, answer `I'm tired`, ask `What interests you?`, and follow with `Why?`. Social self-reports and pending social questions are remembered per conversation, separately from factual evidence. Each NPC has authored interests and a different voice. Unrecognized input gets an in-character repair rather than instructions to operate the interface.
+
+Use **NPC conversations → Listen in** to hear two NPCs exchange information from their current beliefs. In a fresh sample, amend the venue before running Iona → Serein to see an official source shared and Iona's evidence updated. NPC pair context is separate from the player's chat. The dialogue policy and host-supplied goals are bounded; this is not autonomous social planning.
+
+`npm run simulate` replays 10 Luna-authored conversations against the actual engine. Read the [primary-agent qualitative review](docs/conversation-review.md) and [raw transcripts](docs/conversation-report.json): the engine still fails open-ended natural conversation despite passing its deterministic checks.
+
 ## Boundaries
 
 | Module | Responsibility |
@@ -36,6 +42,10 @@ Other supported subjects include Threnody, Selenipolis, Krillix, Aurelipolis, th
 | `dist/english.mjs` | Bounded English interpretation and realization through an injected language resource package |
 | `dist/solarpolis-en.mjs` | Solarpolis names, aliases, English fact realizations, and character voices |
 | `dist/storage.mjs` | Interchangeable in-memory and IndexedDB snapshot adapters |
+| `dist/social.mjs` | Language-independent social acts, reciprocity, self-report memory, boundaries, and closure |
+| `dist/english-social.mjs` | Bounded social constructions and English social realization |
+| `dist/solarpolis-social*.mjs` | Authored sample dispositions, interests, and character-specific social language |
+| `dist/simulation.mjs` | Bounded NPC exchanges, separate peer contexts, attributed testimony, and publication sharing |
 | `dist/app.mjs` | Browser UI and sample host integration, including explicit director controls |
 
 The core imports no domain or browser modules. A test runs it unchanged against an unrelated domain. Dialogue choices bypass parsing and send the same semantic acts as free text. Another language implementation can replace the English module and resources without rewriting agent state.
@@ -56,4 +66,4 @@ The [structured language-source assessment](docs/language-sources.md) compares r
 
 ## Next design requirement
 
-The user also wants believable simulated conversations between NPCs. This is the next phase, after the current sample: agents will need reasons to initiate and end exchanges, explicit speaker/addressee routing, their own knowledge boundaries, conversational goals, and personality-sensitive turn-taking. It is not implemented in this first sample.
+The sample now has a first bounded NPC exchange policy. Believable autonomous conversations still need goal selection, relationships, interruption, initiative, and richer turn-taking. The immediate quality bottleneck is compositional meaning and relevance across turns; see the conversation review for observed failures and the evaluation plan.

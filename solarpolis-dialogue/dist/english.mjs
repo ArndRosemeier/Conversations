@@ -1,4 +1,5 @@
 // First language implementation. Domain vocabulary/templates are injected.
+import {interpretSocial,realizeSocial,realizeEvidence} from './english-social.mjs';
 const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const normalize = s => s.toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g,' ').trim();
 export class EnglishLanguage {
@@ -12,6 +13,8 @@ export class EnglishLanguage {
     }).sort((a,b)=>a.index-b.index).map(x=>x.id);
   }
   interpret(raw,context={}) {
+    const socialAct=interpretSocial(raw,context,this.r.entities);
+    if(socialAct){this.lastInterpretation={engine:'English social constructions'};return socialAct;}
     const text=normalize(raw);
     if (!text) return {function:'clarify',reason:'empty'};
     if (/^(hi|hello|hey|greetings)[!. ]*$/.test(text)) return {function:'greet'};
@@ -29,7 +32,7 @@ export class EnglishLanguage {
         return {function:'assert',content:{predicate:'located_at',args:{subject,place},polarity:!(/\b(isn't|is not|not in|not at)\b/.test(text))}};
       }
     }
-    if (/\b(what time|when)\b/.test(text)) {
+    if (/^(what time|when)\b|[.!?]\s*(what time|when)\b/.test(text)) {
       if (subjects.length===1) return {function:'ask',query:{predicate:'starts_at',args:{subject:subjects[0]}}};
       if (context.focus && this.r.entities[context.focus]?.type==='event') return {function:'ask',query:{predicate:'starts_at',args:{subject:context.focus}}};
       return {function:'clarify',reason:'which-time'};
@@ -39,6 +42,7 @@ export class EnglishLanguage {
     if (!subject && /\b(yourself|your pursuit|you do|you from)\b/.test(text)) subject=context.speaker;
     if (!subject) return {function:'clarify',reason:'unsupported'};
     const query={args:{subject}};
+    if(/\bhow many\b/.test(text))return {function:'ask',query:{predicate:'numeric_count',args:{subject}}};
     if (/\bwhere\b/.test(text)) {query.predicate='located_at';query.args.place={$var:'place'};}
     else if (/\b(source|how do you know|evidence)\b/.test(text)) return {function:'ask_evidence',query};
     else if (/\b(slot|reservation|confirmed|booking)\b/.test(text)) query.predicate='reservation';
@@ -59,6 +63,8 @@ export class EnglishLanguage {
   clock(minute) {const t=16*60+minute;return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;}
   sentence(s) {return s.charAt(0).toUpperCase()+s.slice(1).replace(/[.!?]$/,'')+'.';}
   realize(plan,actor,options={}) {
+    if(plan.social)return realizeSocial(plan,this.r.social?.[actor.voice],id=>this.name(id));
+    if(plan.function==='ask_evidence'){const text=realizeEvidence(plan,actor,this.r.social?.[actor.voice],this);if(text)return text;}
     const voice=this.r.voices[actor.voice];
     let text='';
     if (plan.function==='clarify') {
@@ -95,6 +101,9 @@ export class EnglishLanguage {
     }
     if (options.expanded && actor.voice==='relational') text+='\n\n[Expanded interface: this reply carries an invitation to continue the exchange, without an obligation to agree.]';
     return text;
+  }
+  npcLine(key,actor,args={}) {
+    return (this.r.social?.[actor.voice]?.npc?.[key]??key).replace(/\{(\w+)\}/g,(_,name)=>args[name]??name);
   }
   label(act) {
     if (act.function==='ask_evidence') return 'How do you know?';

@@ -3,14 +3,18 @@ import {domain,scenario} from './solarpolis.mjs';
 import {EnglishLanguage} from './english.mjs';
 import {resources} from './solarpolis-en.mjs';
 import {IndexedDBStorage,MemoryStorage} from './storage.mjs';
+import {simulateNPCConversation} from './simulation.mjs';
 const language=new EnglishLanguage(resources);
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let storage=new IndexedDBStorage(),persistent=true,session=null,core,view,busy=Promise.resolve(),toastTimer;
 try {session=await storage.load();} catch {storage=new MemoryStorage();persistent=false;}
 try {core=new AgentCore(domain,session?.core);} catch {core=new AgentCore(domain);session=null;}
-const freshView=()=>({selected:'serein',mode:'choices',tab:'beliefs',expanded:false,messages:Object.fromEntries(domain.characters.map(c=>[c.id,[{kind:'npc',text:c.introduction,time:0}]])),last:{}});
+const freshView=()=>({selected:'serein',mode:'choices',tab:'beliefs',expanded:false,simulations:[],messages:Object.fromEntries(domain.characters.map(c=>[c.id,[{kind:'npc',text:c.introduction,time:0}]])),last:{}});
 view=session?.view??freshView();
+// Update only the initial introduction; retain the player's conversation and save.
+for(const npc of domain.characters){const first=view.messages[npc.id]?.[0];if(first?.kind==='npc'&&first.time===0)first.text=npc.introduction;}
+view.simulations??=[];
 const actor=()=>domain.characters.find(c=>c.id===view.selected);
 function toast(text){$('toast').textContent=text;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,6000);}
 async function persist(){
@@ -57,8 +61,11 @@ function renderComposer(){
   $('suggestions').hidden=view.mode!=='choices';$('text-form').hidden=view.mode!=='text';
   for(const mode of ['choices','text']){$(`mode-${mode}`).classList.toggle('active',view.mode===mode);$(`mode-${mode}`).setAttribute('aria-pressed',view.mode===mode);}
   $('suggestions').innerHTML=scenario.starterQueries.map((q,i)=>`<button data-question="${i}">${esc(q.label)}<span aria-hidden="true">↗</span></button>`).join('');
+  const pending=core.context(view.selected).social?.pending;
+  if(pending==='wellbeing')$('suggestions').insertAdjacentHTML('afterbegin','<button data-social="positive">I’m doing well, thanks.</button><button data-social="tired">I’m a little tired.</button>');
+  if(pending==='company')$('suggestions').insertAdjacentHTML('afterbegin','<button data-social="company">Yes, some company would be nice.</button><button data-social="boundary">I’d rather leave it alone.</button>');
   $('share-notice').disabled=!core.state.applied.includes(domain.events.venue.id);
-  $('source-question').disabled=!core.context(view.selected).lastQuery;
+  $('source-question').disabled=!core.context(view.selected).lastQuery||!!view.last[view.selected]?.plan.social;
 }
 function beliefCard(group){
   const e=group.primary;
@@ -70,6 +77,11 @@ function renderInspector(){
   document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===view.tab));
   const element=$('inspector'),last=view.last[view.selected];
   if(view.tab==='beliefs'){
+    if(last?.plan.social){
+      const social=core.context(view.selected).social;
+      element.innerHTML=`<div class="inspector-subtitle">SOCIAL CONVERSATION / ${esc(actor().name.toUpperCase())}</div><h3>A person, not a query.</h3><p>${esc(actor().description)}</p><article class="belief-card"><h4>${esc(last.plan.social.topic.replaceAll('_',' '))}</h4><p>${esc(last.plan.decision)}</p><div class="source">${social.userState?`You described yourself as ${esc(social.userState.value)}. This is remembered as your self-report.`:'No wellbeing self-report from you yet.'}</div></article><p>Social dispositions and interests are authored sample characterization. Your mood stays in this conversation; it does not become an authoritative world fact.</p>`;
+      return;
+    }
     const query=last?.plan.query;
     let groups=query?core.beliefs(view.selected,query):core.beliefs(view.selected,{predicate:'located_at'});
     if(!groups.length&&!query)groups=core.beliefs(view.selected).slice(0,4);
@@ -92,9 +104,10 @@ function renderControls(){
   $('clock').textContent=language.clock(core.state.time);
   $('signal-status').textContent=core.state.pending.length?`Bulletin in transit · ${Math.max(0,core.state.pending[0].due-core.state.time)} minutes remaining.`:core.state.applied.includes(domain.events.signal.id)?'Lunar bulletin received. No signals in transit.':'No signals in transit.';
 }
-function render(){renderRoster();renderMessages();renderComposer();renderInspector();renderControls();}
+function render(){renderRoster();renderMessages();renderComposer();renderInspector();renderControls();requestAnimationFrame(()=>{$('messages').scrollTop=$('messages').scrollHeight;});}
 $('roster').addEventListener('click',event=>{const button=event.target.closest('[data-character]');if(button)run(()=>{view.selected=button.dataset.character;});});
 $('suggestions').addEventListener('click',event=>{const button=event.target.closest('[data-question]');if(button)run(()=>{const q=scenario.starterQueries[Number(button.dataset.question)];talk(structuredClone(q.act),q.label);});});
+$('suggestions').addEventListener('click',event=>{const button=event.target.closest('[data-social]');if(!button)return;run(()=>{const key=button.dataset.social;talk(key==='boundary'?{function:'social_boundary'}:key==='company'?{function:'accept'}:{function:'disclose',state:key},button.textContent);});});
 for(const mode of ['choices','text'])$(`mode-${mode}`).addEventListener('click',()=>run(()=>{view.mode=mode;if(mode==='text')setTimeout(()=>$('input').focus(),0);}));
 document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>run(()=>{view.tab=button.dataset.tab;})));
 $('expanded').addEventListener('change',()=>run(()=>{view.expanded=$('expanded').checked;toast(view.expanded?'Expanded translation applies to Rill’s next replies.':'Standard propositional translation restored.');}));
@@ -118,4 +131,18 @@ $('export').addEventListener('click',()=>{
 });
 $('reset').addEventListener('click',()=>run(async()=>{await storage.clear();core=new AgentCore(domain);view=freshView();toast('The sample is back at 16:00.');}));
 $('guide-open').addEventListener('click',()=>$('guide').showModal());$('guide-close').addEventListener('click',()=>$('guide').close());
+const npcScenes=[
+  {initiator:'iona',partner:'serein',goal:scenario.starterQueries[0].act},
+  {initiator:'rill',partner:'serein',goal:{function:'ask',query:{args:{subject:'long_song'}}}},
+  {initiator:'serein',partner:'iona',goal:{function:'ask',query:{predicate:'reservation',args:{subject:'patient_margin'}}}}
+];
+$('simulate-npcs').addEventListener('click',()=>run(()=>{
+  const scene=npcScenes[Number($('npc-scene').value)];
+  const result=simulateNPCConversation(core,language,scene);
+  view.simulations.push({...result,scene:Number($('npc-scene').value),time:core.state.time});
+  $('npc-transcript').innerHTML=result.turns.map(turn=>`<article class="belief-card"><div class="message-label">${esc(domain.characters.find(c=>c.id===turn.speaker).name)}</div><p>${esc(turn.text)}</p></article>`).join('');
+  $('npc-outcome').textContent=result.exchanges.some(e=>e.verified.length)?'A publication was shared and read. The listener’s personal evidence has been updated.':result.exchanges.some(e=>e.reports.length)?'The listener retains attributed testimony. A spoken claim alone does not become verified knowledge.':'The question remained open.';
+  $('npc-dialog').showModal();
+}));
+$('npc-close').addEventListener('click',()=>$('npc-dialog').close());
 render();await persist();
