@@ -52,6 +52,8 @@ Session state stays in the browser's IndexedDB when available, with explicit in-
 
 Work is committed directly to `main` at the user's request.
 
+The [structured language-source assessment](docs/language-sources.md) compares reusable lexicons, morphology, grammars, and annotated dialogue datasets. None have been integrated into the first sample yet.
+
 ## Next design requirement
 
 The user also wants believable simulated conversations between NPCs. This is the next phase, after the current sample: agents will need reasons to initiate and end exchanges, explicit speaker/addressee routing, their own knowledge boundaries, conversational goals, and personality-sensitive turn-taking. It is not implemented in this first sample.
