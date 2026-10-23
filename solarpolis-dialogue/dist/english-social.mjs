@@ -69,7 +69,7 @@ export function realizeEvidence(plan,actor,resources,language){
   return plan.results.map(g=>{
     const e=g.primary;
     const template=e.certainty==='reported'?resources.testimony:resources.sourceReply;
-    const source=e.certainty==='reported'||/^(?:the|your|my|our)\b/i.test(e.source.label)?e.source.label:`the ${e.source.label}`;
+    const source=e.certainty==='reported'||/^(?:the|your|my|our)\b|['’]s\b/i.test(e.source.label)?e.source.label:`the ${e.source.label}`;
     return template.replace('{source}',source).replace('{claim}',language.clause(e)).replace('{time}',language.clock(e.aboutTime));
   }).join(' ');
 }

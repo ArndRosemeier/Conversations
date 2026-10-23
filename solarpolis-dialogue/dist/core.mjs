@@ -27,7 +27,7 @@ export class AgentCore {
       for(const fact of domain.facts.filter(f=>!existing.has(f.id))){
         this.state.world.push(copy(fact));
         for(const npc of domain.characters)if(!fact.knownBy||fact.knownBy.includes(npc.id))
-          this.observe(npc.id,fact,{kind:'publication',label:fact.sourceLabel??'visitor reference archive'},false);
+          this.observe(npc.id,fact,{kind:'publication',label:fact.sourceLabel??'initial knowledge'},false);
       }
       this.state.viewpoints??=[];
       for(const npc of domain.characters)for(const view of domain.viewpoints??[])
@@ -39,7 +39,7 @@ export class AgentCore {
         this.state.contexts[npc.id] = { focus: null, referents:{}, lastQuery: null, lastAct: null, lastResults:[], pendingOffer:null, turn: 0 };
         for (const view of domain.viewpoints??[]) if (!view.knownBy||view.knownBy.includes(npc.id)) this.state.viewpoints.push({...copy(view),holder:npc.id});
         for (const fact of domain.facts.filter(f => !f.knownBy || f.knownBy.includes(npc.id))) {
-          this.observe(npc.id, fact, { kind: 'publication', label: fact.sourceLabel ?? 'visitor reference archive' }, false);
+          this.observe(npc.id, fact, { kind: 'publication', label: fact.sourceLabel ?? 'initial knowledge' }, false);
         }
       }
     }
@@ -168,7 +168,7 @@ export class AgentCore {
     const finish=()=>{
       context.turn++;context.lastAct=act.id??plan.id;
       if(plan.results.length)context.lastResults=plan.results.map(g=>copy(g.primary));
-      const location=plan.results.find(g=>g.primary.atom.predicate==='located_at'&&(g.primary.atom.polarity??true));
+      const location=plan.results.find(g=>g.primary.atom.predicate===(this.domain.discourse?.locationPredicate??'located_at')&&(g.primary.atom.polarity??true));
       if(location)context.lastPlace=location.primary.atom.args.place;
       this.state.history.push({id:this.next('turn'),holder,time:this.state.time,act:copy(act),plan:copy(plan)});
       return plan;

@@ -67,7 +67,15 @@ Session state stays in the browser's IndexedDB when available, with explicit in-
 
 Work is committed directly to `main` at the user's request.
 
-The [structured language-source assessment](docs/language-sources.md) compares reusable lexicons, morphology, grammars, and annotated dialogue datasets. None have been integrated into the first sample yet.
+The [structured language-source assessment](docs/language-sources.md) compares reusable lexicons, morphology, grammars, and annotated dialogue datasets. Selected WordNet/VerbNet resources and a compiled GF grammar are now integrated; see the conversion and build notes below.
+
+## Integrating another setting
+
+Start with the [setting package contract for coding agents](docs/setting-package-contract.md). The complete [Willowbrook package](solarpolis-dialogue/dist/settings/willowbrook/setting.mjs) is an invented village workshop with two NPCs. Open `/willowbrook.html` on the local server, or follow the Willowbrook link in Solarpolis. `npm run demo:willowbrook` runs a short conversation without a browser.
+
+Willowbrook uses the same core, English interpreter/realizer, social rules, and compiled grammar, with no Solarpolis imports. It uses a different location predicate (`kept_at`), an 08:00 clock, private ownership knowledge, inferred responsibility, delayed observations, and an injected ownership question construction. Its separate bundle omits Solarpolis data and the optional lexical pack. Tests verify the dependency graph and behaviors; this demonstrates bounded reuse, not unrestricted English competence.
+
+The version 1 package boundary validates definitions and wraps snapshots with setting identity. The original Solarpolis host still uses its established direct module wiring and v1/v2 snapshot migration; it has not been converted to this stricter package envelope. New hosts should use `createSettingSession`.
 
 ## Next design requirement
 
@@ -85,4 +93,4 @@ Useful new examples: “Why can an array operator affect a ship’s trip?”, �
 
 ### Rebuilding the browser asset
 
-The published page loads `dist/browser.js`, a single bundled script containing the engine and selected language resource. Source modules and the inspectable JSON pack remain in the repository. Serving the checked-in build still needs no package installation. After editing runtime sources, run `npm ci` once and `npm run build` in `solarpolis-dialogue`; esbuild is a pinned development dependency, not a game runtime dependency. The language importer emits equivalent JSON and ES-module resources, verified by its `--check` mode.
+The published Solarpolis page loads `dist/browser.js`, a single bundled script containing the engine and selected language resource. Willowbrook loads its own `dist/willowbrook.js`. Source modules and the inspectable JSON pack remain in the repository. Serving the checked-in builds still needs no package installation. After editing runtime sources, run `npm ci` once and `npm run build` in `solarpolis-dialogue`; esbuild is a pinned development dependency, not a game runtime dependency. The language importer emits equivalent JSON and ES-module resources, verified by its `--check` mode.

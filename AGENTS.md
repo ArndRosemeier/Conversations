@@ -1,5 +1,15 @@
 # Working agreements
 
+## Start here for setting integration
+
+- Read [the setting package contract](docs/setting-package-contract.md) before adding a setting or changing its schema. Copy the small `solarpolis-dialogue/dist/settings/willowbrook/` package as the working example, not Solarpolis world content.
+- Source modules currently live in `solarpolis-dialogue/dist/`. Edit `.mjs` sources; never hand-edit generated `browser.js` or `willowbrook.js`. Rebuild both with `npm run build` from `solarpolis-dialogue`.
+- Keep setting mechanics in injected constructions in the setting's English resource package. Do not import a setting into shared `english*.mjs`, `gf/`, `core.mjs`, `social.mjs`, `discourse.mjs`, or `reasoning.mjs`.
+- New integrations use `createSettingSession`, setting-tagged save envelopes, and distinct storage namespaces. Choice acts use domain predicate IDs; English bindings map shared grammar concepts onto those IDs.
+- Validate with `npm test`, `npm run demo:willowbrook`, and `npm run build`. The setting-package tests include a transitive dependency check and behavioral checks for the second setting. For a new setting, add its own typed/choice equivalence and unseen-event tests.
+
+## Project agreements
+
 - The user explicitly requests that work be pushed directly to `main` in `ArndRosemeier/Conversations`. Do not create feature branches or force-push.
 - Keep the agent core independent of a game engine, browser APIs, persistence technology, and human language.
 - Both dialogue choices and free text must use the same semantic conversation API.

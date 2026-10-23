@@ -1,6 +1,11 @@
+import {interpretSolarpolis} from './solarpolis-meaning.mjs';
 import {resources as expansion} from './solarpolis-expanded-en.mjs';
 import {entities as types} from './solarpolis-expanded.mjs';
 export function expandEnglish(r){
+  r.constructions=[interpretSolarpolis];
+  r.clock={startMinute:16*60};
+  r.predicates.located_at.evidential=true;
+  r.predicates.reservation.evidential=true;
   const old=r.entities;
   r.entities={...old,...Object.fromEntries(Object.entries(expansion.entities).map(([id,e])=>[id,{...e,type:types[id]?.type??e.type}]))};
   r.entities.patient_margin.aliases=['the ship','ship'];

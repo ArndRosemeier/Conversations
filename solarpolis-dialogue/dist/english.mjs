@@ -1,5 +1,6 @@
 // First language implementation. Domain vocabulary/templates are injected.
 import {interpretMeaning,splitTurn} from './english-meaning.mjs';
+import {defaultVoice,defaultSocial} from './english-defaults.mjs';
 import {createGFParser} from './gf/adapter.mjs';
 import {LexicalIndex} from './lexical-index.mjs';
 import {interpretSocial,realizeSocial,realizeEvidence} from './english-social.mjs';
@@ -7,7 +8,14 @@ const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const normalize = s => s.toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g,' ').trim();
 export class EnglishLanguage {
   constructor(resources,options={}) {
-    this.r=resources;this.locale='en';this.gf=createGFParser(resources);
+    this.r={...resources,voices:{},social:{}};
+    for(const [id,voice] of Object.entries(resources.voices??{})){
+      this.r.voices[id]={...defaultVoice,...voice,stances:{...defaultVoice.stances,...voice.stances},repairs:{...defaultVoice.repairs,...voice.repairs}};
+      const social=resources.social?.[id]??{};
+      this.r.social[id]={...defaultSocial,...social,responses:{...defaultSocial.responses,...social.responses},npc:{...defaultSocial.npc,...social.npc}};
+    }
+    this.locale='en';this.gf=createGFParser(this.r);
+    this.schemas=options.schemas;
     this.lexicon=new LexicalIndex(options.lexicalPack);this.lastInterpretation=null;
   }
   name(id) { return this.r.entities[id]?.name ?? id; }
@@ -35,13 +43,48 @@ export class EnglishLanguage {
     return {...act,query:{...q,predicate:undefined,anyOf:facet.map(predicate=>({predicate}))}};
   }
   interpret(raw,context={}) {
+    const act=this.interpretRaw(raw,context);
+    // Bind shared English concepts to the setting's predicate vocabulary.
+    const bind=node=>{
+      if(!node||typeof node!=='object')return node;
+      if(Array.isArray(node))return node.map(bind);
+      return Object.fromEntries(Object.entries(node).map(([key,value])=>[key,key==='predicate'?(this.r.bindings?.[value]??value):bind(value)]));
+    };
+    const result=bind(act);
+    const valid=(node,complete=false)=>{
+      if(!node||typeof node!=='object')return true;
+      if(node.predicate){
+        const schema=this.schemas?.[node.predicate];
+        if(this.schemas&&!schema)return false;
+        if(schema){
+          if(complete&&Object.keys(node.args??{}).length!==Object.keys(schema.roles).length)return false;
+          for(const [role,value] of Object.entries(node.args??{})){
+            const type=schema.roles[role];
+            if(!type||value==null)return false;
+            if(!complete&&typeof value==='object'&&typeof value.$var==='string')continue;
+            if(type==='entity'&&!this.r.entities[value])return false;
+            if(type==='number'&&!Number.isFinite(value))return false;
+            if(type==='string'&&typeof value!=='string')return false;
+          }
+        }
+      }
+      return Object.entries(node).every(([key,value])=>typeof value!=='object'||value===null||
+        (Array.isArray(value)?value.every(v=>valid(v)):valid(value,key==='content')));
+    };
+    if(!valid(result)){
+      this.lastInterpretation={...this.lastInterpretation,rejected:'unsupported setting relation'};
+      return {function:'clarify',reason:'unsupported'};
+    }
+    return result;
+  }
+  interpretRaw(raw,context={}) {
     const socialAct=interpretSocial(raw,context,this.r.entities);
     if(socialAct){this.lastInterpretation={engine:'English social constructions'};return socialAct;}
     const parts=splitTurn(raw);
     if(parts){
       const local=structuredClone(context),acts=[],traces=[];
       for(const part of parts){
-        const act=this.interpret(part,local);acts.push(act);traces.push(this.lastInterpretation);
+        const act=this.interpretRaw(part,local);acts.push(act);traces.push(this.lastInterpretation);
         if(act.function==='set_topic')local.focus=act.subject;
         if(act.function==='assert')local.lastProposition=act.content;
         if(act.query?.args?.subject&&typeof act.query.args.subject==='string')local.focus=act.query.args.subject;
@@ -51,6 +94,10 @@ export class EnglishLanguage {
     }
     const text=normalize(raw),hits=this.lexicon.candidates(text);
     const remember=(act,trace)=>{this.lastInterpretation={...trace,lexicalCandidates:hits};return this.normalizeAct(act);};
+    for(const construction of this.r.constructions??[]){
+      const act=construction(this,raw,context);
+      if(act)return remember(act,{engine:'Setting English construction'});
+    }
     const meaning=interpretMeaning(this,raw,context);
     if(meaning)return remember(meaning,{engine:'English relation construction'});
     if(/^(tell me more|more|go on|continue)[.! ]*$/.test(text))return remember({function:'elaborate'},{engine:'English discourse construction'});
@@ -127,11 +174,11 @@ export class EnglishLanguage {
     let template=a.polarity===false?schema?.negative:schema?.positive;
     if(a.args.subject===speaker)template=(a.polarity===false?schema?.firstPerson?.negative:schema?.firstPerson?.positive)??template;
     if (!template && a.polarity===false) return `the claim about ${args.subject} is false`;
-    if (a.args.value!=null) template=this.r.values[a.args.value]??template;
+    if (a.args.value!=null) template=this.r.values?.[a.args.value]??template;
     if (a.args.minute!=null) args.minute=this.clock(a.args.minute);
     return (template??'{subject}: {value}').replace(/\{(\w+)\}/g,(_,key)=>args[key]??key);
   }
-  clock(minute) {if(minute==null)return 'an unspecified time';const t=16*60+minute;return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;}
+  clock(minute) {if(minute==null)return 'an unspecified time';const t=(this.r.clock?.startMinute??0)+minute;return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;}
   sentence(s) {return s.charAt(0).toUpperCase()+s.slice(1).replace(/[.!?]$/,'')+'.';}
   realize(plan,actor,options={}) {
     if(plan.function==='sequence'){
@@ -198,7 +245,7 @@ export class EnglishLanguage {
         const phrases=plan.results.map(g=>{
           const e=g.primary,claim=this.clause(e,actor.id);
           if (e.certainty==='reported') return voice.tentative.replace('{claim}',claim);
-          if (['located_at','reservation'].includes(e.atom.predicate)) return voice.confirmed.replace('{claim}',claim).replace('{time}',this.clock(e.aboutTime));
+          if (this.r.predicates[e.atom.predicate]?.evidential) return voice.confirmed.replace('{claim}',claim).replace('{time}',this.clock(e.aboutTime));
           return this.sentence(claim);
         });
                 const lead='';
@@ -227,7 +274,7 @@ export class EnglishLanguage {
     if (act.function==='opinion') return `What do you think of ${this.name(act.query.args.subject)}?`;
     if (act.function==='assert') return this.sentence(this.clause({atom:act.content}));
     const q=act.query;
-    if(q?.predicate==='located_at') return `Where is ${this.name(q.args.subject)}?`;
+    if(q?.predicate===(this.r.bindings?.located_at??'located_at')) return `Where is ${this.name(q.args.subject)}?`;
     return `Tell me about ${this.name(q?.args.subject)}.`;
   }
 }

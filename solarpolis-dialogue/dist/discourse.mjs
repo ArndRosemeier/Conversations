@@ -49,7 +49,7 @@ export function respondDiscourse(core,actor,act){
     const outcome=supporting.length&&opposing.length?'conflicted':supporting.length?'supported':opposing.length?'opposed':'unknown';
     context.focus=act.focus??content.args.subject;context.lastQuery={predicate:content.predicate,args:keyArgs};
     context.lastProposition=copy(content);
-    const location=[...supporting,...opposing].find(g=>g.primary.atom.predicate==='located_at'&&(g.primary.atom.polarity??true));
+    const location=[...supporting,...opposing].find(g=>g.primary.atom.predicate===(core.domain.discourse?.locationPredicate??'located_at')&&(g.primary.atom.polarity??true));
     if(location)context.lastPlace=location.primary.atom.args.place;
     return finish({function:'verify',query:copy(context.lastQuery),content:copy(content),outcome,report:act.function==='check_report'?copy(report):undefined,results:[...supporting,...opposing],decision:'Check a specific proposition against personal confirmed or inferred evidence; absence of evidence stays unknown.'});
   }
