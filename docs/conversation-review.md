@@ -65,3 +65,9 @@ The runtime now integrates selected WordNet/VerbNet data and an actual compiled 
 NPC conversations still use a bounded greeting → host-supplied goal → answer → source → acknowledgment → closing policy. The transcript is produced from current personal knowledge, not stored dialogue. The fresh venue scenario contains nine utterances; repeated encounters can be shorter because social state is retained. This is not yet a simulation of autonomous motives, interruptions, negotiations, or evolving relationships.
 
 Next, improve semantic treatment of reported causal statements, metaconversation about what was said, and sentence planning that combines evidence into concise in-character explanations. Evaluate those changes with newly authored or adaptive player conversations; neither current fixture should again be called held out.
+
+## Published browser verification
+
+The first hosted module build stalled before saved-session loading, despite matching the locally tested asset bytes. Replacing the module request chain with one bundled browser script resolved the observed startup failure; the exact client-side cause of the module stall was not established. The static build includes a visible startup error boundary. The final hosted build was verified through the actual UI, not only through an HTTP success response.
+
+After the user clarified that all sessions are disposable test data, the published sample was reset. Iona answered the check-in, retained the mood in a mixed turn about transit history, and followed “What do you enjoy about it?” with a relevant personal explanation. The bundle is generated with a pinned development-only esbuild dependency. The game requires no model, package installation, or remote language service at runtime.
