@@ -1,5 +1,7 @@
 # Language module contract — API version 1
 
+The 0.1.0 release adds an optional `bubbleVersion:1` / `realizeBubble(move, actor)` capability for incremental profile/group conversations. See [the party contract](party-conversations.md#saves-and-language-contracts) for move kinds, evidence fidelity and the 90-code-point output bound. The base adapter remains compatible; no English implementation is imported by the new policy.
+
 English is an explicitly installed module at [`dist/languages/en/index.mjs`](../solarpolis-dialogue/dist/languages/en/index.mjs). The session factory, semantic core, evidence/reasoning code, and NPC policy import no concrete language. They use [`language-contract.mjs`](../solarpolis-dialogue/dist/language-contract.mjs).
 
 ## Install English in a host

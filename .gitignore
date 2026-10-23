@@ -8,4 +8,5 @@ node_modules/
 **/.openai/state/
 *.tar.gz
 *.tgz
+solarpolis-dialogue/.release/
 *.log

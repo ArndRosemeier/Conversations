@@ -2,6 +2,8 @@
 
 ## Start here for setting integration
 
+- For generated populations, groups and speech bubbles read [docs/party-conversations.md](docs/party-conversations.md). Root library imports must stay worker-safe and language-neutral. Release assets are built with `npm run build:release`; declarations are checked with `npm run test:types`. Do not bundle the optional lexical pack into the SDK archive. Runtime catalog knowledge is explicit; party cores do not copy the authoritative world inspector.
+
 - Read [the language module contract](docs/language-module-contract.md) for language integration. `createSettingSession` requires an explicit `languageModule`; do not restore an implicit English import/default in the session factory. English runtime code/resources live in `dist/languages/en/`.
 - Keep grammatical references and NPC wording out of core state. Use neutral references and source/decision IDs. Localize them in the module. Contract tests include a deliberately narrow German fixture; do not advertise it as a complete German implementation.
 

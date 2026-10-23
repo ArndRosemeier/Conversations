@@ -1,6 +1,6 @@
 # Setting package contract, version 1
 
-This is the supported integration recipe for coding agents working in this repository. It is an internal JavaScript module contract, not a published npm SDK or a promise of unrestricted natural-language understanding. The complete runnable example is [Willowbrook](../solarpolis-dialogue/dist/settings/willowbrook/setting.mjs). All its content is invented for this portability test.
+This is the supported integration recipe for coding agents working in this repository. The APIs now ship in the 0.1.0 GitHub release archive with declarations; they are not published to the npm registry. They do not promise unrestricted natural-language understanding. For generated populations, runtime additions and speech bubbles, use the [party conversation contract](party-conversations.md). The complete standalone setting example is [Willowbrook](../solarpolis-dialogue/dist/settings/willowbrook/setting.mjs). All its content is invented for this portability test.
 
 ## Fast path
 

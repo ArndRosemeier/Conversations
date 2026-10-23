@@ -1,5 +1,6 @@
 {
-  "name": "solarpolis-conversation-sample",
+  "name": "solarpolis-dialogue",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,9 +8,14 @@
     "simulate": "node tools/simulate-conversations.mjs --output ../docs/conversation-report.json",
     "start": "node server.mjs",
     "build": "node tools/build.mjs",
-    "demo:willowbrook": "node tools/demo-willowbrook.mjs"
+    "demo:willowbrook": "node tools/demo-willowbrook.mjs",
+    "demo:party": "node tools/demo-party.mjs",
+    "build:release": "node tools/build-release.mjs",
+    "test:types": "tsc -p tests/types/tsconfig.json",
+    "test:release": "node tools/check-release.mjs"
   },
   "devDependencies": {
-    "esbuild": "0.25.10"
+    "esbuild": "0.25.10",
+    "typescript": "5.9.3"
   }
 }

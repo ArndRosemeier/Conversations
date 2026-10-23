@@ -2,6 +2,8 @@
 
 A portable procedural conversation agent, explored through **Solarpolis: The Arrival Commons**. No language model, framework, dependency installation, or remote AI service is required.
 
+**SDK release 0.1.0:** [Generated profiles, 2–6-person speech-bubble conversations, runtime world catalogs, seeds and worker integration](docs/party-conversations.md). Build the typed archive and separate optional lexical pack with `npm run build:release` in `solarpolis-dialogue`; try `npm run demo:party`. English and the Solarpolis canon are explicit, separate module imports.
+
 The first browser sample follows three original characters aboard Threnody: Serein, an AI who helps arriving minds by choice; Iona Venn, a lunar transit-history enthusiast; and Rill, an uplifted dolphin exploring acoustic spaces.
 
 ## Run

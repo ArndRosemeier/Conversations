@@ -5,6 +5,7 @@ import {messages} from './messages.mjs';
 import {createGFParser} from './gf/adapter.mjs';
 import {LexicalIndex} from './lexical-index.mjs';
 import {interpretSocial,realizeSocial,realizeEvidence} from './english-social.mjs';
+import {realizeBubble} from './bubbles.mjs';
 const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 const normalize = s => s.toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g,' ').trim();
 export class EnglishLanguage {
@@ -20,6 +21,8 @@ export class EnglishLanguage {
     this.lexicon=new LexicalIndex(options.lexicalPack);this.lastInterpretation=null;
   }
   name(id) { return this.r.entities[id]?.name ?? id; }
+  get bubbleVersion(){return 1;}
+  realizeBubble(move){return realizeBubble(this,move);}
   describeDecision(id){return messages[id]??id;}
   sourceName(source){
     if(source.kind==='testimony')return source.speaker==='player'?'your unverified statement':this.name(source.speaker);

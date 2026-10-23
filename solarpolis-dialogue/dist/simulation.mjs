@@ -1,6 +1,8 @@
 // A bounded conversation policy over semantic acts, not an authored transcript.
 // Language is an injected port. The host supplies participants and a topic goal.
 const copy=value=>structuredClone(value);
+import {createNPCConversation} from './group-conversation.mjs';
+export {createNPCConversation};
 const sameAtom=(a,b)=>a.predicate===b.predicate&&(a.polarity??true)===(b.polarity??true)&&Object.keys(a.args).length===Object.keys(b.args).length&&Object.entries(a.args).every(([k,v])=>b.args[k]===v);
 function peerContext(core,holder,peer,run){
   const playerContext=core.state.contexts[holder];
@@ -31,7 +33,13 @@ export function sharePublication(core,sender,receiver,evidence){
   return core.observe(receiver,{id:evidence.id,atom:copy(evidence.atom),validFrom:evidence.aboutTime,origin:copy(evidence.origin)},
     {kind:'shared-publication',label:evidence.source.label,labelKey:evidence.source.labelKey,shareable:true,speaker:sender,upstream:evidence.id});
 }
-export function simulateNPCConversation(core,language,{initiator,partner,goal,maxTurns=10}){
+export function simulateNPCConversation(core,language,options){
+  if(options.mode==='ambient'){
+    const conversation=createNPCConversation(core,language,{...options,participants:options.participants??[options.initiator,options.partner],topics:options.topics??(options.goal?[options.goal]:[])});
+    const turns=[];let turn;while((turn=conversation.next()))turns.push(turn);
+    return {turns,exchanges:turns.flatMap(t=>t.exchanges),stopReason:conversation.stopReason};
+  }
+  const {initiator,partner,goal,maxTurns=10}=options;
   if(!Number.isInteger(maxTurns)||maxTurns<2||maxTurns>20)throw new Error('Conversation turn budget must be between 2 and 20');
   const actors=new Map(core.domain.characters.map(c=>[c.id,c]));
   if(!actors.has(initiator)||!actors.has(partner)||initiator===partner)throw new Error('Choose two different known participants');
