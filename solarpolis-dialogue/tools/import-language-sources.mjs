@@ -241,7 +241,7 @@ const manifest = {
       verbFrames:classes.reduce((s,c)=>s+c.frames.length,0),authoredMappings:conceptMappings.length}},
   integrity:'Input hashes lock the exact converted bytes. Frame IDs are generated locators, not upstream global frame IDs. WordNet sense and synset IDs and VerbNet class IDs are preserved verbatim.',
 };
-for (const [name, content] of [['dist/data/lexical-pack.json',serialized],['dist/data/source-manifest.json',JSON.stringify(manifest,null,2)+'\n'],...noticeBytes.flatMap(([name,content]) => [[`vendor-notices/${name}`,content],[`dist/vendor-notices/${name}`,content]])]) {
+for (const [name, content] of [['dist/data/lexical-pack.mjs','// Generated from the same pinned data as lexical-pack.json. See source-manifest.json.\nexport default '+serialized+';\n'],['dist/data/lexical-pack.json',serialized],['dist/data/source-manifest.json',JSON.stringify(manifest,null,2)+'\n'],...noticeBytes.flatMap(([name,content]) => [[`vendor-notices/${name}`,content],[`dist/vendor-notices/${name}`,content]])]) {
   const path = join(root,name);
   if (check) assert.equal(hash(await readFile(path)),hash(content),`Generated file differs: ${name}`);
   else { await mkdir(dirname(path),{recursive:true}); await writeFile(path,content); }

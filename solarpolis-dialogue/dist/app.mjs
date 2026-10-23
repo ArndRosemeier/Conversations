@@ -4,7 +4,7 @@ import {EnglishLanguage} from './english.mjs';
 import {resources} from './solarpolis-en.mjs';
 import {IndexedDBStorage,MemoryStorage} from './storage.mjs';
 import {simulateNPCConversation} from './simulation.mjs';
-const lexicalPack=await fetch('./data/lexical-pack.json').then(r=>{if(!r.ok)throw new Error('Language pack unavailable');return r.json();});
+import lexicalPack from './data/lexical-pack.mjs';
 const language=new EnglishLanguage(resources,{lexicalPack});
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
