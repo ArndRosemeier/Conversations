@@ -1,3 +1,4 @@
+import {expandEnglish} from './solarpolis-integration-en.mjs';
 import {socialEnglish} from './solarpolis-social-en.mjs';
 const e=(name,type,aliases=[])=>({name,type,aliases});
 export const resources={
@@ -86,3 +87,5 @@ export const resources={
     }
   }
 };
+
+expandEnglish(resources);

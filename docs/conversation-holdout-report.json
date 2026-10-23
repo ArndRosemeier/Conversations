@@ -1,0 +1,1850 @@
+{
+  "generatedAt": "2026-10-23T08:51:38.325Z",
+  "engineFiles": {
+    "core.mjs": "2be63deb8709a772b01b2f081a72f78e6a0edbe4ec56499cea0277b1a7c04f19",
+    "discourse.mjs": "059ff373bec60a795039bbebbaea233c7f397f84e86de199cf505ab06dc3b28a",
+    "english-meaning.mjs": "8bf93bc7ea57adaff27781ac9ef4130eb3edc974f00543517436127be68ead7a",
+    "reasoning.mjs": "b6daeebd5952e8e33fc36db11482017b4fd8ae78f550e27f551cc9712bb0e7ab",
+    "lexical-index.mjs": "85700bf9963d34b2ddd2a7f66748c3ea53a8e9478cbccd24c18ff345b358cd90",
+    "gf/adapter.mjs": "fabfbda6a2d804ee4f84daa064bf60295b940a2b01d110888676d68efdcedab7",
+    "data/lexical-pack.json": "71ed47e88b106f6245cacd1ce848ffc48477c5804c623e5c12c58417e6b0e351",
+    "solarpolis-expanded.mjs": "c45c562b02316e78a89130a3cdc63f4e28b19d6fa035dc55bd4c8c0dfdaf3e7a",
+    "solarpolis-expanded-en.mjs": "3ce6c81601a19ea5e34137ed6aa115ed4de0eb87c9b0d602485ba46cb7856d4b",
+    "solarpolis-integration.mjs": "b9a99a1a7e8507e51a86f15054ef51a25845efdcf97d5c88d273c96e417f6203",
+    "solarpolis-integration-en.mjs": "0ff21a3c8162fa164647b634ff39a949e0750979f83234443896d648dd2f66de",
+    "english.mjs": "a8efa53ffb3ba87da049397e07be16e736763a8c80867e8194f918106ba133e7",
+    "social.mjs": "7f2051ac0e84554b8c6ab9acb28ddbb1bb606bac52c87fd17704a037faba45d2",
+    "english-social.mjs": "e2ce3ce9ce06d694b9ebc91c95ea1be1c9ad057c84afb6299faa92c7ce88c21d",
+    "simulation.mjs": "dcc13502a4cb04b2c38ab8969affc53cc75c1260655c1e1e3ddde7146fad76e9",
+    "solarpolis.mjs": "42436f17ecc1ab7e53f53b40c80bc0caf26ae7ce5694ee2696dbff60358a1b83",
+    "solarpolis-en.mjs": "079fa69c7c0a3707a8c99740b82a91eaf9c2c82637736202207949abee65ab5f",
+    "solarpolis-social.mjs": "824f88309d97a804401300b5cbd6d1f2b83a92a1588c8eaa8ea68100ce6e256b",
+    "solarpolis-social-en.mjs": "75b07acac0dff4fefe282304d236eabf91a02e06a8796b2ba5aa7052a421bbc9"
+  },
+  "scenarioAuthor": "Luna",
+  "judge": "See conversation-review.md for primary-agent qualitative review. Metrics are diagnostics, not a naturalness score.",
+  "conversations": [
+    {
+      "id": "holdout-serein-social-factual-mix",
+      "npc": "serein",
+      "turns": [
+        {
+          "input": "You sound as if you enjoy meeting arrivals. How has your day been, and what is Threnody like?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I lost the thread there. What did you mean?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "possession.own",
+                    "words": [
+                      "has"
+                    ],
+                    "wordnetSynsets": [
+                      "02209474-v"
+                    ],
+                    "verbnetClasses": [
+                      "own-100.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "input": "When you say its governing Mind is gentle, do you mean you yourself govern the habitat?",
+          "act": {
+            "function": "ask",
+            "query": {
+              "predicate": "starts_at",
+              "args": {
+                "subject": "threnody_mind"
+              }
+            }
+          },
+          "decision": "No matching personal evidence; acknowledge the knowledge boundary.",
+          "reply": "That lies beyond what I have learned. I would rather leave the space open than fill it with a guess.",
+          "repair": false,
+          "trace": {
+            "engine": "English pattern grammar",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "communication.say",
+                "words": [
+                  "say"
+                ],
+                "wordnetSynsets": [
+                  "01011267-v"
+                ],
+                "verbnetClasses": [
+                  "say-37.7"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "authority.rule",
+                "words": [
+                  "govern",
+                  "governing"
+                ],
+                "wordnetSynsets": [
+                  "02592711-v"
+                ],
+                "verbnetClasses": [
+                  "captain-29.8"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "cognition.mind",
+                "words": [
+                  "mind"
+                ],
+                "wordnetSynsets": [
+                  "05619057-n"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        },
+        {
+          "input": "I see. And is Threnody also a sanctuary for endangered minds?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "multiple-subjects",
+                "candidates": [
+                  "threnody",
+                  "free_port"
+                ]
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I’m still not following. Are we talking about Threnody’s governing Mind, or have you taken us somewhere new?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "perception.see",
+                    "words": [
+                      "see"
+                    ],
+                    "wordnetSynsets": [
+                      "02133754-v"
+                    ],
+                    "verbnetClasses": [
+                      "see-30.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "cognition.mind",
+                    "words": [
+                      "minds"
+                    ],
+                    "wordnetSynsets": [
+                      "05619057-n"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "input": "Thanks for explaining. I think I’m ready to wander for a bit.",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "thank"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "Gladly. I’m still not following. Are we talking about Threnody’s governing Mind, or have you taken us somewhere new?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "knowledge.believe",
+                    "words": [
+                      "think"
+                    ],
+                    "wordnetSynsets": [
+                      "00685199-v"
+                    ],
+                    "verbnetClasses": [
+                      "conjecture-29.5"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "Responds to the personal social question and the factual question without ignoring either part.",
+        "Keeps Serein distinct from Threnody’s governing Mind.",
+        "Answers the sanctuary follow-up from available knowledge.",
+        "Acknowledges the visitor's closing cue without introducing an unrelated topic."
+      ],
+      "metrics": {
+        "turns": 4,
+        "repairs": 3,
+        "repeatedReplies": 0
+      }
+    },
+    {
+      "id": "holdout-iona-identity-and-reference-followup",
+      "npc": "iona",
+      "turns": [
+        {
+          "input": "I like that you collect transit histories. What sort of place is home for you?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I’m not sure what you mean. Could you put it another way?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "location.place",
+                    "words": [
+                      "place"
+                    ],
+                    "wordnetSynsets": [
+                      "08682181-n"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "input": "When you called it the oldest off-world settlement, were you talking about Selenipolis?",
+          "act": {
+            "function": "ask",
+            "query": {
+              "predicate": "starts_at",
+              "args": {
+                "subject": "selenipolis"
+              }
+            }
+          },
+          "decision": "No matching personal evidence; acknowledge the knowledge boundary.",
+          "reply": "I don’t know. I haven’t come across anything I’d trust on that point.",
+          "repair": false,
+          "trace": {
+            "engine": "English pattern grammar",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": []
+          }
+        },
+        {
+          "input": "And the urgency you mentioned—does that mean people there think rushing has a cost?",
+          "act": {
+            "function": "ask",
+            "query": {
+              "args": {
+                "subject": "selenipolis"
+              },
+              "anyOf": [
+                {
+                  "predicate": "rights"
+                },
+                {
+                  "predicate": "recognizes_personhood"
+                },
+                {
+                  "predicate": "recognizes_person"
+                }
+              ]
+            }
+          },
+          "decision": "No matching personal evidence; acknowledge the knowledge boundary.",
+          "reply": "I don’t know. I haven’t come across anything I’d trust on that point.",
+          "repair": false,
+          "trace": {
+            "engine": "English pattern grammar",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "knowledge.believe",
+                "words": [
+                  "think"
+                ],
+                "wordnetSynsets": [
+                  "00685199-v"
+                ],
+                "verbnetClasses": [
+                  "conjecture-29.5"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "possession.own",
+                "words": [
+                  "has"
+                ],
+                "wordnetSynsets": [
+                  "02209474-v"
+                ],
+                "verbnetClasses": [
+                  "own-100.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        },
+        {
+          "input": "Would you tell me one more thing about what draws you to those histories?",
+          "act": {
+            "function": "clarify",
+            "reason": "unsupported"
+          },
+          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
+          "reply": "I’m still missing your meaning. Were you asking about Selenipolis, or something else?",
+          "repair": true,
+          "trace": {
+            "engine": "unresolved",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "communication.inform",
+                "words": [
+                  "tell"
+                ],
+                "wordnetSynsets": [
+                  "00954556-v"
+                ],
+                "verbnetClasses": [
+                  "tell-37.2"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "Responds to the social interest in Iona's pursuit and gives the relevant home context.",
+        "Tracks the pronoun and confirms the prior reference to Selenipolis.",
+        "Connects the follow-up to the local practice about the cost of urgency.",
+        "Maintains Iona's precise, courteous voice and answers the renewed personal question."
+      ],
+      "metrics": {
+        "turns": 4,
+        "repairs": 2,
+        "repeatedReplies": 1
+      }
+    },
+    {
+      "id": "holdout-serein-negated-report-source",
+      "npc": "serein",
+      "turns": [
+        {
+          "input": "Someone told me the acoustic exchange was moved to Current Court. Is that right?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "assert",
+                "content": {
+                  "predicate": "located_at",
+                  "args": {
+                    "subject": "exchange",
+                    "place": "current_court"
+                  },
+                  "polarity": true
+                }
+              },
+              {
+                "function": "check_report"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "Thank you. I will remember that you said the acoustic exchange is in Current Court, with your name attached to the uncertainty. The last I heard, the acoustic exchange is in Echo Gallery. That was the update for 16:00. That differs from what I know. The acoustic exchange is in Echo Gallery.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English pattern grammar",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "communication.inform",
+                    "words": [
+                      "told"
+                    ],
+                    "wordnetSynsets": [
+                      "00954556-v"
+                    ],
+                    "verbnetClasses": [
+                      "tell-37.2"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "possession.trade",
+                    "words": [
+                      "exchange"
+                    ],
+                    "wordnetSynsets": [
+                      "02263812-v"
+                    ],
+                    "verbnetClasses": [
+                      "exchange-13.6.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "motion.move",
+                    "words": [
+                      "moved"
+                    ],
+                    "wordnetSynsets": [
+                      "01839438-v"
+                    ],
+                    "verbnetClasses": [
+                      "run-51.3.2"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "authority.right",
+                    "words": [
+                      "right"
+                    ],
+                    "wordnetSynsets": [
+                      "05182180-n"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "input": "Actually, I haven't seen any notice saying it moved there. Where is it scheduled now?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "ask",
+                "query": {
+                  "args": {
+                    "subject": "exchange",
+                    "place": {
+                      "$var": "place"
+                    }
+                  },
+                  "anyOf": [
+                    {
+                      "predicate": "located_at"
+                    },
+                    {
+                      "predicate": "situated_at"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I lost the thread there. What did you mean? The last I heard, the acoustic exchange is in Echo Gallery. That was the update for 16:00. I also have an unverified report that differs.",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "communication.say",
+                    "words": [
+                      "saying"
+                    ],
+                    "wordnetSynsets": [
+                      "01011267-v"
+                    ],
+                    "verbnetClasses": [
+                      "say-37.7"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "motion.move",
+                    "words": [
+                      "moved"
+                    ],
+                    "wordnetSynsets": [
+                      "01839438-v"
+                    ],
+                    "verbnetClasses": [
+                      "run-51.3.2"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "perception.see",
+                    "words": [
+                      "seen"
+                    ],
+                    "wordnetSynsets": [
+                      "02133754-v"
+                    ],
+                    "verbnetClasses": [
+                      "see-30.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "English pattern grammar",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": []
+              }
+            ]
+          }
+        },
+        {
+          "input": "What was the source for the location you just gave me?",
+          "act": {
+            "function": "clarify",
+            "reason": "unsupported"
+          },
+          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
+          "reply": "I’m still not following. Are we talking about the acoustic exchange, or have you taken us somewhere new?",
+          "repair": true,
+          "trace": {
+            "engine": "unresolved",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "possession.give",
+                "words": [
+                  "gave"
+                ],
+                "wordnetSynsets": [
+                  "02204104-v"
+                ],
+                "verbnetClasses": [
+                  "give-13.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "location.place",
+                "words": [
+                  "location"
+                ],
+                "wordnetSynsets": [
+                  "08682181-n"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        },
+        {
+          "input": "And is the exchange still meant to be an acoustic gathering?",
+          "act": {
+            "function": "clarify",
+            "reason": "unsupported"
+          },
+          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
+          "reply": "I’m still not following. Are we talking about the acoustic exchange, or have you taken us somewhere new?",
+          "repair": true,
+          "trace": {
+            "engine": "unresolved",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "possession.trade",
+                "words": [
+                  "exchange"
+                ],
+                "wordnetSynsets": [
+                  "02263812-v"
+                ],
+                "verbnetClasses": [
+                  "exchange-13.6.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "Does not treat the visitor's initial hearsay as established fact.",
+        "Handles the explicit negation and answers with the currently known venue, while conveying the relevant uncertainty or amendment context.",
+        "Identifies the available source for the venue information instead of inventing one.",
+        "Answers the purpose question and keeps the exchange distinct from its venue."
+      ],
+      "metrics": {
+        "turns": 4,
+        "repairs": 3,
+        "repeatedReplies": 1
+      }
+    },
+    {
+      "id": "holdout-iona-travel-cause-and-booking",
+      "npc": "iona",
+      "turns": [
+        {
+          "input": "I’ve heard the laser arrays can influence travel. Is that what makes journeys possible?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I’m not sure what you mean. Could you put it another way?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "knowledge.learn",
+                    "words": [
+                      "heard"
+                    ],
+                    "wordnetSynsets": [
+                      "00600349-v"
+                    ],
+                    "verbnetClasses": [
+                      "learn-14"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "motion.move",
+                    "words": [
+                      "travel"
+                    ],
+                    "wordnetSynsets": [
+                      "01839438-v"
+                    ],
+                    "verbnetClasses": [
+                      "run-51.3.2"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "perception.hear",
+                    "words": [
+                      "heard"
+                    ],
+                    "wordnetSynsets": [
+                      "02174146-v"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": []
+              }
+            ]
+          }
+        },
+        {
+          "input": "So they can give travelers leverage, but that doesn't tell us which ship someone has booked, does it?",
+          "act": {
+            "function": "clarify",
+            "reason": "unsupported"
+          },
+          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
+          "reply": "I’m still missing your meaning. Were you asking about Selenipolis, or something else?",
+          "repair": true,
+          "trace": {
+            "engine": "unresolved",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "communication.inform",
+                "words": [
+                  "tell"
+                ],
+                "wordnetSynsets": [
+                  "00954556-v"
+                ],
+                "verbnetClasses": [
+                  "tell-37.2"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "possession.own",
+                "words": [
+                  "has"
+                ],
+                "wordnetSynsets": [
+                  "02209474-v"
+                ],
+                "verbnetClasses": [
+                  "own-100.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "possession.give",
+                "words": [
+                  "give"
+                ],
+                "wordnetSynsets": [
+                  "02204104-v"
+                ],
+                "verbnetClasses": [
+                  "give-13.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        },
+        {
+          "input": "Do you know whether the Patient Margin has a confirmed reservation?",
+          "act": {
+            "function": "clarify",
+            "reason": "multiple-subjects",
+            "candidates": [
+              "patient_margin",
+              "patient_margin"
+            ]
+          },
+          "decision": "Preserve ambiguity instead of inventing an interpretation.",
+          "reply": "Which subject do you mean: Patient Margin or Patient Margin?",
+          "repair": true,
+          "trace": {
+            "engine": "unresolved",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "knowledge.know",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00596016-v"
+                ],
+                "verbnetClasses": [
+                  "cognize-85"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "knowledge.familiar",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00595732-v"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "possession.own",
+                "words": [
+                  "has"
+                ],
+                "wordnetSynsets": [
+                  "02209474-v"
+                ],
+                "verbnetClasses": [
+                  "own-100.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        },
+        {
+          "input": "What would have to happen before you could say that booking was confirmed?",
+          "act": {
+            "function": "ask",
+            "query": {
+              "args": {
+                "subject": "patient_margin"
+              },
+              "predicate": "reservation"
+            }
+          },
+          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
+          "reply": "The notice I have for 16:00 says the lunar reservation for Patient Margin is pending.",
+          "repair": false,
+          "trace": {
+            "engine": "English pattern grammar",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "communication.say",
+                "words": [
+                  "say"
+                ],
+                "wordnetSynsets": [
+                  "01011267-v"
+                ],
+                "verbnetClasses": [
+                  "say-37.7"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "possession.own",
+                "words": [
+                  "have"
+                ],
+                "wordnetSynsets": [
+                  "02209474-v"
+                ],
+                "verbnetClasses": [
+                  "own-100.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "Explains the known travel-related purpose of the arrays without inventing a complete account of travel mechanics.",
+        "Preserves the distinction between a general travel cause or aid and a particular ship reservation.",
+        "Reports the Patient Margin reservation as pending based on the available bulletin.",
+        "Does not claim a confirmation or a delivery event that Iona has not received."
+      ],
+      "metrics": {
+        "turns": 4,
+        "repairs": 3,
+        "repeatedReplies": 0
+      }
+    },
+    {
+      "id": "holdout-rill-unknown-counts",
+      "npc": "rill",
+      "turns": [
+        {
+          "input": "I enjoy the sound of a busy commons. How many visitors are here right now?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "That didn’t quite reach me. What did you mean?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "authority.right",
+                    "words": [
+                      "right"
+                    ],
+                    "wordnetSynsets": [
+                      "05182180-n"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "input": "Could you count the people taking part in the acoustic exchange for me?",
+          "act": {
+            "function": "ask",
+            "query": {
+              "args": {
+                "subject": "exchange"
+              },
+              "anyOf": [
+                {
+                  "predicate": "rights"
+                },
+                {
+                  "predicate": "recognizes_personhood"
+                },
+                {
+                  "predicate": "recognizes_person"
+                }
+              ]
+            }
+          },
+          "decision": "No matching personal evidence; acknowledge the knowledge boundary.",
+          "reply": "I have not heard enough to answer. Will you bring the question back if you learn more?",
+          "repair": false,
+          "trace": {
+            "engine": "English pattern grammar",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "possession.trade",
+                "words": [
+                  "exchange"
+                ],
+                "wordnetSynsets": [
+                  "02263812-v"
+                ],
+                "verbnetClasses": [
+                  "exchange-13.6.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        },
+        {
+          "input": "Do you at least know how many seedships the arks are meant to include?",
+          "act": {
+            "function": "ask",
+            "query": {
+              "predicate": "numeric_count",
+              "args": {
+                "subject": "arks"
+              }
+            }
+          },
+          "decision": "No matching personal evidence; acknowledge the knowledge boundary.",
+          "reply": "I have not heard enough to answer. Will you bring the question back if you learn more?",
+          "repair": false,
+          "trace": {
+            "engine": "English pattern grammar",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "knowledge.know",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00596016-v"
+                ],
+                "verbnetClasses": [
+                  "cognize-85"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "knowledge.familiar",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00595732-v"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        },
+        {
+          "input": "If you can't count the crowd, what can you tell me about the exchange itself?",
+          "act": {
+            "function": "clarify",
+            "reason": "unsupported"
+          },
+          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
+          "reply": "I’m still losing the thread. Do you mean the twenty-ark project, or something different?",
+          "repair": true,
+          "trace": {
+            "engine": "unresolved",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "communication.inform",
+                "words": [
+                  "tell"
+                ],
+                "wordnetSynsets": [
+                  "00954556-v"
+                ],
+                "verbnetClasses": [
+                  "tell-37.2"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "possession.trade",
+                "words": [
+                  "exchange"
+                ],
+                "wordnetSynsets": [
+                  "02263812-v"
+                ],
+                "verbnetClasses": [
+                  "exchange-13.6.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "Does not fabricate a current visitor count from the available world state.",
+        "Does not infer an attendance count from the event's existence or venue.",
+        "Gives the known ark project count of twenty seedships only if that fact is within Rill's knowledge; otherwise clearly marks the limit.",
+        "Answers with the known acoustic purpose or venue, preserving Rill's relational voice."
+      ],
+      "metrics": {
+        "turns": 4,
+        "repairs": 2,
+        "repeatedReplies": 1
+      }
+    },
+    {
+      "id": "holdout-serein-closure-reopening",
+      "npc": "serein",
+      "turns": [
+        {
+          "input": "This has been lovely, thank you. I’ll leave you to welcome the next arrival.",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I lost the thread there. What did you mean?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "possession.own",
+                    "words": [
+                      "has"
+                    ],
+                    "wordnetSynsets": [
+                      "02209474-v"
+                    ],
+                    "verbnetClasses": [
+                      "own-100.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "motion.leave",
+                    "words": [
+                      "leave"
+                    ],
+                    "wordnetSynsets": [
+                      "02013448-v"
+                    ],
+                    "verbnetClasses": [
+                      "leave-51.2"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "input": "Before I go, is Rill at the Flow Chamber?",
+          "act": {
+            "function": "clarify",
+            "reason": "unsupported"
+          },
+          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
+          "reply": "I’m still not following. Are we talking about Threnody, or have you taken us somewhere new?",
+          "repair": true,
+          "trace": {
+            "engine": "unresolved",
+            "gfStatus": "unsupported",
+            "lexicalCandidates": [
+              {
+                "concept": "motion.move",
+                "words": [
+                  "go"
+                ],
+                "wordnetSynsets": [
+                  "01839438-v"
+                ],
+                "verbnetClasses": [
+                  "run-51.3.2"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
+        },
+        {
+          "input": "Ah, I remember you said they were near the exchange. Is the exchange there too?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I’m still not following. Are we talking about Threnody, or have you taken us somewhere new?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "knowledge.remember",
+                    "words": [
+                      "remember"
+                    ],
+                    "wordnetSynsets": [
+                      "00609334-v"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "communication.say",
+                    "words": [
+                      "said"
+                    ],
+                    "wordnetSynsets": [
+                      "01011267-v"
+                    ],
+                    "verbnetClasses": [
+                      "say-37.7"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "possession.trade",
+                    "words": [
+                      "exchange"
+                    ],
+                    "wordnetSynsets": [
+                      "02263812-v"
+                    ],
+                    "verbnetClasses": [
+                      "exchange-13.6.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "possession.trade",
+                    "words": [
+                      "exchange"
+                    ],
+                    "wordnetSynsets": [
+                      "02263812-v"
+                    ],
+                    "verbnetClasses": [
+                      "exchange-13.6.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "input": "That answers it. I’m off now—thank you, Serein.",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I’m still not following. Are we talking about Threnody, or have you taken us somewhere new?",
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": []
+              }
+            ]
+          }
+        }
+      ],
+      "checks": [
+        "Recognizes and politely closes in response to the visitor's farewell.",
+        "Handles the visitor reopening the conversation and answers Rill's location from Serein's available current knowledge.",
+        "Resolves 'they' to Rill and keeps Rill's location separate from the exchange venue.",
+        "Closes warmly without continuing to press the visitor."
+      ],
+      "metrics": {
+        "turns": 4,
+        "repairs": 4,
+        "repeatedReplies": 2
+      }
+    }
+  ],
+  "npcConversation": {
+    "turns": [
+      {
+        "speaker": "iona",
+        "act": {
+          "function": "social",
+          "topic": "wellbeing"
+        },
+        "plan": null,
+        "text": "Hello, Serein. How are you?",
+        "time": 1
+      },
+      {
+        "speaker": "serein",
+        "act": {
+          "function": "social",
+          "topic": "wellbeing"
+        },
+        "plan": {
+          "id": "plan:599",
+          "holder": "serein",
+          "function": "social",
+          "results": [],
+          "time": 1,
+          "social": {
+            "move": "answer",
+            "topic": "wellbeing",
+            "repeat": false,
+            "count": 1,
+            "reciprocate": true,
+            "prompt": "wellbeing",
+            "self": {
+              "mood": "content",
+              "activity": "welcoming",
+              "interestTopic": "threnody"
+            },
+            "acknowledgeState": null,
+            "userState": null,
+            "focus": "threnody",
+            "repairCount": 0
+          },
+          "decision": "Respond to a social act; retain conversational memory separately from factual evidence."
+        },
+        "text": "Content, I think. I enjoy helping people find their bearings, and I enjoy the conversations that wander away from that. And how are you finding the day?",
+        "time": 1
+      },
+      {
+        "speaker": "iona",
+        "act": {
+          "function": "social",
+          "topic": "wellbeing",
+          "reciprocate": false
+        },
+        "plan": {
+          "id": "plan:601",
+          "holder": "iona",
+          "function": "social",
+          "results": [],
+          "time": 1,
+          "social": {
+            "move": "answer",
+            "topic": "wellbeing",
+            "repeat": false,
+            "count": 1,
+            "reciprocate": false,
+            "prompt": null,
+            "self": {
+              "mood": "absorbed",
+              "activity": "transit_history",
+              "interestTopic": "selenipolis"
+            },
+            "acknowledgeState": null,
+            "userState": null,
+            "focus": "selenipolis",
+            "repairCount": 0
+          },
+          "decision": "Respond to a social act; retain conversational memory separately from factual evidence."
+        },
+        "text": "Quite well. Pleasantly absorbed in transit calendars, which probably sounds less exciting than it is.",
+        "time": 1
+      },
+      {
+        "speaker": "iona",
+        "act": {
+          "function": "ask",
+          "query": {
+            "predicate": "located_at",
+            "args": {
+              "subject": "exchange",
+              "place": {
+                "$var": "place"
+              }
+            }
+          }
+        },
+        "plan": null,
+        "text": "I meant to ask: Where is the acoustic exchange?",
+        "time": 1
+      },
+      {
+        "speaker": "serein",
+        "act": {
+          "function": "ask",
+          "query": {
+            "predicate": "located_at",
+            "args": {
+              "subject": "exchange",
+              "place": {
+                "$var": "place"
+              }
+            }
+          }
+        },
+        "plan": {
+          "id": "plan:603",
+          "holder": "serein",
+          "function": "ask",
+          "results": [
+            {
+              "primary": {
+                "id": "evidence:597",
+                "holder": "serein",
+                "atom": {
+                  "predicate": "located_at",
+                  "args": {
+                    "subject": "exchange",
+                    "place": "current_court"
+                  },
+                  "polarity": true
+                },
+                "aboutTime": 1,
+                "learnedAt": 1,
+                "certainty": "confirmed",
+                "source": {
+                  "kind": "publication",
+                  "shareable": true,
+                  "label": "16:01 local venue amendment"
+                },
+                "origin": {
+                  "kind": "sample",
+                  "source": "Arrival Commons sample additions"
+                },
+                "supports": [
+                  "fact:596"
+                ]
+              },
+              "confirmed": {
+                "id": "evidence:597",
+                "holder": "serein",
+                "atom": {
+                  "predicate": "located_at",
+                  "args": {
+                    "subject": "exchange",
+                    "place": "current_court"
+                  },
+                  "polarity": true
+                },
+                "aboutTime": 1,
+                "learnedAt": 1,
+                "certainty": "confirmed",
+                "source": {
+                  "kind": "publication",
+                  "shareable": true,
+                  "label": "16:01 local venue amendment"
+                },
+                "origin": {
+                  "kind": "sample",
+                  "source": "Arrival Commons sample additions"
+                },
+                "supports": [
+                  "fact:596"
+                ]
+              },
+              "reports": [],
+              "history": [
+                {
+                  "id": "evidence:597",
+                  "holder": "serein",
+                  "atom": {
+                    "predicate": "located_at",
+                    "args": {
+                      "subject": "exchange",
+                      "place": "current_court"
+                    },
+                    "polarity": true
+                  },
+                  "aboutTime": 1,
+                  "learnedAt": 1,
+                  "certainty": "confirmed",
+                  "source": {
+                    "kind": "publication",
+                    "shareable": true,
+                    "label": "16:01 local venue amendment"
+                  },
+                  "origin": {
+                    "kind": "sample",
+                    "source": "Arrival Commons sample additions"
+                  },
+                  "supports": [
+                    "fact:596"
+                  ]
+                },
+                {
+                  "id": "evidence:25",
+                  "holder": "serein",
+                  "atom": {
+                    "predicate": "located_at",
+                    "args": {
+                      "subject": "exchange",
+                      "place": "echo_gallery"
+                    },
+                    "polarity": true
+                  },
+                  "aboutTime": 0,
+                  "learnedAt": 0,
+                  "certainty": "confirmed",
+                  "source": {
+                    "kind": "publication",
+                    "label": "16:00 local programme notice"
+                  },
+                  "origin": {
+                    "kind": "sample",
+                    "source": "Arrival Commons sample additions"
+                  },
+                  "supports": [
+                    "s-venue"
+                  ]
+                }
+              ],
+              "conflict": false,
+              "derivations": []
+            }
+          ],
+          "time": 1,
+          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
+          "delivery": {
+            "engagement": "inviting"
+          },
+          "query": {
+            "predicate": "located_at",
+            "args": {
+              "subject": "exchange",
+              "place": {
+                "$var": "place"
+              }
+            }
+          },
+          "explanations": [],
+          "stance": null
+        },
+        "text": "The last I heard, the acoustic exchange is in Current Court. That was the update for 16:01.",
+        "time": 1
+      },
+      {
+        "speaker": "iona",
+        "act": {
+          "function": "ask_evidence",
+          "query": {
+            "predicate": "located_at",
+            "args": {
+              "subject": "exchange",
+              "place": {
+                "$var": "place"
+              }
+            }
+          }
+        },
+        "plan": null,
+        "text": "What are you going by?",
+        "time": 1
+      },
+      {
+        "speaker": "serein",
+        "act": {
+          "function": "ask_evidence",
+          "query": {
+            "predicate": "located_at",
+            "args": {
+              "subject": "exchange",
+              "place": {
+                "$var": "place"
+              }
+            }
+          }
+        },
+        "plan": {
+          "id": "plan:606",
+          "holder": "serein",
+          "function": "ask_evidence",
+          "results": [
+            {
+              "primary": {
+                "id": "evidence:597",
+                "holder": "serein",
+                "atom": {
+                  "predicate": "located_at",
+                  "args": {
+                    "subject": "exchange",
+                    "place": "current_court"
+                  },
+                  "polarity": true
+                },
+                "aboutTime": 1,
+                "learnedAt": 1,
+                "certainty": "confirmed",
+                "source": {
+                  "kind": "publication",
+                  "shareable": true,
+                  "label": "16:01 local venue amendment"
+                },
+                "origin": {
+                  "kind": "sample",
+                  "source": "Arrival Commons sample additions"
+                },
+                "supports": [
+                  "fact:596"
+                ]
+              },
+              "confirmed": {
+                "id": "evidence:597",
+                "holder": "serein",
+                "atom": {
+                  "predicate": "located_at",
+                  "args": {
+                    "subject": "exchange",
+                    "place": "current_court"
+                  },
+                  "polarity": true
+                },
+                "aboutTime": 1,
+                "learnedAt": 1,
+                "certainty": "confirmed",
+                "source": {
+                  "kind": "publication",
+                  "shareable": true,
+                  "label": "16:01 local venue amendment"
+                },
+                "origin": {
+                  "kind": "sample",
+                  "source": "Arrival Commons sample additions"
+                },
+                "supports": [
+                  "fact:596"
+                ]
+              },
+              "reports": [],
+              "history": [
+                {
+                  "id": "evidence:597",
+                  "holder": "serein",
+                  "atom": {
+                    "predicate": "located_at",
+                    "args": {
+                      "subject": "exchange",
+                      "place": "current_court"
+                    },
+                    "polarity": true
+                  },
+                  "aboutTime": 1,
+                  "learnedAt": 1,
+                  "certainty": "confirmed",
+                  "source": {
+                    "kind": "publication",
+                    "shareable": true,
+                    "label": "16:01 local venue amendment"
+                  },
+                  "origin": {
+                    "kind": "sample",
+                    "source": "Arrival Commons sample additions"
+                  },
+                  "supports": [
+                    "fact:596"
+                  ]
+                },
+                {
+                  "id": "evidence:25",
+                  "holder": "serein",
+                  "atom": {
+                    "predicate": "located_at",
+                    "args": {
+                      "subject": "exchange",
+                      "place": "echo_gallery"
+                    },
+                    "polarity": true
+                  },
+                  "aboutTime": 0,
+                  "learnedAt": 0,
+                  "certainty": "confirmed",
+                  "source": {
+                    "kind": "publication",
+                    "label": "16:00 local programme notice"
+                  },
+                  "origin": {
+                    "kind": "sample",
+                    "source": "Arrival Commons sample additions"
+                  },
+                  "supports": [
+                    "s-venue"
+                  ]
+                }
+              ],
+              "conflict": false,
+              "derivations": []
+            }
+          ],
+          "time": 1,
+          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
+          "delivery": {
+            "engagement": "inviting"
+          },
+          "query": {
+            "predicate": "located_at",
+            "args": {
+              "subject": "exchange",
+              "place": {
+                "$var": "place"
+              }
+            }
+          },
+          "explanations": [],
+          "stance": null
+        },
+        "text": "I read the 16:01 local venue amendment. It said the acoustic exchange is in Current Court; that information was for 16:01.",
+        "time": 1
+      },
+      {
+        "speaker": "iona",
+        "act": {
+          "function": "acknowledge",
+          "status": "verified"
+        },
+        "plan": null,
+        "text": "Ah, I see the amendment. Thank you. That settles it.",
+        "time": 1
+      },
+      {
+        "speaker": "serein",
+        "act": {
+          "function": "farewell"
+        },
+        "plan": {
+          "id": "plan:610",
+          "holder": "serein",
+          "function": "social",
+          "results": [],
+          "time": 1,
+          "social": {
+            "move": "close",
+            "topic": "farewell",
+            "repeat": false,
+            "count": 1,
+            "reciprocate": true,
+            "prompt": null,
+            "self": {
+              "mood": "content",
+              "activity": "welcoming",
+              "interestTopic": "threnody"
+            },
+            "acknowledgeState": null,
+            "userState": null,
+            "focus": "exchange",
+            "repairCount": 0
+          },
+          "decision": "Respond to a social act; retain conversational memory separately from factual evidence."
+        },
+        "text": "Take care. I’m glad we talked.",
+        "time": 1
+      }
+    ],
+    "exchanges": [
+      {
+        "from": "serein",
+        "to": "iona",
+        "reports": [
+          "evidence:605"
+        ],
+        "verified": [
+          "evidence:608"
+        ]
+      }
+    ],
+    "stopReason": "goal-complete"
+  }
+}

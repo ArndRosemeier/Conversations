@@ -4,7 +4,8 @@ import {EnglishLanguage} from './english.mjs';
 import {resources} from './solarpolis-en.mjs';
 import {IndexedDBStorage,MemoryStorage} from './storage.mjs';
 import {simulateNPCConversation} from './simulation.mjs';
-const language=new EnglishLanguage(resources);
+const lexicalPack=await fetch('./data/lexical-pack.json').then(r=>{if(!r.ok)throw new Error('Language pack unavailable');return r.json();});
+const language=new EnglishLanguage(resources,{lexicalPack});
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let storage=new IndexedDBStorage(),persistent=true,session=null,core,view,busy=Promise.resolve(),toastTimer;
@@ -24,16 +25,16 @@ async function persist(){
 }
 function run(fn){busy=busy.then(async()=>{try{await fn();render();await persist();}catch(error){console.error(error);toast(`Could not complete that action: ${error.message}`);}});return busy;}
 function addMessage(kind,text){view.messages[view.selected].push({kind,text,time:core.state.time});}
-function talk(act,text){
+function talk(act,text,trace=null){
   const turnId=`input:${core.state.sequence+1}`;
   const input={...act,id:turnId};
   const plan=core.respond(view.selected,input);
   addMessage('user',text??language.label(input));
   addMessage('npc',language.realize(plan,actor(),{expanded:view.expanded}));
-  view.last[view.selected]={act:input,plan};
+  view.last[view.selected]={act:input,plan,trace:trace?structuredClone(trace):null};
   view.tab='beliefs';
 }
-function originTag(origin){return origin?.kind==='canon'?'<span class="tag">WORLD BIBLE</span>':origin?.kind==='player'?'<span class="tag reported">PLAYER TESTIMONY</span>':'<span class="tag addition">SAMPLE ADDITION</span>';}
+function originTag(origin){return origin?.kind==='canon'?'<span class="tag">WORLD BIBLE</span>':origin?.kind==='modeled-rule'?'<span class="tag">MODELED RULE</span>':origin?.kind==='testimony'?'<span class="tag reported">NPC TESTIMONY</span>':origin?.kind==='player'?'<span class="tag reported">PLAYER TESTIMONY</span>':'<span class="tag addition">SAMPLE ADDITION</span>';}
 function renderRoster(){
   $('roster').innerHTML=domain.characters.map(c=>`<button class="character-card ${c.id===view.selected?'active':''}" data-character="${c.id}" aria-pressed="${c.id===view.selected}"><span class="avatar ${c.color}" aria-hidden="true">${c.initials}</span><span><strong>${c.name}</strong><small>${c.kind}</small></span>${c.id===view.selected?'<span class="selection">›</span>':''}</button>`).join('');
   const c=actor();
@@ -70,7 +71,7 @@ function renderComposer(){
 function beliefCard(group){
   const e=group.primary;
   const current=core.world().some(f=>matches(f.atom,{...e.atom,polarity:e.atom.polarity??true}));
-  const status=e.certainty==='reported'?'<span class="tag reported">PROVISIONAL</span>':!current?'<span class="tag stale">OUTDATED · DIRECTOR VIEW</span>':'<span class="tag">CONFIRMED SOURCE</span>';
+  const status=e.certainty==='inferred'?'<span class="tag">INFERRED FROM EVIDENCE</span>':e.certainty==='reported'?'<span class="tag reported">PROVISIONAL</span>':!current?'<span class="tag stale">OUTDATED · DIRECTOR VIEW</span>':'<span class="tag">CONFIRMED SOURCE</span>';
   return `<article class="belief-card"><div class="meta">${originTag(e.origin)}${status}</div><h4>${esc(language.sentence(language.clause(e)))}</h4><div class="source">${esc(e.source.label)}<br>About ${language.clock(e.aboutTime)} · learned ${language.clock(e.learnedAt)}</div>${group.conflict?'<p>A competing report is retained separately.</p>':''}<details><summary>${group.history.length} evidence record${group.history.length===1?'':'s'} · inspect</summary>${group.history.map(h=>`<div class="evidence-line">${esc(language.clause(h))}<br>${esc(h.certainty)} · ${esc(h.source.label)}<br>Learned ${language.clock(h.learnedAt)}</div>`).join('')}</details></article>`;
 }
 function renderInspector(){
@@ -82,17 +83,17 @@ function renderInspector(){
       element.innerHTML=`<div class="inspector-subtitle">SOCIAL CONVERSATION / ${esc(actor().name.toUpperCase())}</div><h3>A person, not a query.</h3><p>${esc(actor().description)}</p><article class="belief-card"><h4>${esc(last.plan.social.topic.replaceAll('_',' '))}</h4><p>${esc(last.plan.decision)}</p><div class="source">${social.userState?`You described yourself as ${esc(social.userState.value)}. This is remembered as your self-report.`:'No wellbeing self-report from you yet.'}</div></article><p>Social dispositions and interests are authored sample characterization. Your mood stays in this conversation; it does not become an authoritative world fact.</p>`;
       return;
     }
-    const query=last?.plan.query;
+    const query=last?.plan.query??[...(last?.plan.plans??[])].reverse().find(p=>p.query)?.query;
     let groups=query?core.beliefs(view.selected,query):core.beliefs(view.selected,{predicate:'located_at'});
     if(!groups.length&&!query)groups=core.beliefs(view.selected).slice(0,4);
     element.innerHTML=`<div class="inspector-subtitle">${esc(actor().name.toUpperCase())} / PERSONAL EVIDENCE</div><h3>What this mind knows.</h3><p>${esc(actor().description)}</p><p>Source confidence describes this character’s evidence. “Outdated” is visible to you as director; the character cannot see that comparison.</p>${groups.length?groups.map(beliefCard).join(''):'<div class="belief-card"><h4>No matching personal evidence.</h4><p>A missing fact stays unknown. The NPC cannot read the World tab.</p></div>'}<div class="stat-row"><span>Testimony policy</span><strong>${actor().personality.testimony}</strong></div><div class="stat-row"><span>Current focus</span><strong>${esc(language.name(core.context(view.selected).focus??'—'))}</strong></div><div class="stat-row"><span>Personal evidence records</span><strong>${core.state.evidence.filter(e=>e.holder===view.selected).length}</strong></div>`;
   } else if(view.tab==='meaning'){
-    element.innerHTML=`<div class="inspector-subtitle">LANGUAGE → MEANING → RESPONSE</div><h3>The thought before the words.</h3><p>Dialogue choices and English input send the same kinds of semantic acts to the independent core.</p>${last?`<div class="decision"><p>${esc(last.plan.decision)}</p></div><div class="panel-label">INPUT ACT</div><pre>${esc(JSON.stringify(last.act,null,2))}</pre><div class="panel-label">RESPONSE PLAN</div><pre>${esc(JSON.stringify({function:last.plan.function,query:last.plan.query,stance:last.plan.stance,evidence:last.plan.results.map(g=>({id:g.primary.id,certainty:g.primary.certainty,source:g.primary.source})),reason:last.plan.reason},null,2))}</pre>`:'<div class="belief-card"><p>Ask a question to inspect its meaning and the core’s decision.</p></div>'}`;
+    element.innerHTML=`<div class="inspector-subtitle">LANGUAGE → MEANING → RESPONSE</div><h3>The thought before the words.</h3><p>Dialogue choices and English input send the same kinds of semantic acts to the independent core.</p>${last?`<div class="decision"><p>${esc(last.plan.decision)}</p></div><div class="panel-label">INPUT ACT</div><pre>${esc(JSON.stringify(last.act,null,2))}</pre><div class="panel-label">INTERPRETATION TRACE</div><pre>${esc(JSON.stringify(last.trace??{engine:'Direct semantic choice'},null,2))}</pre><div class="panel-label">RESPONSE PLAN</div><pre>${esc(JSON.stringify({function:last.plan.function,outcome:last.plan.outcome,parts:last.plan.plans?.map(p=>({function:p.function,topic:p.social?.topic,outcome:p.outcome})),query:last.plan.query,stance:last.plan.stance,evidence:last.plan.results.map(g=>({id:g.primary.id,certainty:g.primary.certainty,source:g.primary.source})),reason:last.plan.reason},null,2))}</pre>`:'<div class="belief-card"><p>Ask a question to inspect its meaning and the core’s decision.</p></div>'}`;
   } else if(view.tab==='world'){
     const dynamic=core.world().filter(f=>['located_at','starts_at','reservation'].includes(f.atom.predicate));
     element.innerHTML=`<div class="inspector-subtitle">AUTHORITATIVE STATE / DIRECTOR VIEW</div><h3>What actually changed.</h3><p>World truth is supplied by the host adapter. It is kept separate from what each NPC has observed.</p>${dynamic.map(f=>`<article class="belief-card">${originTag(f.origin)}<h4>${esc(language.sentence(language.clause(f)))}</h4><div class="source">Valid from ${language.clock(f.validFrom)}</div></article>`).join('')}<p>${esc(scenario.delayNote)}</p><div class="panel-label">EVENT LOG</div>${core.state.events.slice(-12).reverse().map(e=>`<div class="evidence-line small">${language.clock(e.time)} · ${esc(e.label??(language.name(e.holder)+' received evidence'))}</div>`).join('')||'<p>No scenario changes yet.</p>'}`;
   } else {
-    element.innerHTML=`<div class="inspector-subtitle">SOURCE & ADDITIONS</div><h3>A world with a paper trail.</h3><p>${esc(scenario.addition)}</p><label class="sr-only" for="canon-search">Search knowledge</label><input id="canon-search" class="canon-search" type="search" placeholder="Search the modeled knowledge…"><div id="canon-items"></div><p>The prototype models a selected slice of the bible. English coverage is bounded; it does not infer every implication of the source text.</p>`;
+    element.innerHTML=`<div class="inspector-subtitle">SOURCE & ADDITIONS</div><h3>A world with a paper trail.</h3><p>${esc(scenario.addition)}</p><label class="sr-only" for="canon-search">Search knowledge</label><input id="canon-search" class="canon-search" type="search" placeholder="Search the modeled knowledge…"><div id="canon-items"></div><p>The prototype combines authored English constructions, a compiled GF grammar, and a selected WordNet / VerbNet language pack. These supply vocabulary and syntax, not world truth. <a href="./data/source-manifest.json" target="_blank">Source manifest</a> · <a href="./vendor-notices/README.md" target="_blank">Notices</a>. English coverage remains bounded.</p>`;
     const update=()=>{
       const text=$('canon-search').value.toLowerCase();
       $('canon-items').innerHTML=domain.facts.filter(f=>language.clause(f).toLowerCase().includes(text)).map(f=>`<article class="canon-item">${originTag(f.origin)}<p>${esc(language.sentence(language.clause(f)))}</p><small>${esc(f.origin.section??f.origin.source)}</small></article>`).join('')||'<p>No matching modeled facts.</p>';
@@ -111,7 +112,7 @@ $('suggestions').addEventListener('click',event=>{const button=event.target.clos
 for(const mode of ['choices','text'])$(`mode-${mode}`).addEventListener('click',()=>run(()=>{view.mode=mode;if(mode==='text')setTimeout(()=>$('input').focus(),0);}));
 document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>run(()=>{view.tab=button.dataset.tab;})));
 $('expanded').addEventListener('change',()=>run(()=>{view.expanded=$('expanded').checked;toast(view.expanded?'Expanded translation applies to Rill’s next replies.':'Standard propositional translation restored.');}));
-$('text-form').addEventListener('submit',event=>{event.preventDefault();const text=$('input').value.trim();if(!text)return;run(()=>{const act=language.interpret(text,{...core.context(view.selected),speaker:view.selected});talk(act,text);$('input').value='';});});
+$('text-form').addEventListener('submit',event=>{event.preventDefault();const text=$('input').value.trim();if(!text)return;run(()=>{const act=language.interpret(text,{...core.context(view.selected),speaker:view.selected});talk(act,text,language.lastInterpretation);$('input').value='';});});
 $('input').addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();$('text-form').requestSubmit();}});
 $('source-question').addEventListener('click',()=>run(()=>talk({function:'ask_evidence'},'How do you know?')));
 $('share-notice').addEventListener('click',()=>run(()=>{

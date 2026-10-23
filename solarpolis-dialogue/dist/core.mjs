@@ -1,8 +1,13 @@
 // Host-independent semantic engine. No DOM, English, IndexedDB, or Solarpolis imports.
+import {deriveEvidence} from './reasoning.mjs';
+import {respondDiscourse} from './discourse.mjs';
 import {respondSocial} from './social.mjs';
 export const copy = value => structuredClone(value);
 const variable = x => x && typeof x === 'object' && '$var' in x;
+const sameAtom=(a,b)=>a.predicate===b.predicate&&(a.polarity??true)===(b.polarity??true)&&Object.keys(a.args).length===Object.keys(b.args).length&&Object.entries(a.args).every(([k,v])=>b.args[k]===v);
 export function matches(atom, query = {}) {
+  if (query.anyOf && !query.anyOf.some(q=>matches(atom,q))) return false;
+  if (query.allOf && !query.allOf.every(q=>matches(atom,q))) return false;
   return (!query.predicate || atom.predicate === query.predicate) &&
     (query.polarity === undefined || (atom.polarity ?? true) === query.polarity) &&
     Object.entries(query.args ?? {}).every(([role, value]) => variable(value) || atom.args[role] === value);
@@ -13,12 +18,26 @@ export class AgentCore {
     this.schemas = domain.predicates;
     this.state = snapshot ? copy(snapshot) : {
       version: 1, domainVersion: domain.version, time: 0, sequence: 0,
-      world: copy(domain.facts), evidence: [], contexts: {}, history: [], events: [], pending: [], applied: []
+      world: copy(domain.facts), evidence: [], contexts: {}, history: [], events: [], pending: [], applied: [], viewpoints: []
     };
-    if (this.state.domainVersion !== domain.version) throw new Error('Incompatible domain snapshot');
+    if (this.state.domainVersion !== domain.version) {
+      if (!domain.migrateFrom?.includes(this.state.domainVersion)) throw new Error('Incompatible domain snapshot');
+      // Add new canon without replacing events, reports, or observations from the saved game.
+      const existing=new Set(this.state.world.map(f=>f.id));
+      for(const fact of domain.facts.filter(f=>!existing.has(f.id))){
+        this.state.world.push(copy(fact));
+        for(const npc of domain.characters)if(!fact.knownBy||fact.knownBy.includes(npc.id))
+          this.observe(npc.id,fact,{kind:'publication',label:fact.sourceLabel??'visitor reference archive'},false);
+      }
+      this.state.viewpoints??=[];
+      for(const npc of domain.characters)for(const view of domain.viewpoints??[])
+        if((!view.knownBy||view.knownBy.includes(npc.id))&&!this.state.viewpoints.some(v=>v.id===view.id&&v.holder===npc.id))this.state.viewpoints.push({...copy(view),holder:npc.id});
+      this.state.domainVersion=domain.version;
+    }
     if (!snapshot) {
       for (const npc of domain.characters) {
-        this.state.contexts[npc.id] = { focus: null, lastQuery: null, lastAct: null, turn: 0 };
+        this.state.contexts[npc.id] = { focus: null, referents:{}, lastQuery: null, lastAct: null, lastResults:[], pendingOffer:null, turn: 0 };
+        for (const view of domain.viewpoints??[]) if (!view.knownBy||view.knownBy.includes(npc.id)) this.state.viewpoints.push({...copy(view),holder:npc.id});
         for (const fact of domain.facts.filter(f => !f.knownBy || f.knownBy.includes(npc.id))) {
           this.observe(npc.id, fact, { kind: 'publication', label: fact.sourceLabel ?? 'visitor reference archive' }, false);
         }
@@ -43,7 +62,11 @@ export class AgentCore {
     const roles = this.schemas[atom.predicate].keyRoles ?? Object.keys(atom.args);
     return JSON.stringify([atom.predicate, ...roles.map(r => [r, atom.args[r]])]);
   }
-  world(query = {}) { return this.state.world.filter(f => f.validTo == null && matches(f.atom, query)); }
+  world(query = {}) {
+    return this.state.world.filter(f => (typeof query.atTime==='number'
+      ? f.validFrom<=query.atTime&&(f.validTo==null||f.validTo>query.atTime)
+      : f.validTo==null) && matches(f.atom,query));
+  }
   observe(holder, fact, source, log = true) {
     if (!this.state.contexts[holder]) throw new Error('Unknown observer');
     this.validate(fact.atom);
@@ -55,22 +78,45 @@ export class AgentCore {
     return e;
   }
   // Resolve only this holder's evidence. Never consult authoritative world state here.
-  beliefs(holder, query = {}) {
+  baseBeliefs(holder, query = {}) {
     const groups = new Map();
-    for (const e of this.state.evidence.filter(e => e.holder === holder && matches(e.atom, query))) {
+    for (const e of this.state.evidence.filter(e => e.holder === holder && (typeof query.atTime!=='number'||(Number.isFinite(e.aboutTime)&&e.aboutTime<=query.atTime)))) {
       const key = this.key(e.atom);
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(e);
     }
     const actor = this.domain.characters.find(c => c.id === holder);
     return [...groups.values()].map(items => {
-      items.sort((a,b) => b.aboutTime - a.aboutTime || b.learnedAt - a.learnedAt || Number(b.id.split(':')[1]) - Number(a.id.split(':')[1]));
-      const confirmed = items.find(e => e.certainty === 'confirmed');
+      items.sort((a,b) => (b.aboutTime??-1)-(a.aboutTime??-1) || b.learnedAt-a.learnedAt || Number(b.id.split(':')[1])-Number(a.id.split(':')[1]));
+      const confirmations=items.filter(e => e.certainty === 'confirmed').filter((e,i,all)=>all.findIndex(x=>x.aboutTime===e.aboutTime&&sameAtom(x.atom,e.atom))===i);
+      const confirmed = query.temporal==='previous' ? confirmations[1]??confirmations[0] : confirmations[0];
       const reports = items.filter(e => e.certainty === 'reported' && (!confirmed || e.learnedAt >= confirmed.learnedAt));
       const tentative = reports.find(e => !confirmed || e.aboutTime > confirmed.aboutTime);
       const primary = actor?.personality.testimony === 'provisional' && tentative ? tentative : confirmed ?? tentative;
-      return { primary, confirmed, reports, history: items, conflict: !!confirmed && reports.some(e => JSON.stringify(e.atom) !== JSON.stringify(confirmed.atom)) };
-    }).filter(g => g.primary);
+      return { primary, confirmed, reports, history: items, conflict: !!confirmed && reports.some(e => !sameAtom(e.atom,confirmed.atom)) };
+    }).filter(g => g.primary && matches(g.primary.atom,query));
+  }
+  beliefs(holder, query = {}) {
+    const base=this.baseBeliefs(holder,{atTime:query.atTime,temporal:query.temporal});
+    const inferred=deriveEvidence(holder,base.map(g=>g.primary),this.domain.rules,atom=>this.validate(atom));
+    const groups=new Map(base.map(g=>[this.key(g.primary.atom),{...g,derivations:[]} ]));
+    for(const e of inferred){
+      const key=this.key(e.atom),group=groups.get(key);
+      if(group){
+        if(sameAtom(group.primary.atom,e.atom))group.derivations.push(e);
+      }else groups.set(key,{primary:e,confirmed:null,reports:[],history:[e],derivations:[e],conflict:false});
+    }
+    return [...groups.values()].filter(g=>matches(g.primary.atom,query));
+  }
+  knownViewpoints(holder,topic){
+    return (this.state.viewpoints??[]).filter(v=>v.holder===holder&&(v.topic===topic||v.alsoTopics?.includes(topic)));
+  }
+  rank(groups,actor){
+    const order=this.domain.summaryOrder??[];
+    return [...groups].sort((a,b)=>{
+      const score=g=>(actor.interests?.[g.primary.atom.predicate]??0)*10+(order.length-(order.indexOf(g.primary.atom.predicate)<0?order.length:order.indexOf(g.primary.atom.predicate)));
+      return score(b)-score(a);
+    });
   }
   // Host-authorized, atomic state change. Observers and delivery time are supplied by the host.
   applyEvent(event) {
@@ -114,37 +160,103 @@ export class AgentCore {
     const actor = this.domain.characters.find(c => c.id === holder);
     if (!actor) throw new Error('Unknown character');
     const context = this.state.contexts[holder];
+    const discoursePlan=respondDiscourse(this,actor,act);
+    if(discoursePlan)return discoursePlan;
     const socialPlan=respondSocial(this,actor,act);
     if(socialPlan)return socialPlan;
-    const plan = { id:this.next('plan'), holder, function:act.function, results:[], time:this.state.time, decision:'' };
+    const plan = { id:this.next('plan'), holder, function:act.function, results:[], time:this.state.time, decision:'',delivery:{engagement:actor.personality.affiliation>.8?'inviting':'neutral'}};
+    const finish=()=>{
+      context.turn++;context.lastAct=act.id??plan.id;
+      if(plan.results.length)context.lastResults=plan.results.map(g=>copy(g.primary));
+      const location=plan.results.find(g=>g.primary.atom.predicate==='located_at'&&(g.primary.atom.polarity??true));
+      if(location)context.lastPlace=location.primary.atom.args.place;
+      this.state.history.push({id:this.next('turn'),holder,time:this.state.time,act:copy(act),plan:copy(plan)});
+      return plan;
+    };
+    if(['agree','accept','elaborate'].includes(act.function)){
+      if(context.pendingOffer){
+        const offer=copy(context.pendingOffer);context.pendingOffer=null;
+        return this.respond(holder,{...offer.act,function:'ask',offset:offer.offset,speaker:act.speaker});
+      }
+      plan.function='clarify';plan.reason='no-pending-offer';return finish();
+    }
+    if(['disagree','reject'].includes(act.function)){
+      plan.function=context.pendingOffer?'decline':'acknowledge_disagreement';context.pendingOffer=null;
+      plan.decision='Record conversational feedback without changing world truth or personal factual evidence.';return finish();
+    }
+    if(act.function==='ask_consensus'){
+      const topic=act.query?.args?.subject??context.focus;
+      if(!topic){plan.function='clarify';plan.reason='missing-context';return finish();}
+      plan.topic=topic;plan.viewpoints=copy(this.knownViewpoints(holder,topic));
+      plan.stance=actor.attitudes?.[topic]??actor.attitudes?.[this.domain.attitudeLinks?.[topic]]??'undecided';
+      plan.decision='Report only viewpoints this character has encountered; distinguish them from the character’s own position and from universal agreement.';
+      return finish();
+    }
+    if(act.function==='compare'){
+      const left=act.query?.args?.subject,right=act.query?.args?.other;
+      if(!left||!right){plan.function='clarify';plan.reason='multiple-subjects';return finish();}
+      const facets=this.domain.comparisonPredicates??Object.keys(this.schemas);
+      const a=this.beliefs(holder,{args:{subject:left}}),b=this.beliefs(holder,{args:{subject:right}});
+      plan.comparison=facets.map(predicate=>({predicate,left:a.filter(g=>g.primary.atom.predicate===predicate),right:b.filter(g=>g.primary.atom.predicate===predicate)}))
+        .filter(f=>f.left.length||f.right.length).slice(0,3);
+      plan.results=plan.comparison.flatMap(f=>[...f.left,...f.right]);plan.entities=[left,right];
+      context.focus=left;context.referents={it:[left],that:[left]};context.lastQuery={args:{subject:left}};
+      plan.decision='Compare matching facets using this character’s evidence on each side; leave missing information unknown.';
+      return finish();
+    }
+    if(act.function==='ask_list'){
+      plan.query=copy(act.query??{});plan.results=this.beliefs(holder,plan.query).filter(g=>(g.primary.atom.polarity??true));
+      const select=act.select??Object.entries(plan.query.args??{}).find(([,v])=>variable(v))?.[0]??'subject';
+      plan.items=[...new Set(plan.results.map(g=>g.primary.atom.args[select]))];
+      plan.descriptions=plan.items.map(id=>({id,evidence:this.domain.listDescriptionPredicate?this.beliefs(holder,{predicate:this.domain.listDescriptionPredicate,args:{subject:id}}).slice(0,1):[]}));
+      context.focus=act.topic??this.domain.listTopics?.[plan.query.args?.object]??null;context.lastQuery=copy(plan.query);
+      plan.decision='List the category members this character knows, without claiming an exhaustive census.';
+      return finish();
+    }
     if (act.function === 'assert') {
       this.validate(act.content);
-      const evidence = { id:this.next('evidence'),holder,atom:copy(act.content),aboutTime:this.state.time,
-        learnedAt:this.state.time,certainty:'reported',source:{kind:'testimony',speaker:'player',label:'your unverified statement'},origin:{kind:'player'},supports:[] };
+      const speaker=act.speaker??'player';
+      const evidence = { id:this.next('evidence'),holder,atom:copy(act.content),aboutTime:act.temporal==='past_unspecified'?null:act.aboutTime??this.state.time,
+        learnedAt:this.state.time,certainty:'reported',source:{kind:'testimony',speaker,label:speaker==='player'?'your unverified statement':speaker},origin:{kind:speaker==='player'?'player':'testimony',speaker},supports:[] };
+      if(act.temporal)evidence.temporal=act.temporal;
       this.state.evidence.push(evidence);
       plan.report = evidence;
       plan.results = this.beliefs(holder,{predicate:act.content.predicate,args:Object.fromEntries(this.schemas[act.content.predicate].keyRoles.map(r=>[r,act.content.args[r]]))});
       plan.decision = actor.personality.testimony === 'provisional' ? 'Use testimony provisionally, preserving attribution.' : 'Record testimony separately; retain confirmed evidence.';
       context.focus = act.content.args.subject ?? context.focus;
-    } else if (['ask','ask_evidence','opinion'].includes(act.function)) {
+      context.lastReportId=evidence.id;context.lastProposition=copy(act.content);
+      context.lastQuery={predicate:act.content.predicate,args:Object.fromEntries((this.schemas[act.content.predicate].keyRoles??Object.keys(act.content.args)).map(r=>[r,act.content.args[r]]))};
+      plan.query=copy(context.lastQuery);
+    } else if (['ask','ask_reason','ask_evidence','opinion'].includes(act.function)) {
       const query = act.query ?? context.lastQuery;
       if (!query) { plan.function='clarify'; plan.reason='missing-context'; }
       else {
         context.lastQuery = copy(query);
-        context.focus = query.args?.subject ?? context.focus;
+        context.focus = typeof query.args?.subject==='string'?query.args.subject:context.focus;
+        context.referents={it:[context.focus],that:[context.focus],they:[context.focus],he:[context.focus],she:[context.focus]};
         plan.query = copy(query);
-        plan.results = this.beliefs(holder,query).slice(0,act.function==='ask_evidence'?6:actor.personality.detail);
-        plan.stance = act.function === 'opinion' ? actor.attitudes?.[context.focus] ?? 'undecided' : null;
+        let candidates=this.beliefs(holder,query);
+        if(!query.predicate&&!query.anyOf)for(const rule of this.domain.summaryRedundancies??[]){
+          if(candidates.some(g=>g.primary.atom.predicate===rule.preferred&&(!rule.subject||g.primary.atom.args.subject===rule.subject)))
+            candidates=candidates.filter(g=>g.primary.atom.predicate!==rule.redundant||(rule.subject&&g.primary.atom.args.subject!==rule.subject));
+        }
+        const all=this.rank(candidates,actor),offset=act.offset??0;
+        const limit=act.function==='ask_evidence'?6:act.function==='ask_reason'?4:actor.personality.detail;
+        plan.results=all.slice(offset,offset+limit);
+        if(variable(query.args?.subject)&&plan.results.length===1)context.focus=plan.results[0].primary.atom.args.subject;
+        plan.explanations=plan.results.flatMap(g=>(g.primary.proof?[g.primary]:g.derivations??[]).slice(0,1));
+        plan.stance=act.function==='opinion' ? actor.attitudes?.[context.focus]??actor.attitudes?.[this.domain.attitudeLinks?.[context.focus]]??'undecided':null;
+        if(act.function==='ask'&&all.length>offset+limit){
+          plan.offer={kind:'elaboration',remaining:all.length-offset-limit};
+          context.pendingOffer={act:{function:'ask',query:copy(query)},offset:offset+limit};
+        }else context.pendingOffer=null;
         plan.decision = plan.results.length ? 'Select personal evidence matching the query; preserve source and uncertainty.' : 'No matching personal evidence; acknowledge the knowledge boundary.';
       }
     } else if (act.function === 'clarify') {
       plan.reason=act.reason; plan.candidates=act.candidates;
       plan.decision='Preserve ambiguity instead of inventing an interpretation.';
     } else plan.decision='Handle a social conversational act.';
-    context.turn++;
-    context.lastAct=act.id ?? plan.id;
-    this.state.history.push({id:this.next('turn'),holder,time:this.state.time,act:copy(act),plan:copy(plan)});
-    return plan;
+    return finish();
   }
   snapshot() { return copy(this.state); }
 }

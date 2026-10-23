@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "oewn-2025",
+      "name": "Open English WordNet",
+      "release": "2025-edition",
+      "metadataCommit": "45fdb60396dc804526b85f21a23c59983c2c396a",
+      "homepage": "https://en-word.net/",
+      "repository": "https://github.com/globalwordnet/english-wordnet",
+      "licenses": [
+        "CC-BY-4.0",
+        "Princeton-WordNet"
+      ],
+      "notices": [
+        "Open-English-WordNet-LICENSE.md",
+        "Princeton-WordNet-LICENSE.txt"
+      ],
+      "modifications": "Selected synsets and senses; selected relations; one level of hypernyms; normalized JSON fields; authored concept links."
+    },
+    {
+      "id": "verbnet-3.4",
+      "name": "University of Colorado VerbNet",
+      "version": "3.4",
+      "commit": "ae8e9cfdc2c0d3414b748763612f1a0a34194cc1",
+      "homepage": "https://verbs.colorado.edu/verbnet/",
+      "repository": "https://github.com/cu-clear/verbnet",
+      "licenses": [
+        "LicenseRef-VerbNet-3.X"
+      ],
+      "notices": [
+        "VerbNet-3.X-LICENSE.txt"
+      ],
+      "citation": "Karin Kipper, Anna Korhonen, Neville Ryant, Martha Palmer. A Large-scale Classification of English Verbs. Language Resources and Evaluation 42(1), 21–40, 2008.",
+      "modifications": "Selected class files, preserving subclass inheritance, members, role restrictions, syntax and semantic trees; added deterministic frame locators and authored concept links."
+    }
+  ],
+  "inputs": [
+    {
+      "file": "oewn-2025.zip",
+      "url": "https://github.com/globalwordnet/english-wordnet/releases/download/2025-edition/english-wordnet-2025-json.zip",
+      "sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+      "bytes": 9986555
+    },
+    {
+      "file": "vn-allow-64.1.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/allow-64.1.xml",
+      "sha256": "d8035dc4601e78a1c3ddf3b3f4fc21ecf072256a2b2257e97f59dc057b56c21e",
+      "bytes": 4520
+    },
+    {
+      "file": "vn-beg-58.2.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/beg-58.2.xml",
+      "sha256": "175688305929c21eba02485aabeb7e36dca62b437e480b36ec2642b0f73bcd22",
+      "bytes": 10998
+    },
+    {
+      "file": "vn-captain-29.8.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/captain-29.8.xml",
+      "sha256": "e04a71dea6daa23f18e39b7f64c3a3607322ae68c418bb39f1919391af3ca980",
+      "bytes": 8946
+    },
+    {
+      "file": "vn-cognize-85.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/cognize-85.xml",
+      "sha256": "b83c186e8279b01215500be277708410fda386bf776bdf1c2434aee7ce71a76b",
+      "bytes": 2948
+    },
+    {
+      "file": "vn-conjecture-29.5.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/conjecture-29.5.xml",
+      "sha256": "846580087442413117a98bd5c3029cba15a5acc56dd21fde34902d3d3c24239a",
+      "bytes": 7174
+    },
+    {
+      "file": "vn-escape-51.1.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/escape-51.1.xml",
+      "sha256": "ffee6da0d11e03154c9707e5613de3fc7c8901e6ff3b476dfe3a5bd7b265351c",
+      "bytes": 18428
+    },
+    {
+      "file": "vn-exchange-13.6.1.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/exchange-13.6.1.xml",
+      "sha256": "a7793c16d6386e7b3a7ddb0f4c647f19a0148875e30dfc50136e37e466f75844",
+      "bytes": 12895
+    },
+    {
+      "file": "vn-forbid-64.4.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/forbid-64.4.xml",
+      "sha256": "ec2bf6a57f58a3a6f81b36abee02dc4c94de00b574c8cf3e9746ac8c959cd340",
+      "bytes": 4868
+    },
+    {
+      "file": "vn-give-13.1.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/give-13.1.xml",
+      "sha256": "bbddd2c3cbe0a8a6862eee7a140827938921df2eaf7fc2852f3f4d133800fbee",
+      "bytes": 19540
+    },
+    {
+      "file": "vn-help-72.1.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/help-72.1.xml",
+      "sha256": "cba3a0dabc909cec269712e1c0b1bae55b5d687a4f478fe3b5a20f9665db937d",
+      "bytes": 8460
+    },
+    {
+      "file": "vn-inquire-37.1.2.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/inquire-37.1.2.xml",
+      "sha256": "4f4b2d729a6882ef01937a1d279ba73bcd88afb2a70b7cdffbb53ba5bbcd4195",
+      "bytes": 40145
+    },
+    {
+      "file": "vn-learn-14.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/learn-14.xml",
+      "sha256": "a5bb6085eee107b70b1945da639eb11dc40c9e8dc7414c9bf79f39a76617db21",
+      "bytes": 20742
+    },
+    {
+      "file": "vn-leave-51.2.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/leave-51.2.xml",
+      "sha256": "b6ba905395ebd5bdf24200577a32f82cb54406c9d405e334bfac3e90a528ff17",
+      "bytes": 4907
+    },
+    {
+      "file": "vn-own-100.1.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/own-100.1.xml",
+      "sha256": "f1849a02df18dd88ab6b6fa50e34eb7b16f3d0b4c4a0040ac843c1c457f2cca4",
+      "bytes": 1532
+    },
+    {
+      "file": "vn-promise-37.13.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/promise-37.13.xml",
+      "sha256": "2b356bce7eadec9b69841e815ce9d13cbee4f5b40810f339891459524cea72a3",
+      "bytes": 5648
+    },
+    {
+      "file": "vn-run-51.3.2.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/run-51.3.2.xml",
+      "sha256": "42cb9db096e72bac6d8bcdd1407d1ddf16fa0ecc2ad3583d461aa4e3227137cb",
+      "bytes": 50808
+    },
+    {
+      "file": "vn-say-37.7.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/say-37.7.xml",
+      "sha256": "f6b897d56857b21f2710e15b9f2003ec4bfe4e7af90ca3b553871686dbc11c87",
+      "bytes": 45404
+    },
+    {
+      "file": "vn-see-30.1.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/see-30.1.xml",
+      "sha256": "cb3bccd8170076c1294dd1616b4454f9aa3c1ace95ef2d73ba562e452632c908",
+      "bytes": 8418
+    },
+    {
+      "file": "vn-tell-37.2.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/tell-37.2.xml",
+      "sha256": "722829293329040bcb6206fb0331cf82dfee1078ae6f974ab42d9b3395e83e00",
+      "bytes": 5126
+    },
+    {
+      "file": "vn-want-32.1.xml",
+      "url": "https://raw.githubusercontent.com/cu-clear/verbnet/ae8e9cfdc2c0d3414b748763612f1a0a34194cc1/verbnet3.4/want-32.1.xml",
+      "sha256": "992362dfabcaeb0a829cb2dbaaa7c31fb515d5cf4e5aa642fced84f0e4e5025e",
+      "bytes": 11872
+    },
+    {
+      "file": "Open-English-WordNet-LICENSE.md",
+      "url": "https://raw.githubusercontent.com/globalwordnet/english-wordnet/45fdb60396dc804526b85f21a23c59983c2c396a/LICENSE.md",
+      "sha256": "672cc8b5663e8dc74c4b07a9dcf477193853575b119908fd3dc0aeeb60a9dbbb",
+      "bytes": 19863
+    },
+    {
+      "file": "Princeton-WordNet-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/globalwordnet/english-wordnet/45fdb60396dc804526b85f21a23c59983c2c396a/WNDB_License.txt",
+      "sha256": "df30ec18fbabcdaf031b79ea026d3e6b959010cffe6dd7be9ac137822175b904",
+      "bytes": 1740
+    },
+    {
+      "file": "VerbNet-3.X-LICENSE.txt",
+      "url": "https://verbs.colorado.edu/~mpalmer/projects/verbnet/license.3.0.txt",
+      "sha256": "6a28570a960b693eb96800264ff1379eb374436dec6211b23b516e54b6e2f13f",
+      "bytes": 2109
+    }
+  ],
+  "runtime": {
+    "file": "lexical-pack.json",
+    "sha256": "71ed47e88b106f6245cacd1ce848ffc48477c5804c623e5c12c58417e6b0e351",
+    "bytes": 497255,
+    "counts": {
+      "synsets": 71,
+      "lexicalEntries": 176,
+      "senses": 191,
+      "verbClasses": 51,
+      "verbMembers": 439,
+      "verbFrames": 156,
+      "authoredMappings": 40
+    }
+  },
+  "integrity": "Input hashes lock the exact converted bytes. Frame IDs are generated locators, not upstream global frame IDs. WordNet sense and synset IDs and VerbNet class IDs are preserved verbatim."
+}

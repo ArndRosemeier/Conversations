@@ -1,47 +1,67 @@
-# First conversation simulation review
+# Conversation improvement review
 
-Reviewed on 2026-10-23. **The engine still fails as an open-ended conversationalist.** This release fixes the reported ordinary greeting failure and adds social state and executable simulations. It does not establish general conversational competence.
+Reviewed 2026-10-23. **The prototype is materially better on the tested conversations, but remains a bounded conversational system.** It is not yet convincing for unrestricted play. The main improvement is interpreting and retaining relations, reports, and several acts in one turn, rather than answering whichever topic name happens to match.
 
-## Method
+## Method and honest comparison
 
-Luna authored 10 player conversation scenarios, with 58 player turns and explicit qualitative criteria. The actual procedural engine generated every NPC reply. The primary agent read the resulting conversations and judged relevance, continuity, voice, knowledge discipline, and closure. No language model runs inside the browser or supplies NPC answers.
+Luna authored the original 10 conversations (58 player turns). Those were already development examples. In this iteration, a Luna agent wrote six additional conversations (24 turns) without reading the parser or the original fixtures. The primary agent did not read these new prompts until the first implementation pass was complete. The actual procedural engine generated every NPC answer; the primary agent read and judged the transcripts. No language model runs in the browser or supplies the NPC dialogue.
 
-The fixture is fixed and reproducible, not an adaptive model adversary. It was used during this iteration, so it is a development set, not a held-out benchmark. `conversation-report.json` contains the exact inputs, semantic interpretations, replies, diagnostic counts, and SHA-256 hashes of the evaluated engine modules. A repair is counted from the response plan. Absence of a repair does **not** establish that an answer was relevant or correct.
+| Run | Turns | Turns containing a repair | Interpretation |
+| --- | ---: | ---: | --- |
+| Previous release, original development examples | 58 | 15 | Also contained wrong-topic answers that did not count as repairs |
+| Current release, original development examples | 58 | 1 | Remaining repair asks about an unresolved “it”; fewer repairs alone is not a quality score |
+| Fresh examples, first unseen run | 24 | 17 | Strong evidence that the first pass still generalized poorly |
+| Same fresh examples after fixes | 24 | 3 | Now development examples; this is **not** a held-out score |
 
-Run from `solarpolis-dialogue` with `npm run simulate`. Run invariant and regression checks with `npm test`.
+The first unseen result is preserved unchanged in [conversation-holdout-report.json](conversation-holdout-report.json). Final results are [conversation-report.json](conversation-report.json) and [conversation-followup-report.json](conversation-followup-report.json). Each report includes inputs, parsed acts, replies, traces, and hashes of the evaluated modules. Compound turns count as repairs if any child plan repairs. Repeated exact replies are another diagnostic, not a naturalness judgment.
 
-## Human assessment
+Run `npm run simulate` in `solarpolis-dialogue` for the original examples. For the additional examples:
 
-| Dimension | Assessment | Evidence |
+```sh
+node tools/simulate-conversations.mjs --fixture tests/fixtures/conversation-holdout.json --output ../docs/conversation-followup-report.json
+```
+
+The first unseen artifact must not be overwritten by this rerun.
+
+## Primary-agent assessment
+
+| Dimension | Current assessment | Transcript evidence |
 | --- | --- | --- |
-| Ordinary social openings | Improved | All three NPCs answer a check-in, disclose different interests, and can reciprocate. Mood self-reports stay separate from factual evidence. |
-| Distinct voices | Promising but limited | Iona discusses calendars directly, Serein attends to personal choice and company, Rill discusses acoustic experience. These are authored dispositions and realizations, not a full emotion simulation. |
-| Multi-turn naturalness | Fail | Repeated replies and abrupt repairs still interrupt the exchange. More complex personal questions and invitations are often missed. |
-| Meaning and relevance | Fail | A question about why an array operator affects travel receives the ship's reservation status. A question about governing the whole inner system receives a Selenipolis summary. Both are non-answers, even though they contain modeled facts. |
-| Knowledge boundaries | Mixed | Unknown dolphin counts stay unknown. Unconsented-copying testimony in a longer utterance is not understood or retained; asking about its provenance later cannot succeed. Rejecting fabrication is necessary but insufficient. |
-| Ambiguity and closure | Partial | Basic missing-reference repair, goodbye, and reopening work. Some longer closing turns still fail. |
-| Bounded NPC exchange | Pass within narrow scope | Current beliefs determine the venue answer. A shared official amendment updates the listener; an unsupported spoken report does not become verified evidence. |
+| Social attention and personality | Improved within authored coverage | Serein answers why welcoming arrivals matters; Rill explains listening to acoustic spaces and accepts an invitation to keep talking; Iona accepts a clarified friendly greeting. |
+| Mixed turns | Improved, still bounded | “I’m fine. I heard…” retains both the mood and a separately attributed report. A wellbeing question joined to a question about Threnody answers both. |
+| Travel relevance | Improved, incomplete paraphrase coverage | A direct question about array operators now discusses acceleration, braking, and launch windows. It no longer returns the ship reservation. The indirect “I’ve heard the laser arrays can influence travel…” still repairs. |
+| Identity and reference | Improved | Serein distinguishes themself from the governing Mind. A “who” answer establishes the person reference. “There” follows the last known location while keeping Rill separate from the exchange. |
+| Testimony and negation | Improved | The unconsented-copying claim remains the player’s unverified report and is checked against the taboo norm. “I haven’t seen any notice” qualifies the source without falsely denying the event. |
+| Knowledge boundaries | Sound in the tested cases | Population estimates remain unknown. Rill does not gain detailed arkship knowledge merely because another NPC has it. A reservation remains pending until Iona receives the delayed bulletin. |
+| Explanation and voice | Mixed | Causal answers contain relevant premises, but some read like several database clauses joined together. The Selenipolis explanation is too long and repetitive. Source and verification answers are less characterful than the social replies. |
+| Closure and reopening | Improved | Indirect leaving cues close naturally, and reopening with a location question works. An unsupported recollection prefix still adds an unnecessary repair before a correct venue answer. |
+| NPC exchanges | Working within a narrow policy | A changed venue produces attributed testimony, an actual publication is shared, and Iona updates her belief. Pair context remains separate from player context. |
 
-**Observed diagnostics:** 10 conversations, 58 player turns, 15 repairs. The other 43 turns are not a pass count. The NPC venue scenario produces nine utterances. All 26 invariant/regression tests pass independently of this qualitative failure.
+Representative corrected replies:
 
-Selected observations:
+- Array travel: “Laser-pushed sail travel relies on external arrays for acceleration and braking.” The answer goes on to identify braking control and launch windows.
+- Regional government: “The inner system is not governed by Selenipolis.” This is a modeled inference with inspectable premises, not a lookup of global truth.
+- Distinct identities: “I am a separate individual from Threnody’s governing Mind.”
+- Verification: “That differs from what I know. Copying a mind without consent is taboo in most habitats.” The original report remains stored and attributable.
 
-- Iona's reply to “How are you today?” now starts “Quite well. Pleasantly absorbed in transit calendars…” and asks “How about you?”
-- Rill acknowledges “Not very well. I had a rough conversation earlier.” and offers company.
-- Social reasons such as “What do you enjoy about them?” work after a modeled activity, but broader causal and implied-meaning follow-ups remain brittle.
-- Serein still fails questions that require distinguishing the local welcoming individual from the governing Mind when the reference is indirect.
-- No evaluation score is inferred from code coverage, parsing success, or the number of fluent-looking sentences.
+## What still fails
 
-## NPC simulations
+Two turns in the travel follow-up scenario remain unsupported: an indirect report about arrays enabling travel, and the distinction the visitor draws between general travel influence and a specific booking. The engine answers the later direct booking and verification-policy questions correctly, but the interrupted exchange is not a natural success.
 
-The browser's **NPC conversations → Listen in** offers three host-supplied goals: the exchange venue, the Long Song, and the ship's reservation. These goals use a bounded social-opening → question → answer → source → acknowledgment → closing policy. The words and factual answers come from the current language implementation and personal evidence, rather than a prewritten transcript.
+The reopening scenario still cannot interpret “I remember you said they were near the exchange.” It repairs that clause, then correctly answers whether the exchange is in Rill’s known location. Preserving an honest gap is preferable to inventing the recollection, but the interruption remains a conversational failure.
 
-For the knowledge-change demonstration, start a fresh sample, amend the venue, then choose Iona → Serein. Only Serein initially knows the amendment. Iona receives attributed testimony, asks for its source, reads the shareable publication, and updates her evidence. Old saves retain their original source capabilities; an observation from an older version is not retroactively declared shareable.
+Other limitations: source and assertion responses can be verbose; some back-to-back acknowledgments feel assembled; repeated factual questions repeat answers; known concepts do not imply unrestricted sentence comprehension. Broad social constructions and topic summaries need adversarial tests for questions that contain exceptions, comparisons, or several competing referents. The finite English grammar does not yet support arbitrary reported speech, quantifier scope, hypothetical planning, or reliable open-ended repair.
 
-Each participant pair has separate conversational context. NPC exchanges share personal evidence with the rest of the game but preserve the player's chat context. They have a turn budget and an explicit stop reason. They do not yet choose their own goals, interruptions, social relationships, or long-term motives. Autonomous believable NPC society remains future work.
+## Verification and implementation scope
 
-## Next evaluation priorities
+70 automated checks pass: the original 26 invariants/social/simulation checks, 29 GF grammar checks, and 15 new meaning/state checks. These verify source-derived grammar execution, a real WordNet/VerbNet departure frame, scoped and negated reports, reference tracking, no world mutation from testimony, bounded inference invalidation, duplicate-source temporal history, and additive v1 save migration. Source conversion reproduces the checked-in lexical pack and license copies from the cached pinned inputs.
 
-The next implementation priority is a compositional meaning layer: distinguish the requested relation, scope, question type, and assertions from nearby vocabulary. Topic detection alone must not select a superficially related answer. Extend conversational initiative and repair after that foundation, rather than accumulating isolated greeting variants.
+Browser verification covered an existing saved world at 16:01, ordinary wellbeing, mixed social/testimony input, checking the retained report, interpretation traces, the corrected belief inspector, and an NPC exchange using the existing amended venue. Existing player conversations and world changes were retained.
 
-Keep these scenarios as regressions. Add a held-out set and adaptive Luna player runs with new phrasing. The primary judge should independently assess relevance, coherence, personality, knowledge provenance, and natural closure, with transcript evidence and explicit failure reasons. Keep this qualitative review separate from deterministic state/invariant tests.
+The runtime now integrates selected WordNet/VerbNet data and an actual compiled GF grammar. These expand the available language resources; they do not generate personality or infer unlimited meanings. Social characterization remains authored sample material. The integrated world has 217 seed assertions and 199 entity IDs, including overlapping original summaries and finer relations; those totals are not distinct-fact or fluency scores.
+
+## NPC simulation boundary and next work
+
+NPC conversations still use a bounded greeting → host-supplied goal → answer → source → acknowledgment → closing policy. The transcript is produced from current personal knowledge, not stored dialogue. The fresh venue scenario contains nine utterances; repeated encounters can be shorter because social state is retained. This is not yet a simulation of autonomous motives, interruptions, negotiations, or evolving relationships.
+
+Next, improve semantic treatment of reported causal statements, metaconversation about what was said, and sentence planning that combines evidence into concise in-character explanations. Evaluate those changes with newly authored or adaptive player conversations; neither current fixture should again be called held out.

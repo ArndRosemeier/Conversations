@@ -31,7 +31,7 @@ Ordinary social openings also work: try `How are you today?`, answer `I'm tired`
 
 Use **NPC conversations → Listen in** to hear two NPCs exchange information from their current beliefs. In a fresh sample, amend the venue before running Iona → Serein to see an official source shared and Iona's evidence updated. NPC pair context is separate from the player's chat. The dialogue policy and host-supplied goals are bounded; this is not autonomous social planning.
 
-`npm run simulate` replays 10 Luna-authored conversations against the actual engine. Read the [primary-agent qualitative review](docs/conversation-review.md) and [raw transcripts](docs/conversation-report.json): the engine still fails open-ended natural conversation despite passing its deterministic checks.
+`npm run simulate` replays 10 Luna-authored conversations against the actual engine. Six additional conversations were authored before the new parser was evaluated; their first result and subsequent development rerun are retained separately. Read the [primary-agent qualitative review](docs/conversation-review.md) and [raw transcripts](docs/conversation-report.json): the engine still fails open-ended natural conversation despite passing its deterministic checks.
 
 ## Boundaries
 
@@ -41,6 +41,11 @@ Use **NPC conversations → Listen in** to hear two NPCs exchange information fr
 | `dist/solarpolis.mjs` | Selected world-bible facts, domain schema, original characters, personality policies, scenario events |
 | `dist/english.mjs` | Bounded English interpretation and realization through an injected language resource package |
 | `dist/solarpolis-en.mjs` | Solarpolis names, aliases, English fact realizations, and character voices |
+| `dist/discourse.mjs` | Ordered speech acts, proposition verification, report qualifications, and explicit references |
+| `dist/reasoning.mjs` | Bounded inference from personal evidence, including premise provenance |
+| `dist/english-meaning.mjs` | Relation and scope constructions, compound turns, contextual references |
+| `dist/gf/` and `dist/lexical-index.mjs` | Actual compiled GF grammar and selected WordNet/VerbNet lexical candidates |
+| `dist/solarpolis-expanded*.mjs` and `dist/solarpolis-integration*.mjs` | Extended world model, language resources, and additive v1 save migration |
 | `dist/storage.mjs` | Interchangeable in-memory and IndexedDB snapshot adapters |
 | `dist/social.mjs` | Language-independent social acts, reciprocity, self-report memory, boundaries, and closure |
 | `dist/english-social.mjs` | Bounded social constructions and English social realization |
@@ -54,7 +59,7 @@ An observation has an event/about time, a learning time, a source, and confidenc
 
 ## Scope and provenance
 
-This is an architectural slice, not an open-domain conversational system. English grammar is deliberately bounded and returns clarification on unsupported or ambiguous input. Reasoning currently covers evidence selection, source attribution, temporal updates, testimony policy, conversational reference, and authored attitudes. General rule inference, planning, nested beliefs, negotiation, and automatic knowledge extraction are future work. Most factual clauses are authored and composed; this is not unrestricted text generation.
+This is an architectural slice, not an open-domain conversational system. English grammar is deliberately bounded and returns clarification on unsupported or ambiguous input. Reasoning currently covers evidence selection, source attribution, temporal updates, testimony policy, conversational reference, and authored attitudes. Bounded forward rules now derive conclusions from each NPC’s own confirmed evidence, with inspectable premises. Planning, nested beliefs, negotiation, and automatic knowledge extraction remain future work. Most factual clauses are authored and composed; this is not unrestricted text generation.
 
 Setting facts are attributed to sections of **SOLARPOLIS — WORLD BIBLE**, supplied by the user. The Arrival Commons, all named sample visitors, local rooms, exchange, ship, and changing events are additions. The 12-minute remote link is an illustrative scenario parameter, not a canonical orbital position or physical ephemeris. No ship travels during that interval.
 
@@ -67,3 +72,13 @@ The [structured language-source assessment](docs/language-sources.md) compares r
 ## Next design requirement
 
 The sample now has a first bounded NPC exchange policy. Believable autonomous conversations still need goal selection, relationships, interruption, initiative, and richer turn-taking. The immediate quality bottleneck is compositional meaning and relevance across turns; see the conversation review for observed failures and the evaluation plan.
+
+## Language and knowledge expansion
+
+The runtime now includes 217 seed assertions, 199 entity IDs, four bounded inference rules, and attributed viewpoints. Some assertions retain the original compact representation alongside the newer relations; the count is not a measure of distinct knowledge.
+
+The browser loads a selected 497,255-byte lexical pack: 71 WordNet synsets, 176 lexical entries, and 156 VerbNet frames. A compiled GF grammar supplies another bounded parsing path. These are actual source-derived resources, with pinned input hashes and shipped licenses. Most conversation constructions and all personality lines are still authored; imported lexical data does not automatically create conversational understanding.
+
+Read [lexical conversion](docs/lexical-import.md), [GF build and limitations](docs/gf-feasibility.md), and [world model coverage](docs/solarpolis-model-expansion.md). To verify source conversion against a populated cache, run `node solarpolis-dialogue/tools/import-language-sources.mjs --check`; add `--download` to obtain the pinned public sources. `LANGUAGE_SOURCE_CACHE` optionally selects a cache directory. Playback makes no remote AI or lexical-source calls.
+
+Useful new examples: “Why can an array operator affect a ship’s trip?”, “Who are the main players?”, “Why can Pritt rule Aurelipolis?”, and “Who helps arrivals find their bearings?”. A mixed turn such as “I’m fine. I heard that copying a mind without consent is ordinary practice in most habitats.” records both the mood and the attributed report. Follow with “Can you check that against what you know?”.

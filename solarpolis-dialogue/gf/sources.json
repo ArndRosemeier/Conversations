@@ -1,0 +1,49 @@
+{
+  "retrieved": "2026-10-23",
+  "compiler": {
+    "project": "GrammaticalFramework/gf-core",
+    "version": "3.12.0",
+    "releaseTag": "release-3.12",
+    "download": "https://github.com/GrammaticalFramework/gf-core/releases/download/release-3.12/gf-3.12-windows.zip",
+    "downloadBytes": 8716418,
+    "sha256": "a8dc0c54e29bc43f606329a5ca8037764fe7fb89f83ae0eebaa306d0ae320a99",
+    "bundledInApplication": false,
+    "license": "GPL; see vendor/GF-LICENSE.txt",
+    "reportedBuildCommit": "fa2826d"
+  },
+  "runtime": {
+    "source": "https://raw.githubusercontent.com/GrammaticalFramework/gf-core/release-3.12/src/runtime/javascript/gflib.js",
+    "sha256": "11b372b7dc9ef22163b016132e6647094c1a0f3492af5f5b6d9eac0989e86e41",
+    "license": "Dual LGPL/BSD; BSD option selected for this distribution",
+    "licenseSource": "https://raw.githubusercontent.com/GrammaticalFramework/gf-core/release-3.12/LICENSE",
+    "licenseSha256": "c4f9fe675ae187383c49bd6b3464843732857d75864287fafbff0192dacb282c",
+    "modifications": [
+      "build.mjs removes no-op delete(ps2), forbidden in ECMAScript modules",
+      "build.mjs names tagIt and replaces arguments.callee with that name for ESM strict mode",
+      "Compiled grammar and ESM exports appended; original vendor/gflib.js retained unchanged"
+    ]
+  },
+  "applicationGrammar": {
+    "files": ["Conversation.gf", "ConversationEng.gf", "adapter.mjs"],
+    "origin": "Original authored application meaning, English patterns and lexical adapter; English Ref noun phrases and location clauses reuse the pinned RGL API",
+    "license": "MIT; see LICENSE.txt"
+  },
+  "resourceGrammar": {
+    "project": "GrammaticalFramework/gf-rgl",
+    "releaseTag": "20260403",
+    "download": "https://github.com/GrammaticalFramework/gf-rgl/releases/download/20260403/gf-rgl-20260403.zip",
+    "downloadBytes": 27761595,
+    "sha256": "a1a9424e59e3adf73b34647f51c036a03040c9cd002ce77d7d55452006250eeb",
+    "modulesUsed": ["SyntaxEng", "ParadigmsEng", "ExtraEng"],
+    "usage": "English noun phrases, pronouns, location questions, positive/negative copular clauses, perfect moved-to clauses, contracted/uncontracted negation",
+    "wholesaleLibraryBundledInApplication": false,
+    "license": "LGPL/BSD with explicit permission to choose any license for API-derived application grammar; BSD option selected",
+    "licenseSource": "https://raw.githubusercontent.com/GrammaticalFramework/gf-rgl/20260403/LICENSE",
+    "licenseSha256": "8032e75e3f93b844b3e3671f70a8c1976a44e97a354e6d943c22b310aa3903b3"
+  },
+  "documentation": [
+    "https://www.grammaticalframework.org/download/index.html",
+    "https://www.grammaticalframework.org/doc/tutorial/gf-tutorial.html#javascript-applications",
+    "https://www.grammaticalframework.org/lib/doc/synopsis/index.html"
+  ]
+}

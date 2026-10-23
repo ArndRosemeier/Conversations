@@ -1,4 +1,5 @@
 // Solarpolis is replaceable data, never imported by the agent core.
+import {expandDomain} from './solarpolis-integration.mjs';
 import {socialProfiles} from './solarpolis-social.mjs';
 const canon = section => ({kind:'canon',source:'SOLARPOLIS — WORLD BIBLE',section});
 const addition = {kind:'sample',source:'Arrival Commons sample additions'};
@@ -116,3 +117,5 @@ export const scenario = {
     {label:'Where is Rill?',act:{function:'ask',query:{predicate:'located_at',args:{subject:'rill',place:{$var:'place'}}}}}
   ]
 };
+
+expandDomain(domain);

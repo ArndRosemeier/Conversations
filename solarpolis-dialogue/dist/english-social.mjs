@@ -51,14 +51,14 @@ export function realizeSocial(plan,resources,name) {
   const social=plan.social,voice=resources;
   if(!voice)return 'I lost the thread there. What did you mean?';
   const topic=social.topic;
-  if(topic==='user_state')return voice.responses[social.userState.value];
+  if(topic==='user_state')return social.reciprocate===false?(voice.acknowledgments?.[social.userState.value]??'Thank you for telling me.').trim():voice.responses[social.userState.value];
   if(topic==='repair')return (social.repairCount>1?voice.repairAgain:voice.repair).replace('{topic}',name(social.focus));
   if(topic==='company')return voice[social.move==='accept'?'company':'boundary'];
   if(topic==='boundary')return voice.boundary;
   if(topic==='farewell')return voice.farewell;
   if(topic==='greeting')return social.repeat?voice.greetingAgain:voice.greeting;
   const lines=voice[topic];
-  let text=Array.isArray(lines)?lines[social.repeat?1:0]:lines;
+  let text=Array.isArray(lines)?lines[((social.count??1)-1)%lines.length]:lines;
   if(!text)return voice.repair.replace('{topic}',name(social.focus));
   if(social.acknowledgeState)text=(voice.acknowledgments?.[social.acknowledgeState]??'Thank you for telling me. ')+text;
   if(social.prompt==='wellbeing')text+=' '+voice.returnQuestion;

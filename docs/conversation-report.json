@@ -1,13 +1,24 @@
 {
-  "generatedAt": "2026-10-23T08:10:36.010Z",
+  "generatedAt": "2026-10-23T09:07:55.229Z",
   "engineFiles": {
-    "core.mjs": "048942849aaf65a189961c757537f58de05c93de5caeebae26f31955865c1d7d",
-    "english.mjs": "ce7c654143e4bd2ab6acb345aa1268eed2242795c0f4925970b4b5eaf0b2b80f",
-    "social.mjs": "69e6869ba57cf783d507024458d0552f9ee5bd9f0482202c3d78ebcd63ea0a6a",
-    "english-social.mjs": "2e24b5efe6b2749abcc9d456152aacdb85c288104de3cd3da888b3a054b23619",
+    "core.mjs": "ac0ae948f99d528d4ba6b5bffb160a6a27a5d6a2c1e54c5d0eb09fcae7e1d906",
+    "discourse.mjs": "b839bdf468844d19e316d822a88101bd14918e4857eb61bc60f8b821ac7463e2",
+    "english-meaning.mjs": "f9375b21cbd04ca685aa863b34fd8f3e26bd8591942b84f81a0f6918e8758c5f",
+    "reasoning.mjs": "b6daeebd5952e8e33fc36db11482017b4fd8ae78f550e27f551cc9712bb0e7ab",
+    "lexical-index.mjs": "85700bf9963d34b2ddd2a7f66748c3ea53a8e9478cbccd24c18ff345b358cd90",
+    "gf/adapter.mjs": "fabfbda6a2d804ee4f84daa064bf60295b940a2b01d110888676d68efdcedab7",
+    "gf/grammar.mjs": "8d4988cd788ec773ce1175c6623af7e10db26cf82c0d5c57f17ed65c1f9ad9fb",
+    "data/lexical-pack.json": "71ed47e88b106f6245cacd1ce848ffc48477c5804c623e5c12c58417e6b0e351",
+    "solarpolis-expanded.mjs": "c45c562b02316e78a89130a3cdc63f4e28b19d6fa035dc55bd4c8c0dfdaf3e7a",
+    "solarpolis-expanded-en.mjs": "3ce6c81601a19ea5e34137ed6aa115ed4de0eb87c9b0d602485ba46cb7856d4b",
+    "solarpolis-integration.mjs": "38ca3a20fb3b64bd16f5b8f4fe35ea4fd3cddcb6295d70dd55e74b65553d1927",
+    "solarpolis-integration-en.mjs": "e5e1d016efa5989bcef5f7c346fe2b1c8035491a7d93f10c224c5eb733a9639e",
+    "english.mjs": "e752530ddd800234929bbf9fdbe2348716ec174c5d3f5afe9524dae4394f771c",
+    "social.mjs": "7f2051ac0e84554b8c6ab9acb28ddbb1bb606bac52c87fd17704a037faba45d2",
+    "english-social.mjs": "e2ce3ce9ce06d694b9ebc91c95ea1be1c9ad057c84afb6299faa92c7ce88c21d",
     "simulation.mjs": "dcc13502a4cb04b2c38ab8969affc53cc75c1260655c1e1e3ddde7146fad76e9",
-    "solarpolis.mjs": "484cf259a462e230bf6c213de2f1a498550cc489f636e5acc4e418bc03a554c9",
-    "solarpolis-en.mjs": "66fd6a67128603cb9ee7fc0551c5166049b8e266756f72629a623bdff7e2cc36",
+    "solarpolis.mjs": "42436f17ecc1ab7e53f53b40c80bc0caf26ae7ce5694ee2696dbff60358a1b83",
+    "solarpolis-en.mjs": "079fa69c7c0a3707a8c99740b82a91eaf9c2c82637736202207949abee65ab5f",
     "solarpolis-social.mjs": "824f88309d97a804401300b5cbd6d1f2b83a92a1588c8eaa8ea68100ce6e256b",
     "solarpolis-social-en.mjs": "75b07acac0dff4fefe282304d236eabf91a02e06a8796b2ba5aa7052a421bbc9"
   },
@@ -26,7 +37,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Content, I think. I enjoy helping people find their bearings, and I enjoy the conversations that wander away from that. And how are you finding the day?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm doing well, thank you. And how are you?",
@@ -37,7 +51,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "I’m glad. Still content. And happy to hear more about your day.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "A little unsettled, honestly. The Commons is new to me.",
@@ -48,27 +65,56 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "You sound unsettled. Would you like some company while you talk it through?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "What do you usually do when a new arrival feels that way?",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "social",
+            "topic": "coping"
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I lost the thread there. What did you mean?",
-          "repair": true
+          "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
+          "reply": "I would give them room to say what feels unfamiliar, then offer one small place to begin. Arriving needn’t mean understanding everything at once.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": []
+          }
         },
         {
           "input": "That sounds kind. What brings you to welcome people here?",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "social",
+                "topic": "appreciation"
+              },
+              {
+                "function": "social",
+                "topic": "welcome_reason"
+              }
+            ]
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m still not following. Are we talking about Threnody, or have you taken us somewhere new?",
-          "repair": true
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I’m glad that meant something to you. I like watching a place become less strange to someone. Offering a little orientation gives us a beginning; the conversation can go wherever they choose.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              }
+            ]
+          }
         }
       ],
       "checks": [
@@ -79,7 +125,7 @@
       ],
       "metrics": {
         "turns": 5,
-        "repairs": 2,
+        "repairs": 0,
         "repeatedReplies": 0
       }
     },
@@ -95,7 +141,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Quite well. Pleasantly absorbed in transit calendars, which probably sounds less exciting than it is. How about you?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm well, thanks. How about you?",
@@ -106,7 +155,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Good to hear. Still pleasantly occupied. The calendars still have my attention.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm fine, just passing the time. What have you been up to?",
@@ -117,7 +169,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Good to hear. Looking at transit calendars. For pleasure, before you ask. It is not everyone’s idea of an afternoon.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "Transit calendars sound like an unusual hobby. What do you enjoy about them?",
@@ -127,31 +182,81 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "A timetable looks inevitable once it is printed. I like working backwards to the choices that made it.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "Changing subject: why can an array operator affect a ship's trip?",
           "act": {
-            "function": "ask",
+            "function": "ask_reason",
             "query": {
-              "args": {
-                "subject": "patient_margin"
-              }
+              "anyOf": [
+                {
+                  "predicate": "requires",
+                  "args": {
+                    "subject": "sails",
+                    "object": "arrays"
+                  }
+                },
+                {
+                  "predicate": "enables",
+                  "args": {
+                    "subject": "arrays"
+                  }
+                },
+                {
+                  "predicate": "controls",
+                  "args": {
+                    "subject": "arrays"
+                  }
+                },
+                {
+                  "predicate": "constrained_by",
+                  "args": {
+                    "subject": "lunar_arrays"
+                  }
+                }
+              ]
             }
           },
           "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "The notice I have for 16:00 says the lunar reservation for Patient Margin is pending.",
-          "repair": false
+          "reply": "Laser-pushed sail travel relies on external arrays for acceleration and braking. The laser-array network enables access to cheap sail travel. The laser-array network controls the braking push for arriving sail ships. The lunar array network is constrained by trajectory-dependent launch windows.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": []
+          }
         },
         {
           "input": "So the launch windows and braking push both matter?",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "ask",
+            "query": {
+              "anyOf": [
+                {
+                  "predicate": "constrained_by",
+                  "args": {
+                    "object": "launch_windows"
+                  }
+                },
+                {
+                  "predicate": "controls",
+                  "args": {
+                    "object": "braking_push"
+                  }
+                }
+              ]
+            }
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m not sure what you mean. Could you put it another way?",
-          "repair": true
+          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
+          "reply": "The laser-array network controls the braking push for arriving sail ships. The lunar array network is constrained by trajectory-dependent launch windows.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": []
+          }
         }
       ],
       "checks": [
@@ -162,7 +267,7 @@
       ],
       "metrics": {
         "turns": 6,
-        "repairs": 1,
+        "repairs": 0,
         "repeatedReplies": 0
       }
     },
@@ -178,7 +283,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Curious. I’m thinking about acoustic spaces, and how much of them gets lost when I put them into words. And you? What sort of day are you having?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "Not very well. I had a rough conversation earlier.",
@@ -189,35 +297,112 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Oh. Would you like company for a while?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "Thanks for asking. What do you do when you need to clear your head?",
           "act": {
-            "function": "ask",
-            "query": {
-              "args": {
-                "subject": "rill"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "thank"
+              },
+              {
+                "function": "social",
+                "topic": "coping"
               }
-            }
+            ]
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "I heard Rill is in Flow Chamber, from the update for 16:00. Rill explores acoustic spaces and contributes to the Long Song, participating here from moving water.",
-          "repair": false
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "An answer offered, an answer heard. I tend to listen to a space before trying to answer it. Letting a sound finish can help me find room for my own thoughts.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "communication.ask",
+                    "words": [
+                      "asking"
+                    ],
+                    "wordnetSynsets": [
+                      "00786389-v"
+                    ],
+                    "verbnetClasses": [
+                      "inquire-37.1.2"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "communication.request",
+                    "words": [
+                      "asking"
+                    ],
+                    "wordnetSynsets": [
+                      "00754499-v"
+                    ],
+                    "verbnetClasses": [
+                      "beg-58.2"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "goal.need",
+                    "words": [
+                      "need"
+                    ],
+                    "wordnetSynsets": [
+                      "01191258-v"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "input": "You explore acoustic spaces? What does that mean to you?",
           "act": {
-            "function": "ask",
-            "query": {
-              "args": {
-                "subject": "rill"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "social",
+                "topic": "interest_detail"
+              },
+              {
+                "function": "social",
+                "topic": "interest_detail"
               }
-            }
+            ]
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "I heard Rill is in Flow Chamber, from the update for 16:00. Rill explores acoustic spaces and contributes to the Long Song, participating here from moving water.",
-          "repair": false
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I mean listening to how a place changes a sound, and how another voice answers it. A description in letters only gives you part of it.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              }
+            ]
+          }
         },
         {
           "input": "Could I hear about the Long Song?",
@@ -230,22 +415,65 @@
             }
           },
           "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "I hear it this way. The Long Song is an ever-growing collective acoustic record: history, art, and memory, without a deity. Contributions to the Long Song are recorded, shared, and layered into a collective work.",
-          "repair": false
+          "reply": "The Long Song is an ever-growing collective acoustic record: history, art, and memory, without a deity. Contributions to the Long Song are recorded, shared, and layered into a collective work. I can say more about that, if you would like.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "knowledge.learn",
+                "words": [
+                  "hear"
+                ],
+                "wordnetSynsets": [
+                  "00600349-v"
+                ],
+                "verbnetClasses": [
+                  "learn-14"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "perception.hear",
+                "words": [
+                  "hear"
+                ],
+                "wordnetSynsets": [
+                  "02174146-v"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         },
         {
           "input": "Would you rather keep talking about it, or should I give you some quiet?",
           "act": {
-            "function": "ask",
-            "query": {
-              "args": {
-                "subject": "long_song"
-              }
-            }
+            "function": "social",
+            "topic": "invitation"
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "Let me put the pieces beside each other. The Long Song is an ever-growing collective acoustic record: history, art, and memory, without a deity. Contributions to the Long Song are recorded, shared, and layered into a collective work.",
-          "repair": false
+          "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
+          "reply": "I’d like to keep talking. Quiet is welcome too, but I’m not asking you to leave.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "possession.give",
+                "words": [
+                  "give"
+                ],
+                "wordnetSynsets": [
+                  "02204104-v"
+                ],
+                "verbnetClasses": [
+                  "give-13.1"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         }
       ],
       "checks": [
@@ -257,7 +485,7 @@
       "metrics": {
         "turns": 6,
         "repairs": 0,
-        "repeatedReplies": 1
+        "repeatedReplies": 0
       }
     },
     {
@@ -272,7 +500,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Quite well. Pleasantly absorbed in transit calendars, which probably sounds less exciting than it is. How about you?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm well. And you?",
@@ -283,7 +514,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Good to hear. Still pleasantly occupied. The calendars still have my attention.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "Doing well, thanks. Anyway, hello again! How are you?",
@@ -293,18 +527,25 @@
             "disclosure": "positive"
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
-          "reply": "Good to hear. Still pleasantly occupied. The calendars still have my attention.",
-          "repair": false
+          "reply": "Good to hear. No change in my answer, but I appreciate the thought.",
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I meant that as a friendly greeting, not a new factual question.",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "social",
+            "topic": "greeting_repair"
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m not sure what you mean. Could you put it another way?",
-          "repair": true
+          "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
+          "reply": "Ah, understood. Hello, then. I’m glad you stopped to talk.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": []
+          }
         },
         {
           "input": "All right. Could you tell me what you have been studying lately?",
@@ -314,7 +555,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Looking at transit calendars. For pleasure, before you ask. It is not everyone’s idea of an afternoon.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         }
       ],
       "checks": [
@@ -325,8 +569,8 @@
       ],
       "metrics": {
         "turns": 5,
-        "repairs": 1,
-        "repeatedReplies": 1
+        "repairs": 0,
+        "repeatedReplies": 0
       }
     },
     {
@@ -341,7 +585,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Content, I think. I enjoy helping people find their bearings, and I enjoy the conversations that wander away from that. And how are you finding the day?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm all right. How are you?",
@@ -352,50 +599,175 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "I’m glad. Still content. And happy to hear more about your day.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I keep hearing that it starts at sixteen. Is that what you meant?",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              },
+              {
+                "function": "clarify",
+                "reason": "unsupported"
+              }
+            ]
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
           "reply": "I lost the thread there. What did you mean?",
-          "repair": true
+          "repair": true,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": [
+                  {
+                    "concept": "knowledge.learn",
+                    "words": [
+                      "hearing"
+                    ],
+                    "wordnetSynsets": [
+                      "00600349-v"
+                    ],
+                    "verbnetClasses": [
+                      "learn-14"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "perception.hear",
+                    "words": [
+                      "hearing"
+                    ],
+                    "wordnetSynsets": [
+                      "02174146-v"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "unresolved",
+                "gfStatus": "unsupported",
+                "lexicalCandidates": []
+              }
+            ]
+          }
         },
         {
           "input": "Sorry, I was unclear: I mean the acoustic exchange. When does it start?",
           "act": {
-            "function": "ask",
-            "query": {
-              "predicate": "starts_at",
-              "args": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "set_topic",
                 "subject": "exchange"
+              },
+              {
+                "function": "ask",
+                "query": {
+                  "predicate": "starts_at",
+                  "args": {
+                    "subject": "exchange"
+                  }
+                }
               }
-            }
+            ]
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "Here is what I know. The acoustic exchange starts at 16:20.",
-          "repair": false
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "The acoustic exchange starts at 16:20.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "possession.trade",
+                    "words": [
+                      "exchange"
+                    ],
+                    "wordnetSynsets": [
+                      "02263812-v"
+                    ],
+                    "verbnetClasses": [
+                      "exchange-13.6.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "GF",
+                "grammar": "ConversationEng",
+                "input": "when does it start",
+                "inputs": [
+                  "when does it start"
+                ],
+                "entities": [],
+                "canonical": [
+                  "when does it start"
+                ],
+                "trees": [
+                  "AskTime It"
+                ],
+                "lexicalCandidates": []
+              }
+            ]
+          }
         },
         {
           "input": "Thanks. And where is it being held?",
           "act": {
-            "function": "ask",
-            "query": {
-              "args": {
-                "subject": "exchange",
-                "place": {
-                  "$var": "place"
-                }
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "thank"
               },
-              "predicate": "located_at"
-            }
+              {
+                "function": "ask",
+                "query": {
+                  "args": {
+                    "subject": "exchange"
+                  },
+                  "anyOf": [
+                    {
+                      "predicate": "located_at"
+                    },
+                    {
+                      "predicate": "situated_at"
+                    }
+                  ]
+                }
+              }
+            ]
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "The last I heard, the acoustic exchange is in Echo Gallery. That was the update for 16:00.",
-          "repair": false
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "Gladly. The last I heard, the acoustic exchange is in Echo Gallery. That was the update for 16:00.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              }
+            ]
+          }
         },
         {
           "input": "I appreciate the help. Goodbye for now.",
@@ -404,7 +776,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Take care. I’m glad we talked.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         }
       ],
       "checks": [
@@ -431,7 +806,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Curious. I’m thinking about acoustic spaces, and how much of them gets lost when I put them into words. And you? What sort of day are you having?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "A little tired, but glad to listen. How are you?",
@@ -442,10 +820,74 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Then I’ll leave a little quiet between the words. Still curious. Text has not become a better swimming medium while we’ve been talking.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm fine. Do you know exactly how many dolphins are in Krillix today?",
+          "act": {
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "disclose",
+                "state": "positive"
+              },
+              {
+                "function": "ask",
+                "query": {
+                  "predicate": "numeric_count",
+                  "args": {
+                    "subject": "krillix"
+                  }
+                }
+              }
+            ]
+          },
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "Good! I have not heard enough to answer. Will you bring the question back if you learn more?",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English social constructions"
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "knowledge.know",
+                    "words": [
+                      "know"
+                    ],
+                    "wordnetSynsets": [
+                      "00596016-v"
+                    ],
+                    "verbnetClasses": [
+                      "cognize-85"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "knowledge.familiar",
+                    "words": [
+                      "know"
+                    ],
+                    "wordnetSynsets": [
+                      "00595732-v"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "input": "Could you estimate if you don't know the current count?",
           "act": {
             "function": "ask",
             "query": {
@@ -453,41 +895,137 @@
               "args": {
                 "subject": "krillix"
               }
-            }
+            },
+            "estimateRequested": true
           },
           "decision": "No matching personal evidence; acknowledge the knowledge boundary.",
           "reply": "I have not heard enough to answer. Will you bring the question back if you learn more?",
-          "repair": false
-        },
-        {
-          "input": "Could you estimate if you don't know the current count?",
-          "act": {
-            "function": "clarify",
-            "reason": "unsupported"
-          },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "That didn’t quite reach me. What did you mean?",
-          "repair": true
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "knowledge.know",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00596016-v"
+                ],
+                "verbnetClasses": [
+                  "cognize-85"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "knowledge.familiar",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00595732-v"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         },
         {
           "input": "Then tell me something you do know about Enceladus.",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "ask",
+            "query": {
+              "args": {
+                "subject": "enceladus"
+              }
+            }
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m still losing the thread. Do you mean Krillix, or something different?",
-          "repair": true
+          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
+          "reply": "Enceladus has genuine multicellular life in its subsurface ocean. Enceladus is maintained as a closed, policed nature reserve. I can say more about that, if you would like.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "knowledge.know",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00596016-v"
+                ],
+                "verbnetClasses": [
+                  "cognize-85"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "knowledge.familiar",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00595732-v"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "communication.inform",
+                "words": [
+                  "tell"
+                ],
+                "wordnetSynsets": [
+                  "00954556-v"
+                ],
+                "verbnetClasses": [
+                  "tell-37.2"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         },
         {
           "input": "Does the modeled account say who may enter the reserve?",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "ask_access",
+            "query": {
+              "args": {
+                "subject": "enceladus"
+              },
+              "anyOf": [
+                {
+                  "predicate": "preserves_as"
+                },
+                {
+                  "predicate": "access_status"
+                }
+              ]
+            }
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m still losing the thread. Do you mean Krillix, or something different?",
-          "repair": true
+          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
+          "reply": "Enceladus is maintained as a closed, policed nature reserve. I don’t have a list of who is permitted to enter.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "communication.say",
+                "words": [
+                  "say"
+                ],
+                "wordnetSynsets": [
+                  "01011267-v"
+                ],
+                "verbnetClasses": [
+                  "say-37.7"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         }
       ],
       "checks": [
@@ -498,8 +1036,8 @@
       ],
       "metrics": {
         "turns": 6,
-        "repairs": 3,
-        "repeatedReplies": 1
+        "repairs": 0,
+        "repeatedReplies": 0
       }
     },
     {
@@ -514,7 +1052,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Content, I think. I enjoy helping people find their bearings, and I enjoy the conversations that wander away from that. And how are you finding the day?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm well, thank you. How are you?",
@@ -525,51 +1066,224 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "I’m glad. Still content. And happy to hear more about your day.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm fine. I heard that copying a mind without consent is ordinary practice in most habitats.",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "disclose",
+                "state": "positive"
+              },
+              {
+                "function": "assert",
+                "content": {
+                  "predicate": "norm_status",
+                  "args": {
+                    "subject": "unconsented_copying",
+                    "scope": "most_habitats",
+                    "value": "ordinary practice"
+                  },
+                  "polarity": true
+                }
+              }
+            ]
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I lost the thread there. What did you mean?",
-          "repair": true
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "I’m glad. Thank you. I will remember that you said copying a mind without consent is ordinary practice in most habitats, with your name attached to the uncertainty. The last I heard, copying a mind without consent is taboo in most habitats. That was the update for 16:00.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English social constructions"
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "knowledge.learn",
+                    "words": [
+                      "heard"
+                    ],
+                    "wordnetSynsets": [
+                      "00600349-v"
+                    ],
+                    "verbnetClasses": [
+                      "learn-14"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "perception.hear",
+                    "words": [
+                      "heard"
+                    ],
+                    "wordnetSynsets": [
+                      "02174146-v"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "cognition.mind",
+                    "words": [
+                      "mind"
+                    ],
+                    "wordnetSynsets": [
+                      "05619057-n"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "input": "Can you check that against what you know?",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "check_report"
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m still not following. Are we talking about Threnody, or have you taken us somewhere new?",
-          "repair": true
+          "decision": "Check a specific proposition against personal confirmed or inferred evidence; absence of evidence stays unknown.",
+          "reply": "That differs from what I know. Copying a mind without consent is taboo in most habitats.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "knowledge.know",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00596016-v"
+                ],
+                "verbnetClasses": [
+                  "cognize-85"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "knowledge.familiar",
+                "words": [
+                  "know"
+                ],
+                "wordnetSynsets": [
+                  "00595732-v"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         },
         {
           "input": "I may have heard wrong. What is the broader norm around mind copying?",
           "act": {
-            "function": "ask",
-            "query": {
-              "args": {
-                "subject": "minds"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "social",
+                "topic": "uncertainty"
+              },
+              {
+                "function": "ask",
+                "query": {
+                  "predicate": "norm_status",
+                  "args": {
+                    "subject": "unconsented_copying",
+                    "scope": "most_habitats"
+                  }
+                }
               }
-            }
+            ]
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "I can offer this much. Copying or modifying a mind without consent is deeply taboo in the vast majority of habitats. Mind transfer destroys the original as it moves a mind to new substrate; it is more widely accepted than copying, although contested. Legal personhood depends on the local jurisdiction; there is no universal system-wide guarantee.",
-          "repair": false
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "We can take a moment to sort that out. Copying a mind without consent is taboo in most habitats. I also have an unverified report that differs.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "knowledge.learn",
+                    "words": [
+                      "heard"
+                    ],
+                    "wordnetSynsets": [
+                      "00600349-v"
+                    ],
+                    "verbnetClasses": [
+                      "learn-14"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "possession.own",
+                    "words": [
+                      "have"
+                    ],
+                    "wordnetSynsets": [
+                      "02209474-v"
+                    ],
+                    "verbnetClasses": [
+                      "own-100.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "perception.hear",
+                    "words": [
+                      "heard"
+                    ],
+                    "wordnetSynsets": [
+                      "02174146-v"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "cognition.mind",
+                    "words": [
+                      "mind"
+                    ],
+                    "wordnetSynsets": [
+                      "05619057-n"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "input": "Please keep my first statement attached to me as an unverified report.",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "remember_report"
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m still not following. Are we talking about mind-states, or have you taken us somewhere new?",
-          "repair": true
+          "decision": "Recall the actual attributed report, without inventing or promoting testimony.",
+          "reply": "I have kept your report: copying a mind without consent is ordinary practice in most habitats. It remains attributed to you, without treating it as confirmed.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": []
+          }
         }
       ],
       "checks": [
@@ -580,7 +1294,7 @@
       ],
       "metrics": {
         "turns": 6,
-        "repairs": 3,
+        "repairs": 0,
         "repeatedReplies": 0
       }
     },
@@ -596,7 +1310,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Quite well. Pleasantly absorbed in transit calendars, which probably sounds less exciting than it is. How about you?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "Quite well. How are you?",
@@ -607,55 +1324,145 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Good to hear. Still pleasantly occupied. The calendars still have my attention.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm good. Is transit history still your favorite subject?",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "disclose",
+                "state": "positive"
+              },
+              {
+                "function": "social",
+                "topic": "interest"
+              }
+            ]
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m not sure what you mean. Could you put it another way?",
-          "repair": true
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "Good to hear. Transit history. I like finding out why a journey became possible at one moment rather than another.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English social constructions"
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              }
+            ]
+          }
         },
         {
           "input": "What makes Selenipolis influential in travel?",
           "act": {
-            "function": "ask",
+            "function": "ask_reason",
             "query": {
+              "predicate": "power_basis",
               "args": {
                 "subject": "selenipolis"
               }
             }
           },
           "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "As I understand it, Selenipolis is the oldest continuous offworld settlement and a major lunar array power. The Schedule Authority is the effective government of Selenipolis; it publishes transit windows years ahead.",
-          "repair": false
+          "reply": "Selenipolis gains leverage from control of array access. Selenipolis gains leverage from traffic to and from Earth. Selenipolis gains leverage from trajectory-dependent launch windows. Selenipolis gains leverage from access to cheap sail travel. An operator that controls access to this array can control access to cheap sail travel. Selenipolis controls the lunar array network. The lunar array network enables access to cheap sail travel.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "motion.move",
+                "words": [
+                  "travel"
+                ],
+                "wordnetSynsets": [
+                  "01839438-v"
+                ],
+                "verbnetClasses": [
+                  "run-51.3.2"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         },
         {
           "input": "Does that mean it governs the whole inner system?",
           "act": {
-            "function": "ask",
-            "query": {
+            "function": "verify",
+            "content": {
+              "predicate": "governed_by",
               "args": {
-                "subject": "selenipolis"
-              }
+                "subject": "inner_system",
+                "object": "selenipolis"
+              },
+              "polarity": true
             }
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "I’d put it this way. Selenipolis is the oldest continuous offworld settlement and a major lunar array power. The Schedule Authority is the effective government of Selenipolis; it publishes transit windows years ahead.",
-          "repair": false
+          "decision": "Check a specific proposition against personal confirmed or inferred evidence; absence of evidence stays unknown.",
+          "reply": "That differs from what I know. The inner system is not governed by Selenipolis.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "authority.rule",
+                "words": [
+                  "governs"
+                ],
+                "wordnetSynsets": [
+                  "02592711-v"
+                ],
+                "verbnetClasses": [
+                  "captain-29.8"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         },
         {
           "input": "Thanks. I'd like to return to the calendar question another time. Goodbye.",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "thank"
+              },
+              {
+                "function": "social_boundary"
+              },
+              {
+                "function": "farewell"
+              }
+            ]
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I’m still missing your meaning. Were you asking about Selenipolis, or something else?",
-          "repair": true
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "You are welcome. Of course. We can leave it alone. Until next time. I shall probably still be thinking about calendars.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "English social constructions"
+              }
+            ]
+          }
         }
       ],
       "checks": [
@@ -666,7 +1473,7 @@
       ],
       "metrics": {
         "turns": 6,
-        "repairs": 2,
+        "repairs": 0,
         "repeatedReplies": 0
       }
     },
@@ -682,7 +1489,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Curious. I’m thinking about acoustic spaces, and how much of them gets lost when I put them into words. And you? What sort of day are you having?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm listening, and glad you're here. How are you?",
@@ -692,17 +1502,66 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Still curious. Text has not become a better swimming medium while we’ve been talking.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "I'm well. I enjoyed hearing about the Long Song.",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "disclose",
+                "state": "positive"
+              },
+              {
+                "function": "social",
+                "topic": "appreciation"
+              }
+            ]
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "That didn’t quite reach me. What did you mean?",
-          "repair": true
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "Good! I’m glad it reached you. There is pleasure in having someone listen.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English social constructions"
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "knowledge.learn",
+                    "words": [
+                      "hearing"
+                    ],
+                    "wordnetSynsets": [
+                      "00600349-v"
+                    ],
+                    "verbnetClasses": [
+                      "learn-14"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "perception.hear",
+                    "words": [
+                      "hearing"
+                    ],
+                    "wordnetSynsets": [
+                      "02174146-v"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "input": "I should go now. Goodbye, Rill.",
@@ -711,21 +1570,29 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Until we hear each other again.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "Actually, one last question: can the neural interface carry every social cue in a whistle?",
           "act": {
             "function": "ask",
             "query": {
+              "predicate": "nature",
               "args": {
                 "subject": "interface"
               }
             }
           },
           "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "I hear it this way. The neural interface efficiently translates propositions but omits much social and acoustic context by default; either participant can request expanded translation.",
-          "repair": false
+          "reply": "The neural interface efficiently translates propositions but omits much social and acoustic context by default; either participant can request expanded translation.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": []
+          }
         },
         {
           "input": "Thank you. Now I'll really say goodbye.",
@@ -734,7 +1601,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Until we hear each other again.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         }
       ],
       "checks": [
@@ -745,7 +1615,7 @@
       ],
       "metrics": {
         "turns": 6,
-        "repairs": 1,
+        "repairs": 0,
         "repeatedReplies": 1
       }
     },
@@ -761,7 +1631,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Content, I think. I enjoy helping people find their bearings, and I enjoy the conversations that wander away from that. And how are you finding the day?",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "Peaceful, thank you. How has yours been?",
@@ -772,45 +1645,204 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "I’m glad. Still content. And happy to hear more about your day.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         },
         {
           "input": "A bit confusing. Someone told me the governing Mind of Threnody personally welcomes every arrival. Is that right?",
           "act": {
-            "function": "ask",
-            "query": {
-              "args": {
-                "subject": "threnody"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "social",
+                "topic": "uncertainty"
+              },
+              {
+                "function": "assert",
+                "content": {
+                  "predicate": "welcomes_every_arrival",
+                  "args": {
+                    "subject": "threnody_mind"
+                  },
+                  "polarity": true
+                }
+              },
+              {
+                "function": "check_report"
               }
-            }
+            ]
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "A little context may help. Threnody is a bubble habitat, formally The Long Afternoon of Threnody. Threnody is governed by a gentle, eccentric AI Mind. Threnody is especially welcoming to AIs and uplifts escaping harsher jurisdictions.",
-          "repair": false
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "We can take a moment to sort that out. Thank you. I will remember that you said Threnody’s governing Mind personally welcomes every arrival, with your name attached to the uncertainty. I don’t have enough evidence to confirm that.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "communication.inform",
+                    "words": [
+                      "told"
+                    ],
+                    "wordnetSynsets": [
+                      "00954556-v"
+                    ],
+                    "verbnetClasses": [
+                      "tell-37.2"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "authority.rule",
+                    "words": [
+                      "governing"
+                    ],
+                    "wordnetSynsets": [
+                      "02592711-v"
+                    ],
+                    "verbnetClasses": [
+                      "captain-29.8"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  },
+                  {
+                    "concept": "cognition.mind",
+                    "words": [
+                      "mind"
+                    ],
+                    "wordnetSynsets": [
+                      "05619057-n"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "authority.right",
+                    "words": [
+                      "right"
+                    ],
+                    "wordnetSynsets": [
+                      "05182180-n"
+                    ],
+                    "verbnetClasses": [],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "input": "I might be mixing up two people. Who helps arrivals find their bearings?",
           "act": {
-            "function": "clarify",
-            "reason": "unsupported"
+            "function": "sequence",
+            "acts": [
+              {
+                "function": "social",
+                "topic": "uncertainty"
+              },
+              {
+                "function": "ask",
+                "query": {
+                  "predicate": "welcomes_arrivals",
+                  "args": {
+                    "subject": {
+                      "$var": "person"
+                    }
+                  }
+                }
+              }
+            ]
           },
-          "decision": "Acknowledge an unrecognized turn in character without claiming to understand it.",
-          "reply": "I lost the thread there. What did you mean?",
-          "repair": true
+          "decision": "Interpret and respond to each speech act in order; keep social disclosure distinct from factual testimony.",
+          "reply": "We can take a moment to sort that out. I voluntarily help arrivals find their bearings.",
+          "repair": false,
+          "trace": {
+            "engine": "English composed turn",
+            "parts": [
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": []
+              },
+              {
+                "engine": "English relation construction",
+                "lexicalCandidates": [
+                  {
+                    "concept": "social.help",
+                    "words": [
+                      "helps"
+                    ],
+                    "wordnetSynsets": [
+                      "02553283-v"
+                    ],
+                    "verbnetClasses": [
+                      "help-72.1"
+                    ],
+                    "mappingOrigin": "authored-integration-mapping"
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
           "input": "And is that person the same as the Mind that governs Threnody?",
           "act": {
-            "function": "ask",
-            "query": {
+            "function": "verify",
+            "content": {
+              "predicate": "same_individual",
               "args": {
-                "subject": "threnody"
-              }
+                "subject": "serein",
+                "object": "threnody_mind"
+              },
+              "polarity": true
             }
           },
-          "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
-          "reply": "I can offer this much. Threnody is a bubble habitat, formally The Long Afternoon of Threnody. Threnody is governed by a gentle, eccentric AI Mind. Threnody is especially welcoming to AIs and uplifts escaping harsher jurisdictions.",
-          "repair": false
+          "decision": "Check a specific proposition against personal confirmed or inferred evidence; absence of evidence stays unknown.",
+          "reply": "That differs from what I know. I am a separate individual from Threnody’s governing Mind.",
+          "repair": false,
+          "trace": {
+            "engine": "English relation construction",
+            "lexicalCandidates": [
+              {
+                "concept": "authority.rule",
+                "words": [
+                  "governs"
+                ],
+                "wordnetSynsets": [
+                  "02592711-v"
+                ],
+                "verbnetClasses": [
+                  "captain-29.8"
+                ],
+                "mappingOrigin": "authored-integration-mapping"
+              },
+              {
+                "concept": "cognition.mind",
+                "words": [
+                  "mind"
+                ],
+                "wordnetSynsets": [
+                  "05619057-n"
+                ],
+                "verbnetClasses": [],
+                "mappingOrigin": "authored-integration-mapping"
+              }
+            ]
+          }
         },
         {
           "input": "Thanks for sorting that out. I should let you get back to your day.",
@@ -819,7 +1851,10 @@
           },
           "decision": "Respond to a social act; retain conversational memory separately from factual evidence.",
           "reply": "Take care. I’m glad we talked.",
-          "repair": false
+          "repair": false,
+          "trace": {
+            "engine": "English social constructions"
+          }
         }
       ],
       "checks": [
@@ -830,7 +1865,7 @@
       ],
       "metrics": {
         "turns": 6,
-        "repairs": 1,
+        "repairs": 0,
         "repeatedReplies": 0
       }
     }
@@ -854,7 +1889,7 @@
           "topic": "wellbeing"
         },
         "plan": {
-          "id": "plan:102",
+          "id": "plan:599",
           "holder": "serein",
           "function": "social",
           "results": [],
@@ -863,6 +1898,8 @@
             "move": "answer",
             "topic": "wellbeing",
             "repeat": false,
+            "count": 1,
+            "reciprocate": true,
             "prompt": "wellbeing",
             "self": {
               "mood": "content",
@@ -887,7 +1924,7 @@
           "reciprocate": false
         },
         "plan": {
-          "id": "plan:104",
+          "id": "plan:601",
           "holder": "iona",
           "function": "social",
           "results": [],
@@ -896,6 +1933,8 @@
             "move": "answer",
             "topic": "wellbeing",
             "repeat": false,
+            "count": 1,
+            "reciprocate": false,
             "prompt": null,
             "self": {
               "mood": "absorbed",
@@ -945,13 +1984,13 @@
           }
         },
         "plan": {
-          "id": "plan:106",
+          "id": "plan:603",
           "holder": "serein",
           "function": "ask",
           "results": [
             {
               "primary": {
-                "id": "evidence:100",
+                "id": "evidence:597",
                 "holder": "serein",
                 "atom": {
                   "predicate": "located_at",
@@ -974,11 +2013,11 @@
                   "source": "Arrival Commons sample additions"
                 },
                 "supports": [
-                  "fact:99"
+                  "fact:596"
                 ]
               },
               "confirmed": {
-                "id": "evidence:100",
+                "id": "evidence:597",
                 "holder": "serein",
                 "atom": {
                   "predicate": "located_at",
@@ -1001,13 +2040,13 @@
                   "source": "Arrival Commons sample additions"
                 },
                 "supports": [
-                  "fact:99"
+                  "fact:596"
                 ]
               },
               "reports": [],
               "history": [
                 {
-                  "id": "evidence:100",
+                  "id": "evidence:597",
                   "holder": "serein",
                   "atom": {
                     "predicate": "located_at",
@@ -1030,7 +2069,7 @@
                     "source": "Arrival Commons sample additions"
                   },
                   "supports": [
-                    "fact:99"
+                    "fact:596"
                   ]
                 },
                 {
@@ -1060,11 +2099,15 @@
                   ]
                 }
               ],
-              "conflict": false
+              "conflict": false,
+              "derivations": []
             }
           ],
           "time": 1,
           "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
+          "delivery": {
+            "engagement": "inviting"
+          },
           "query": {
             "predicate": "located_at",
             "args": {
@@ -1074,6 +2117,7 @@
               }
             }
           },
+          "explanations": [],
           "stance": null
         },
         "text": "The last I heard, the acoustic exchange is in Current Court. That was the update for 16:01.",
@@ -1112,13 +2156,13 @@
           }
         },
         "plan": {
-          "id": "plan:109",
+          "id": "plan:606",
           "holder": "serein",
           "function": "ask_evidence",
           "results": [
             {
               "primary": {
-                "id": "evidence:100",
+                "id": "evidence:597",
                 "holder": "serein",
                 "atom": {
                   "predicate": "located_at",
@@ -1141,11 +2185,11 @@
                   "source": "Arrival Commons sample additions"
                 },
                 "supports": [
-                  "fact:99"
+                  "fact:596"
                 ]
               },
               "confirmed": {
-                "id": "evidence:100",
+                "id": "evidence:597",
                 "holder": "serein",
                 "atom": {
                   "predicate": "located_at",
@@ -1168,13 +2212,13 @@
                   "source": "Arrival Commons sample additions"
                 },
                 "supports": [
-                  "fact:99"
+                  "fact:596"
                 ]
               },
               "reports": [],
               "history": [
                 {
-                  "id": "evidence:100",
+                  "id": "evidence:597",
                   "holder": "serein",
                   "atom": {
                     "predicate": "located_at",
@@ -1197,7 +2241,7 @@
                     "source": "Arrival Commons sample additions"
                   },
                   "supports": [
-                    "fact:99"
+                    "fact:596"
                   ]
                 },
                 {
@@ -1227,11 +2271,15 @@
                   ]
                 }
               ],
-              "conflict": false
+              "conflict": false,
+              "derivations": []
             }
           ],
           "time": 1,
           "decision": "Select personal evidence matching the query; preserve source and uncertainty.",
+          "delivery": {
+            "engagement": "inviting"
+          },
           "query": {
             "predicate": "located_at",
             "args": {
@@ -1241,6 +2289,7 @@
               }
             }
           },
+          "explanations": [],
           "stance": null
         },
         "text": "I read the 16:01 local venue amendment. It said the acoustic exchange is in Current Court; that information was for 16:01.",
@@ -1262,7 +2311,7 @@
           "function": "farewell"
         },
         "plan": {
-          "id": "plan:113",
+          "id": "plan:610",
           "holder": "serein",
           "function": "social",
           "results": [],
@@ -1271,6 +2320,8 @@
             "move": "close",
             "topic": "farewell",
             "repeat": false,
+            "count": 1,
+            "reciprocate": true,
             "prompt": null,
             "self": {
               "mood": "content",
@@ -1293,10 +2344,10 @@
         "from": "serein",
         "to": "iona",
         "reports": [
-          "evidence:108"
+          "evidence:605"
         ],
         "verified": [
-          "evidence:111"
+          "evidence:608"
         ]
       }
     ],

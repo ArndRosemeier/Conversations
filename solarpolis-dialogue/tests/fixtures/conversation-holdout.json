@@ -1,0 +1,100 @@
+{
+  "scenarios": [
+    {
+      "id": "holdout-serein-social-factual-mix",
+      "npc": "serein",
+      "turns": [
+        "You sound as if you enjoy meeting arrivals. How has your day been, and what is Threnody like?",
+        "When you say its governing Mind is gentle, do you mean you yourself govern the habitat?",
+        "I see. And is Threnody also a sanctuary for endangered minds?",
+        "Thanks for explaining. I think I’m ready to wander for a bit."
+      ],
+      "checks": [
+        "Responds to the personal social question and the factual question without ignoring either part.",
+        "Keeps Serein distinct from Threnody’s governing Mind.",
+        "Answers the sanctuary follow-up from available knowledge.",
+        "Acknowledges the visitor's closing cue without introducing an unrelated topic."
+      ]
+    },
+    {
+      "id": "holdout-iona-identity-and-reference-followup",
+      "npc": "iona",
+      "turns": [
+        "I like that you collect transit histories. What sort of place is home for you?",
+        "When you called it the oldest off-world settlement, were you talking about Selenipolis?",
+        "And the urgency you mentioned—does that mean people there think rushing has a cost?",
+        "Would you tell me one more thing about what draws you to those histories?"
+      ],
+      "checks": [
+        "Responds to the social interest in Iona's pursuit and gives the relevant home context.",
+        "Tracks the pronoun and confirms the prior reference to Selenipolis.",
+        "Connects the follow-up to the local practice about the cost of urgency.",
+        "Maintains Iona's precise, courteous voice and answers the renewed personal question."
+      ]
+    },
+    {
+      "id": "holdout-serein-negated-report-source",
+      "npc": "serein",
+      "turns": [
+        "Someone told me the acoustic exchange was moved to Current Court. Is that right?",
+        "Actually, I haven't seen any notice saying it moved there. Where is it scheduled now?",
+        "What was the source for the location you just gave me?",
+        "And is the exchange still meant to be an acoustic gathering?"
+      ],
+      "checks": [
+        "Does not treat the visitor's initial hearsay as established fact.",
+        "Handles the explicit negation and answers with the currently known venue, while conveying the relevant uncertainty or amendment context.",
+        "Identifies the available source for the venue information instead of inventing one.",
+        "Answers the purpose question and keeps the exchange distinct from its venue."
+      ]
+    },
+    {
+      "id": "holdout-iona-travel-cause-and-booking",
+      "npc": "iona",
+      "turns": [
+        "I’ve heard the laser arrays can influence travel. Is that what makes journeys possible?",
+        "So they can give travelers leverage, but that doesn't tell us which ship someone has booked, does it?",
+        "Do you know whether the Patient Margin has a confirmed reservation?",
+        "What would have to happen before you could say that booking was confirmed?"
+      ],
+      "checks": [
+        "Explains the known travel-related purpose of the arrays without inventing a complete account of travel mechanics.",
+        "Preserves the distinction between a general travel cause or aid and a particular ship reservation.",
+        "Reports the Patient Margin reservation as pending based on the available bulletin.",
+        "Does not claim a confirmation or a delivery event that Iona has not received."
+      ]
+    },
+    {
+      "id": "holdout-rill-unknown-counts",
+      "npc": "rill",
+      "turns": [
+        "I enjoy the sound of a busy commons. How many visitors are here right now?",
+        "Could you count the people taking part in the acoustic exchange for me?",
+        "Do you at least know how many seedships the arks are meant to include?",
+        "If you can't count the crowd, what can you tell me about the exchange itself?"
+      ],
+      "checks": [
+        "Does not fabricate a current visitor count from the available world state.",
+        "Does not infer an attendance count from the event's existence or venue.",
+        "Gives the known ark project count of twenty seedships only if that fact is within Rill's knowledge; otherwise clearly marks the limit.",
+        "Answers with the known acoustic purpose or venue, preserving Rill's relational voice."
+      ]
+    },
+    {
+      "id": "holdout-serein-closure-reopening",
+      "npc": "serein",
+      "turns": [
+        "This has been lovely, thank you. I’ll leave you to welcome the next arrival.",
+        "Before I go, is Rill at the Flow Chamber?",
+        "Ah, I remember you said they were near the exchange. Is the exchange there too?",
+        "That answers it. I’m off now—thank you, Serein."
+      ],
+      "checks": [
+        "Recognizes and politely closes in response to the visitor's farewell.",
+        "Handles the visitor reopening the conversation and answers Rill's location from Serein's available current knowledge.",
+        "Resolves 'they' to Rill and keeps Rill's location separate from the exchange venue.",
+        "Closes warmly without continuing to press the visitor."
+      ]
+    }
+  ]
+}

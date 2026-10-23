@@ -1,0 +1,4 @@
+.tooling/
+*.gfo
+*.pgf
+Conversation.js

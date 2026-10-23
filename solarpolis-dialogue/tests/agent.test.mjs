@@ -54,7 +54,7 @@ test('history and source times survive changes and repeated events are idempoten
   assert.equal(c.beliefs('serein',query.query)[0].history.length,2);
 });
 test('English, choices, pronoun follow-ups, and evidence requests share semantics',()=>{
-  assert.deepEqual(english.interpret('Where is the exchange?'),scenario.starterQueries[0].act);
+  assert.deepEqual(english.interpret('Where is the exchange?'),english.normalizeAct(scenario.starterQueries[0].act));
   const c=new AgentCore(domain);c.respond('iona',english.interpret('Where is Rill?'));
   assert.equal(english.interpret('Where are they now?',c.context('iona')).query.args.subject,'rill');
   const plan=c.respond('iona',english.interpret('How do you know?'));
