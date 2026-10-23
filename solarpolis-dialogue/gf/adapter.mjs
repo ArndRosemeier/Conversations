@@ -61,7 +61,7 @@ export function createGFParser(resources) {
       if(ref.name==='Named') return named.get(ref.args[0]?.name.slice(1,-1))??[];
       if(ref.name==='You') return context.speaker?[context.speaker]:[];
       if(['She','He','They','It','That'].includes(ref.name)) {
-        const ids=context.referents?.[ref.name.toLowerCase()]??(context.focus?[context.focus]:[]);
+        const ids=context.referents?.[ref.name.toLowerCase()]??context.referents?.topic??(context.focus?[context.focus]:[]);
         if(!ids.length) unresolved=true;
         return Array.isArray(ids)?ids:[ids];
       }

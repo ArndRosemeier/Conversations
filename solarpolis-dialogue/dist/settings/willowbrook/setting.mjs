@@ -1,5 +1,5 @@
 import {domain} from './domain.mjs';
-import {resources} from './en.mjs';
+import {resources} from '../../languages/en/settings/willowbrook.mjs';
 export const setting={contractVersion:1,id:'willowbrook',title:'Willowbrook Workshop',domain,languages:{en:resources},
   demo:{choices:[
     {label:'How are you today?',act:{function:'social',topic:'wellbeing'}},

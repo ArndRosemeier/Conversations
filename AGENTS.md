@@ -2,6 +2,9 @@
 
 ## Start here for setting integration
 
+- Read [the language module contract](docs/language-module-contract.md) for language integration. `createSettingSession` requires an explicit `languageModule`; do not restore an implicit English import/default in the session factory. English runtime code/resources live in `dist/languages/en/`.
+- Keep grammatical references and NPC wording out of core state. Use neutral references and source/decision IDs. Localize them in the module. Contract tests include a deliberately narrow German fixture; do not advertise it as a complete German implementation.
+
 - Read [the setting package contract](docs/setting-package-contract.md) before adding a setting or changing its schema. Copy the small `solarpolis-dialogue/dist/settings/willowbrook/` package as the working example, not Solarpolis world content.
 - Source modules currently live in `solarpolis-dialogue/dist/`. Edit `.mjs` sources; never hand-edit generated `browser.js` or `willowbrook.js`. Rebuild both with `npm run build` from `solarpolis-dialogue`.
 - Keep setting mechanics in injected constructions in the setting's English resource package. Do not import a setting into shared `english*.mjs`, `gf/`, `core.mjs`, `social.mjs`, `discourse.mjs`, or `reasoning.mjs`.

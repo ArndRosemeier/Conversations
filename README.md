@@ -39,16 +39,16 @@ Use **NPC conversations → Listen in** to hear two NPCs exchange information fr
 | --- | --- |
 | `dist/core.mjs` | Typed predicates, temporal world changes, per-character evidence, testimony policies, semantic dialogue acts, context, delayed observations, response plans |
 | `dist/solarpolis.mjs` | Selected world-bible facts, domain schema, original characters, personality policies, scenario events |
-| `dist/english.mjs` | Bounded English interpretation and realization through an injected language resource package |
-| `dist/solarpolis-en.mjs` | Solarpolis names, aliases, English fact realizations, and character voices |
+| `dist/languages/en/english.mjs` | Bounded English interpretation and realization through an injected language resource package |
+| `dist/languages/en/solarpolis-en.mjs` | Solarpolis names, aliases, English fact realizations, and character voices |
 | `dist/discourse.mjs` | Ordered speech acts, proposition verification, report qualifications, and explicit references |
 | `dist/reasoning.mjs` | Bounded inference from personal evidence, including premise provenance |
-| `dist/english-meaning.mjs` | Relation and scope constructions, compound turns, contextual references |
-| `dist/gf/` and `dist/lexical-index.mjs` | Actual compiled GF grammar and selected WordNet/VerbNet lexical candidates |
+| `dist/languages/en/english-meaning.mjs` | Relation and scope constructions, compound turns, contextual references |
+| `dist/languages/en/gf/` and `dist/languages/en/lexical-index.mjs` | Actual compiled GF grammar and selected WordNet/VerbNet lexical candidates |
 | `dist/solarpolis-expanded*.mjs` and `dist/solarpolis-integration*.mjs` | Extended world model, language resources, and additive v1 save migration |
 | `dist/storage.mjs` | Interchangeable in-memory and IndexedDB snapshot adapters |
 | `dist/social.mjs` | Language-independent social acts, reciprocity, self-report memory, boundaries, and closure |
-| `dist/english-social.mjs` | Bounded social constructions and English social realization |
+| `dist/languages/en/english-social.mjs` | Bounded social constructions and English social realization |
 | `dist/solarpolis-social*.mjs` | Authored sample dispositions, interests, and character-specific social language |
 | `dist/simulation.mjs` | Bounded NPC exchanges, separate peer contexts, attributed testimony, and publication sharing |
 | `dist/app.mjs` | Browser UI and sample host integration, including explicit director controls |
@@ -70,6 +70,8 @@ Work is committed directly to `main` at the user's request.
 The [structured language-source assessment](docs/language-sources.md) compares reusable lexicons, morphology, grammars, and annotated dialogue datasets. Selected WordNet/VerbNet resources and a compiled GF grammar are now integrated; see the conversion and build notes below.
 
 ## Integrating another setting
+
+English is now an explicit [language module](docs/language-module-contract.md), with entry point `solarpolis-dialogue/dist/languages/en/index.mjs`. Inject `englishModule` into `createSettingSession`; the loader and core have no English dependency or implicit fallback. A different implementation can use the same semantic API and saved state. A narrow German contract fixture verifies this separation; only English is currently supplied as a production module.
 
 Start with the [setting package contract for coding agents](docs/setting-package-contract.md). The complete [Willowbrook package](solarpolis-dialogue/dist/settings/willowbrook/setting.mjs) is an invented village workshop with two NPCs. Open `/willowbrook.html` on the local server, or follow the Willowbrook link in Solarpolis. `npm run demo:willowbrook` runs a short conversation without a browser.
 

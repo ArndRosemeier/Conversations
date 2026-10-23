@@ -1,6 +1,7 @@
 // First language implementation. Domain vocabulary/templates are injected.
 import {interpretMeaning,splitTurn} from './english-meaning.mjs';
 import {defaultVoice,defaultSocial} from './english-defaults.mjs';
+import {messages} from './messages.mjs';
 import {createGFParser} from './gf/adapter.mjs';
 import {LexicalIndex} from './lexical-index.mjs';
 import {interpretSocial,realizeSocial,realizeEvidence} from './english-social.mjs';
@@ -19,6 +20,11 @@ export class EnglishLanguage {
     this.lexicon=new LexicalIndex(options.lexicalPack);this.lastInterpretation=null;
   }
   name(id) { return this.r.entities[id]?.name ?? id; }
+  describeDecision(id){return messages[id]??id;}
+  sourceName(source){
+    if(source.kind==='testimony')return source.speaker==='player'?'your unverified statement':this.name(source.speaker);
+    return this.r.sources?.[source.labelKey]??source.label??(source.labelKey==='source.initial'?'initial knowledge':source.labelKey??'an unspecified source');
+  }
   entitiesIn(text) {
     return Object.entries(this.r.entities).flatMap(([id,e]) => {
       const aliases=[e.name,...(e.aliases??[])].sort((a,b)=>b.length-a.length);
@@ -43,6 +49,7 @@ export class EnglishLanguage {
     return {...act,query:{...q,predicate:undefined,anyOf:facet.map(predicate=>({predicate}))}};
   }
   interpret(raw,context={}) {
+    context={...context,speaker:context.addressee??context.speaker};
     const act=this.interpretRaw(raw,context);
     // Bind shared English concepts to the setting's predicate vocabulary.
     const bind=node=>{
@@ -236,7 +243,7 @@ export class EnglishLanguage {
         const e=g.primary;
         const proof=e.proof??g.derivations?.[0]?.proof;
         if(proof)return `${this.sentence(this.clause(e))} ${this.r.explanations?.[proof.explanationKey]??'This follows from the premises.'} Premises: ${proof.premises.map(p=>this.sentence(this.clause(p))).join(' ')}`;
-        return `Recorded claim: ${this.clause(e)}. Source: ${e.source.label}; about ${this.clock(e.aboutTime)}, learned at ${this.clock(e.learnedAt)}${e.source.sentAt!=null?`, sent at ${this.clock(e.source.sentAt)}`:''}. ${e.certainty==='reported'?'That is testimony, not independent confirmation.':''}`;
+        return `Recorded claim: ${this.clause(e)}. Source: ${this.sourceName(e.source)}; about ${this.clock(e.aboutTime)}, learned at ${this.clock(e.learnedAt)}${e.source.sentAt!=null?`, sent at ${this.clock(e.source.sentAt)}`:''}. ${e.certainty==='reported'?'That is testimony, not independent confirmation.':''}`;
       }).join(' ');
     } else {
       if (plan.function==='opinion') text=voice.stances[plan.stance]??voice.stances.undecided;

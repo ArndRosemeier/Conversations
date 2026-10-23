@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {AgentCore,matches} from '../dist/core.mjs';
-import {EnglishLanguage} from '../dist/english.mjs';
+import {EnglishLanguage} from '../dist/languages/en/english.mjs';
 import {domain} from '../dist/solarpolis.mjs';
-import {resources} from '../dist/solarpolis-en.mjs';
-const lexicalPack=JSON.parse(readFileSync(new URL('../dist/data/lexical-pack.json',import.meta.url)));
+import {resources} from '../dist/languages/en/solarpolis-en.mjs';
+const lexicalPack=JSON.parse(readFileSync(new URL('../dist/languages/en/data/lexical-pack.json',import.meta.url)));
 function session(id='serein'){
   const core=new AgentCore(domain),language=new EnglishLanguage(resources,{lexicalPack});
   const turn=input=>{const act=language.interpret(input,{...core.context(id),speaker:id}),plan=core.respond(id,act);return {act,plan,reply:language.realize(plan,domain.characters.find(c=>c.id===id))};};

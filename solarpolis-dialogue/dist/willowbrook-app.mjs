@@ -1,3 +1,4 @@
+import {englishModule} from './languages/en/index.mjs';
 import {setting} from './settings/willowbrook/setting.mjs';
 import {createSettingSession} from './setting-package.mjs';
 import {IndexedDBStorage,MemoryStorage} from './storage.mjs';
@@ -7,8 +8,8 @@ async function main(){
   let storage=new IndexedDBStorage('conversations-willowbrook-v1'),saved,temporary=false;
   try{saved=await storage.load();}catch{storage=new MemoryStorage();temporary=true;}
   let session,messages,selected='ada',lastAct=null;
-  try{session=createSettingSession(setting,{saved});messages=saved?.messages??{};}
-  catch{session=createSettingSession(setting);messages={};$('status').textContent='This notebook belongs to an older setting. A fresh morning has begun.';}
+  try{session=createSettingSession(setting,{languageModule:englishModule,saved});messages=saved?.messages??{};}
+  catch{session=createSettingSession(setting,{languageModule:englishModule});messages={};$('status').textContent='This notebook belongs to an older setting. A fresh morning has begun.';}
   const actor=()=>setting.domain.characters.find(c=>c.id===selected);
   const rows=(target,items)=>{
     target.replaceChildren();
@@ -54,7 +55,7 @@ async function main(){
     render();$('overheard').showModal();
   });
   $('close-listen').onclick=()=>$('overheard').close();
-  $('reset').onclick=()=>run(async()=>{await storage.clear();session=createSettingSession(setting);messages={};lastAct=null;render();});
+  $('reset').onclick=()=>run(async()=>{await storage.clear();session=createSettingSession(setting,{languageModule:englishModule});messages={};lastAct=null;render();});
   render();await persist();
 }
 main().catch(error=>{document.getElementById('status').textContent=`The workshop could not open: ${error.message}`;});

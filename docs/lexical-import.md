@@ -38,7 +38,7 @@ installation, sandboxed and unsandboxed processes can have different temporary
 directories; point both at the same absolute cache when needed. No repository
 cache or `.gitignore` addition is required.
 
-`dist/data/source-manifest.json` records every input URL, byte count, and SHA-256,
+`dist/languages/en/data/source-manifest.json` records every input URL, byte count, and SHA-256,
 plus the output hash and record counts. Subsequent imports reject changed input
 bytes. The WordNet release archive is additionally hash-pinned in the importer.
 Changing the selected records or updating a source requires reviewing the
@@ -50,7 +50,7 @@ upstream executable code is run.
 
 ## Runtime contract
 
-`dist/data/lexical-pack.json` contains:
+`dist/languages/en/data/lexical-pack.json` contains:
 
 | Field | Contents |
 | --- | --- |

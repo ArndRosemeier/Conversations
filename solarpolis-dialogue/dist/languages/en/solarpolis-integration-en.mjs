@@ -1,8 +1,9 @@
 import {interpretSolarpolis} from './solarpolis-meaning.mjs';
 import {resources as expansion} from './solarpolis-expanded-en.mjs';
-import {entities as types} from './solarpolis-expanded.mjs';
+import {entities as types} from '../../solarpolis-expanded.mjs';
 export function expandEnglish(r){
   r.constructions=[interpretSolarpolis];
+  r.accessPredicates=['preserves_as'];
   r.clock={startMinute:16*60};
   r.predicates.located_at.evidential=true;
   r.predicates.reservation.evidential=true;

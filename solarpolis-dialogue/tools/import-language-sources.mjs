@@ -22,7 +22,7 @@ const wnArchiveHash = '7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8
 const sources = [];
 const hash = b => createHash('sha256').update(b).digest('hex');
 let previousManifest;
-try { previousManifest = JSON.parse(await readFile(join(root, 'dist/data/source-manifest.json'), 'utf8')); } catch {}
+try { previousManifest = JSON.parse(await readFile(join(root, 'dist/languages/en/data/source-manifest.json'), 'utf8')); } catch {}
 
 async function input(name, url, expectedHash) {
   const path = join(cache, name);
@@ -241,7 +241,7 @@ const manifest = {
       verbFrames:classes.reduce((s,c)=>s+c.frames.length,0),authoredMappings:conceptMappings.length}},
   integrity:'Input hashes lock the exact converted bytes. Frame IDs are generated locators, not upstream global frame IDs. WordNet sense and synset IDs and VerbNet class IDs are preserved verbatim.',
 };
-for (const [name, content] of [['dist/data/lexical-pack.mjs','// Generated from the same pinned data as lexical-pack.json. See source-manifest.json.\nexport default '+serialized+';\n'],['dist/data/lexical-pack.json',serialized],['dist/data/source-manifest.json',JSON.stringify(manifest,null,2)+'\n'],...noticeBytes.flatMap(([name,content]) => [[`vendor-notices/${name}`,content],[`dist/vendor-notices/${name}`,content]])]) {
+for (const [name, content] of [['dist/languages/en/data/lexical-pack.mjs','// Generated from the same pinned data as lexical-pack.json. See source-manifest.json.\nexport default '+serialized+';\n'],['dist/languages/en/data/lexical-pack.json',serialized],['dist/languages/en/data/source-manifest.json',JSON.stringify(manifest,null,2)+'\n'],...noticeBytes.flatMap(([name,content]) => [[`vendor-notices/${name}`,content],[`dist/languages/en/vendor-notices/${name}`,content]])]) {
   const path = join(root,name);
   if (check) assert.equal(hash(await readFile(path)),hash(content),`Generated file differs: ${name}`);
   else { await mkdir(dirname(path),{recursive:true}); await writeFile(path,content); }

@@ -1,6 +1,7 @@
+import {englishModule} from '../dist/languages/en/index.mjs';
 import {setting} from '../dist/settings/willowbrook/setting.mjs';
 import {createSettingSession} from '../dist/setting-package.mjs';
-const session=createSettingSession(setting);
+const session=createSettingSession(setting,{languageModule:englishModule});
 const say=(who,input)=>{console.log(`YOU → ${who}: ${input}`);console.log(`${who.toUpperCase()}: ${session.respondText(who,input).text}\n`);};
 say('ada','How are you today?');say('moss','How are you today?');
 say('ada','Who owns the lantern?');say('moss','Who owns the lantern?');

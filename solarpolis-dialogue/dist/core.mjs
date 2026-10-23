@@ -27,7 +27,7 @@ export class AgentCore {
       for(const fact of domain.facts.filter(f=>!existing.has(f.id))){
         this.state.world.push(copy(fact));
         for(const npc of domain.characters)if(!fact.knownBy||fact.knownBy.includes(npc.id))
-          this.observe(npc.id,fact,{kind:'publication',label:fact.sourceLabel??'initial knowledge'},false);
+          this.observe(npc.id,fact,{kind:'publication',label:fact.sourceLabel,labelKey:fact.sourceKey??'source.initial'},false);
       }
       this.state.viewpoints??=[];
       for(const npc of domain.characters)for(const view of domain.viewpoints??[])
@@ -39,7 +39,7 @@ export class AgentCore {
         this.state.contexts[npc.id] = { focus: null, referents:{}, lastQuery: null, lastAct: null, lastResults:[], pendingOffer:null, turn: 0 };
         for (const view of domain.viewpoints??[]) if (!view.knownBy||view.knownBy.includes(npc.id)) this.state.viewpoints.push({...copy(view),holder:npc.id});
         for (const fact of domain.facts.filter(f => !f.knownBy || f.knownBy.includes(npc.id))) {
-          this.observe(npc.id, fact, { kind: 'publication', label: fact.sourceLabel ?? 'initial knowledge' }, false);
+          this.observe(npc.id, fact, { kind: 'publication', label: fact.sourceLabel,labelKey:fact.sourceKey??'source.initial' }, false);
         }
       }
     }
@@ -131,12 +131,12 @@ export class AgentCore {
         const key = this.key(change.atom);
         for (const old of this.state.world.filter(f => f.validTo == null && this.key(f.atom) === key)) old.validTo = this.state.time;
         const fact = { id: this.next('fact'), atom: copy(change.atom), validFrom: this.state.time,
-          validTo: null, origin: copy(event.origin), sourceLabel: event.label };
+          validTo: null, origin: copy(event.origin), sourceLabel: event.label, sourceKey:event.sourceKey };
         this.state.world.push(fact);
-        for (const holder of event.observers ?? []) this.observe(holder, fact, {...(event.source??{kind:'observation'}), label:event.label});
+        for (const holder of event.observers ?? []) this.observe(holder, fact, {...(event.source??{kind:'observation'}), label:event.label,labelKey:event.sourceKey});
         if (event.deliverAfter != null) this.state.pending.push({
           id: this.next('delivery'), due: this.state.time + event.deliverAfter,
-          holders: event.recipients ?? [], fact: copy(fact), label: event.label, sentAt: this.state.time
+          holders: event.recipients ?? [], fact: copy(fact), label: event.label,labelKey:event.sourceKey, sentAt: this.state.time
         });
       }
       this.state.events.push({ id:event.id, kind:'world-change', time:this.state.time, label:event.label });
@@ -150,7 +150,7 @@ export class AgentCore {
     const due = this.state.pending.filter(p => p.due <= target).sort((a,b) => a.due-b.due);
     for (const p of due) {
       this.state.time = p.due;
-      for (const holder of p.holders) this.observe(holder,p.fact,{kind:'received-signal',label:p.label,sentAt:p.sentAt,receivedAt:p.due});
+      for (const holder of p.holders) this.observe(holder,p.fact,{kind:'received-signal',label:p.label,labelKey:p.labelKey,sentAt:p.sentAt,receivedAt:p.due});
     }
     this.state.pending = this.state.pending.filter(p => p.due > target);
     this.state.time = target;
@@ -182,14 +182,14 @@ export class AgentCore {
     }
     if(['disagree','reject'].includes(act.function)){
       plan.function=context.pendingOffer?'decline':'acknowledge_disagreement';context.pendingOffer=null;
-      plan.decision='Record conversational feedback without changing world truth or personal factual evidence.';return finish();
+      plan.decision="decision.feedback";return finish();
     }
     if(act.function==='ask_consensus'){
       const topic=act.query?.args?.subject??context.focus;
       if(!topic){plan.function='clarify';plan.reason='missing-context';return finish();}
       plan.topic=topic;plan.viewpoints=copy(this.knownViewpoints(holder,topic));
       plan.stance=actor.attitudes?.[topic]??actor.attitudes?.[this.domain.attitudeLinks?.[topic]]??'undecided';
-      plan.decision='Report only viewpoints this character has encountered; distinguish them from the character’s own position and from universal agreement.';
+      plan.decision="decision.known-viewpoints";
       return finish();
     }
     if(act.function==='compare'){
@@ -200,8 +200,8 @@ export class AgentCore {
       plan.comparison=facets.map(predicate=>({predicate,left:a.filter(g=>g.primary.atom.predicate===predicate),right:b.filter(g=>g.primary.atom.predicate===predicate)}))
         .filter(f=>f.left.length||f.right.length).slice(0,3);
       plan.results=plan.comparison.flatMap(f=>[...f.left,...f.right]);plan.entities=[left,right];
-      context.focus=left;context.referents={it:[left],that:[left]};context.lastQuery={args:{subject:left}};
-      plan.decision='Compare matching facets using this character’s evidence on each side; leave missing information unknown.';
+      context.focus=left;context.referents={topic:[left]};context.lastQuery={args:{subject:left}};
+      plan.decision="decision.compare-evidence";
       return finish();
     }
     if(act.function==='ask_list'){
@@ -210,19 +210,19 @@ export class AgentCore {
       plan.items=[...new Set(plan.results.map(g=>g.primary.atom.args[select]))];
       plan.descriptions=plan.items.map(id=>({id,evidence:this.domain.listDescriptionPredicate?this.beliefs(holder,{predicate:this.domain.listDescriptionPredicate,args:{subject:id}}).slice(0,1):[]}));
       context.focus=act.topic??this.domain.listTopics?.[plan.query.args?.object]??null;context.lastQuery=copy(plan.query);
-      plan.decision='List the category members this character knows, without claiming an exhaustive census.';
+      plan.decision="decision.known-members";
       return finish();
     }
     if (act.function === 'assert') {
       this.validate(act.content);
       const speaker=act.speaker??'player';
       const evidence = { id:this.next('evidence'),holder,atom:copy(act.content),aboutTime:act.temporal==='past_unspecified'?null:act.aboutTime??this.state.time,
-        learnedAt:this.state.time,certainty:'reported',source:{kind:'testimony',speaker,label:speaker==='player'?'your unverified statement':speaker},origin:{kind:speaker==='player'?'player':'testimony',speaker},supports:[] };
+        learnedAt:this.state.time,certainty:'reported',source:{kind:'testimony',speaker,labelKey:'source.testimony'},origin:{kind:speaker==='player'?'player':'testimony',speaker},supports:[] };
       if(act.temporal)evidence.temporal=act.temporal;
       this.state.evidence.push(evidence);
       plan.report = evidence;
       plan.results = this.beliefs(holder,{predicate:act.content.predicate,args:Object.fromEntries(this.schemas[act.content.predicate].keyRoles.map(r=>[r,act.content.args[r]]))});
-      plan.decision = actor.personality.testimony === 'provisional' ? 'Use testimony provisionally, preserving attribution.' : 'Record testimony separately; retain confirmed evidence.';
+      plan.decision = actor.personality.testimony === 'provisional' ? "decision.provisional-testimony" : "decision.retain-confirmed";
       context.focus = act.content.args.subject ?? context.focus;
       context.lastReportId=evidence.id;context.lastProposition=copy(act.content);
       context.lastQuery={predicate:act.content.predicate,args:Object.fromEntries((this.schemas[act.content.predicate].keyRoles??Object.keys(act.content.args)).map(r=>[r,act.content.args[r]]))};
@@ -233,7 +233,7 @@ export class AgentCore {
       else {
         context.lastQuery = copy(query);
         context.focus = typeof query.args?.subject==='string'?query.args.subject:context.focus;
-        context.referents={it:[context.focus],that:[context.focus],they:[context.focus],he:[context.focus],she:[context.focus]};
+        context.referents={topic:context.focus?[context.focus]:[]};
         plan.query = copy(query);
         let candidates=this.beliefs(holder,query);
         if(!query.predicate&&!query.anyOf)for(const rule of this.domain.summaryRedundancies??[]){
@@ -250,12 +250,12 @@ export class AgentCore {
           plan.offer={kind:'elaboration',remaining:all.length-offset-limit};
           context.pendingOffer={act:{function:'ask',query:copy(query)},offset:offset+limit};
         }else context.pendingOffer=null;
-        plan.decision = plan.results.length ? 'Select personal evidence matching the query; preserve source and uncertainty.' : 'No matching personal evidence; acknowledge the knowledge boundary.';
+        plan.decision = plan.results.length ? "decision.select-evidence" : "decision.unknown";
       }
     } else if (act.function === 'clarify') {
       plan.reason=act.reason; plan.candidates=act.candidates;
-      plan.decision='Preserve ambiguity instead of inventing an interpretation.';
-    } else plan.decision='Handle a social conversational act.';
+      plan.decision="decision.clarify";
+    } else plan.decision="decision.social";
     return finish();
   }
   snapshot() { return copy(this.state); }

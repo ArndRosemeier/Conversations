@@ -80,7 +80,7 @@ parser.parse('Why does the Moon have power?');
 // tree: AskPower (Named "gfentity0")
 ```
 
-The browser import is `dist/gf/adapter.mjs`; use
+The browser import is `dist/languages/en/gf/adapter.mjs`; use
 `createGFParser(resources).parse(text, context)` (or its alias `parseWithGF`).
 Results contain `status`, `acts`, abstract `trees`, and an inspectable trace with
 `engine:'GF'`, lexical bindings, and canonical GF-generated wording. Status is

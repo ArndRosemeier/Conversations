@@ -1,7 +1,10 @@
+import {characterPresentation} from './solarpolis-presentation.mjs';
+export {scenario} from './solarpolis-presentation.mjs';
 import {expandEnglish} from './solarpolis-integration-en.mjs';
 import {socialEnglish} from './solarpolis-social-en.mjs';
 const e=(name,type,aliases=[])=>({name,type,aliases});
 export const resources={
+  characters:characterPresentation,
   social:socialEnglish,
   entities:{
     threnody:e('Threnody','habitat',['the long afternoon of threnody']),

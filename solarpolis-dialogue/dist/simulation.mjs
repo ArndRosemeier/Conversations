@@ -19,7 +19,7 @@ export function hearResponse(core,sender,receiver,plan){
   });
   return spoken.map(e=>{
     const report={id:core.next('evidence'),holder:receiver,atom:copy(e.atom),aboutTime:e.aboutTime,learnedAt:core.state.time,
-      certainty:'reported',source:{kind:'testimony',speaker:sender,label:core.domain.characters.find(c=>c.id===sender).name,upstream:e.id},
+      certainty:'reported',source:{kind:'testimony',speaker:sender,labelKey:'source.testimony',upstream:e.id},
       origin:{kind:'testimony',speaker:sender},supports:[e.id]};
     core.state.evidence.push(report);return report;
   });
@@ -29,7 +29,7 @@ export function sharePublication(core,sender,receiver,evidence){
   if(!held||!sameAtom(held.atom,evidence.atom))return null;
   evidence=held;
   return core.observe(receiver,{id:evidence.id,atom:copy(evidence.atom),validFrom:evidence.aboutTime,origin:copy(evidence.origin)},
-    {kind:'shared-publication',label:evidence.source.label,shareable:true,speaker:sender,upstream:evidence.id});
+    {kind:'shared-publication',label:evidence.source.label,labelKey:evidence.source.labelKey,shareable:true,speaker:sender,upstream:evidence.id});
 }
 export function simulateNPCConversation(core,language,{initiator,partner,goal,maxTurns=10}){
   if(!Number.isInteger(maxTurns)||maxTurns<2||maxTurns>20)throw new Error('Conversation turn budget must be between 2 and 20');
@@ -44,7 +44,7 @@ export function simulateNPCConversation(core,language,{initiator,partner,goal,ma
     emit(holder,act,plan,language.realize(plan,actors.get(holder)));return plan;
   }
   const opening={function:'social',topic:'wellbeing'};
-  emit(initiator,opening,null,language.npcLine('opening',actors.get(initiator),{partner:actors.get(partner).name}));
+  emit(initiator,opening,null,language.npcLine('opening',actors.get(initiator),{partner:language.name(partner)}));
   const welcome=answer(partner,initiator,opening);
   if(welcome?.social?.prompt==='wellbeing')answer(initiator,partner,{function:'social',topic:'wellbeing',reciprocate:false});
   if(!emit(initiator,goal,null,language.npcLine('question',actors.get(initiator),{question:language.label(goal)})))return {turns,exchanges,stopReason:'turn-budget'};

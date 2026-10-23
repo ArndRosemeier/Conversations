@@ -1,15 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {AgentCore} from '../dist/core.mjs';
-import {EnglishLanguage} from '../dist/english.mjs';
+import {EnglishLanguage} from '../dist/languages/en/english.mjs';
 import {domain} from '../dist/solarpolis.mjs';
-import {resources} from '../dist/solarpolis-en.mjs';
+import {resources} from '../dist/languages/en/solarpolis-en.mjs';
 const language=new EnglishLanguage(resources);
 function turn(core,npc,text){const act=language.interpret(text,{...core.context(npc),speaker:npc});const plan=core.respond(npc,act);return {act,plan,text:language.realize(plan,domain.characters.find(c=>c.id===npc))};}
 test('ordinary social openings work for every NPC without changing world facts or evidence',()=>{
   for(const npc of domain.characters){
     const core=new AgentCore(domain),before=core.snapshot();
-    const reply=turn(core,npc.id,`Hello, ${npc.name}. How are you today?`);
+    const reply=turn(core,npc.id,`Hello, ${language.name(npc.id)}. How are you today?`);
     assert.equal(reply.plan.social.topic,'wellbeing');assert.equal(reply.plan.social.prompt,'wellbeing');
     assert.doesNotMatch(reply.text,/specific question|suggested questions|establish|unrecognized/i);
     assert.deepEqual(core.state.world,before.world);assert.deepEqual(core.state.evidence,before.evidence);

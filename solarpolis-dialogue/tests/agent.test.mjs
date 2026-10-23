@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {AgentCore} from '../dist/core.mjs';
-import {domain,scenario} from '../dist/solarpolis.mjs';
-import {EnglishLanguage} from '../dist/english.mjs';
-import {resources} from '../dist/solarpolis-en.mjs';
+import {domain} from '../dist/solarpolis.mjs';
+import {scenario} from '../dist/languages/en/solarpolis-presentation.mjs';
+import {EnglishLanguage} from '../dist/languages/en/english.mjs';
+import {resources} from '../dist/languages/en/solarpolis-en.mjs';
 import {MemoryStorage} from '../dist/storage.mjs';
 const english=new EnglishLanguage(resources);
 const query={function:'ask',query:{predicate:'located_at',args:{subject:'exchange',place:{$var:'place'}}}};

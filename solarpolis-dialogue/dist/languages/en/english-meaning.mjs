@@ -53,7 +53,7 @@ export function interpretMeaning(language,raw,context){
     const place=ids.find(id=>['place','polity','body','region'].includes(language.r.entities[id]?.type));
     if(place)return ask('numeric_count',{subject:place,...(ids.find(id=>id!==place)?{object:ids.find(id=>id!==place)}:{})});
   }
-  if(/\bwho (?:may|can|is allowed to) enter\b/.test(text)&&focus)return {function:'ask_access',query:{args:{subject:focus},anyOf:[{predicate:'preserves_as'},{predicate:'access_status'}]}};
+  if(/\bwho (?:may|can|is allowed to) enter\b/.test(text)&&focus)return {function:'ask_access',query:{args:{subject:focus},anyOf:(language.r.accessPredicates??['access_status']).map(predicate=>({predicate}))}};
   if(/^(?:where is|where's) (?:it|that)(?: being held)?$/.test(text))return context.focus?ask('located_at',{subject:context.focus}):{function:'clarify',reason:'missing-context'};
   // Explicit topic introduction is different from an arbitrary question containing a known noun.
   const introduction=/^i (?:mean|meant) (.+)$/.exec(text);

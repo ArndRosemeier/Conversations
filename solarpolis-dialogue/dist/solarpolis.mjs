@@ -30,24 +30,21 @@ export const domain = {
     pursuit:{roles:{subject:'entity',value:'string'},keyRoles:['subject']}
   },
   characters:[
-    {id:'serein',name:'Serein',initials:'SE',kind:'Born-digital AI',role:'A welcome freely offered',home:'Threnody',
-      introduction:'Hello. I’m Serein. I help arriving minds find their bearings, but I’m quite happy to be distracted by a conversation.',
+    {id:'serein',
       personality:{detail:3,testimony:'cautious',directness:0.5,affiliation:0.9},
       attitudes:{aurelipolis:'opposed',minds:'protective',liberators:'cautious',enceladus:'cautious',threnody:'supportive'},
-      color:'sage',voice:'gentle',location:'Arrival Commons',
-      description:'Patient, gently wry, attentive to consent. A separate individual from Threnody’s governing Mind.'},
-    {id:'iona',name:'Iona Venn',initials:'IV',kind:'Human · Selenipolis',role:'A collector of good timing',home:'Selenipolis',
-      introduction:'Iona Venn. I’m from Selenipolis. I collect transit histories, mostly for the pleasure of getting lost in them.',
+      color:'sage',voice:'gentle',
+      },
+    {id:'iona',
       personality:{detail:2,testimony:'strict',directness:0.9,affiliation:0.4},
       attitudes:{arrays:'supportive',selenipolis:'supportive',aurelipolis:'cautious',liberators:'opposed',minds:'protective'},
-      color:'amber',voice:'precise',location:'Arrival Commons',
-      description:'Exact and courteous, with little patience for avoidable urgency. A visitor pursuing transit history for pleasure.'},
-    {id:'rill',name:'Rill',initials:'RI',kind:'Uplifted dolphin · Krillix',role:'A listener who answers',home:'Krillix',
-      introduction:'Rill, approximately. My whistle fits less neatly into letters. I’m listening through the text link. What caught your attention?',
+      color:'amber',voice:'precise',
+      },
+    {id:'rill',
       personality:{detail:2,testimony:'provisional',directness:0.65,affiliation:0.95},
       attitudes:{long_song:'supportive',krillix:'supportive',enceladus:'curious',halvorn:'cautious',minds:'protective',aurelipolis:'opposed'},
-      color:'blue',voice:'relational',location:'Flow Chamber · local text link',
-      description:'Playful, relational, acoustically minded. English arrives through the neural interface; Rill speaks for themself.'}
+      color:'blue',voice:'relational',
+      }
   ],
   facts:[
     fact('c-threnody','nature','threnody',{value:'bubble_habitat'},'VIII · Threnody'),
@@ -102,20 +99,6 @@ for (const f of domain.facts) {
   if (f.atom.args.subject==='liberators') f.knownBy=['serein','iona'];
   if (['c-song-contribution','c-interface'].includes(f.id)) f.knownBy=['serein','rill'];
 }
-export const scenario = {
-  title:'The Arrival Commons',host:'The Long Afternoon of Threnody',
-  premise:'An acoustic exchange, three visitors, and a notice that not everyone has read.',
-  addition:'The commons, all four named visitors, rooms, exchange, ship, and mutable events are sample additions. The wider polities and cultural principles come from your world bible.',
-  delayNote:'12 minutes is an illustrative scenario link budget, not a canonical orbit or calculated ephemeris. No ship travels during this test. The reservation concerns a future journey.',
-  starterQueries:[
-    {label:'Where is the exchange?',act:{function:'ask',query:{predicate:'located_at',args:{subject:'exchange',place:{$var:'place'}}}}},
-    {label:'How are you today?',act:{function:'social',topic:'wellbeing'}},
-    {label:'What is Threnody like?',act:{function:'ask',query:{args:{subject:'threnody'}}}},
-    {label:'Are AIs safe in Aurelipolis?',act:{function:'ask',query:{predicate:'rights',args:{subject:'aurelipolis'}}}},
-    {label:'Tell me about the Long Song.',act:{function:'ask',query:{args:{subject:'long_song'}}}},
-    {label:'Is the ship’s slot confirmed?',act:{function:'ask',query:{predicate:'reservation',args:{subject:'patient_margin'}}}},
-    {label:'Where is Rill?',act:{function:'ask',query:{predicate:'located_at',args:{subject:'rill',place:{$var:'place'}}}}}
-  ]
-};
+
 
 expandDomain(domain);

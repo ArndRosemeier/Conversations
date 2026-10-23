@@ -5,8 +5,8 @@ This is the supported integration recipe for coding agents working in this repos
 ## Fast path
 
 1. Copy `solarpolis-dialogue/dist/settings/willowbrook/` to a new setting directory. Give the package a unique `id` and its own storage namespace.
-2. Author language-neutral `domain.mjs`, English vocabulary/voices in `en.mjs`, and the `setting.mjs` entry point. Do not copy the shared English parser or core.
-3. Call `validateSetting(package)` or `createSettingSession(package)`. Fix authoring errors before connecting a UI.
+2. Author language-neutral `domain.mjs`, English vocabulary/voices under `dist/languages/en/`, and the `setting.mjs` entry point. Do not copy the shared English parser or core.
+3. Call `validateSetting(package, {languageModule})` or `createSettingSession(package, {languageModule})`. Fix authoring errors before connecting a UI.
 4. Wire game events to `session.core.applyEvent(event)`, explicit observations to `observe`, and elapsed simulation minutes to `advance`. Ordinary player dialogue must never call these authority APIs.
 5. Send text through `respondText(npcId, text)` and choices through `respondAct(npcId, act)`. Both return `{act, plan, text}`.
 6. Add integration tests like [setting-package.test.mjs](../solarpolis-dialogue/tests/setting-package.test.mjs), especially unseen changes, unknown facts, negative claims, and typed/choice equivalence.
@@ -22,7 +22,7 @@ export const setting = {
   id: 'willowbrook',             // stable lowercase slug; save identity
   title: 'Willowbrook Workshop', // host metadata
   domain,                      // language-neutral, structured-cloneable data
-  languages: {en: resources},   // only English has a runtime adapter today
+  languages: {en: resources},   // English is the shipped production language module
   demo: {choices: [             // optional host metadata, not core policy
     {label: 'Where is the lantern?', act: {
       function: 'ask',
@@ -34,7 +34,7 @@ export const setting = {
 };
 ```
 
-`validateSetting` returns the package or throws an error prefixed `Setting package:`. It checks required structures, entity references, character voices, predicate roles and keys, positive/negative templates, facts and recipients, rule variables, bindings, and clock settings. It is an authoring check, not a security sandbox or exhaustive semantic proof. In particular, optional UI metadata, arbitrary extension functions, and all possible runtime speech acts are not statically verified. Use trusted package code and behavioral tests.
+`validateSetting` checks neutral domain structures, facts, events, recipients, roles, keys, and rules. With `languageModule` supplied it also delegates locale-resource validation to that module. `createSettingSession` requires an explicit language module and always validates its resources. Errors identify the setting or language boundary. It is an authoring check, not a security sandbox or exhaustive semantic proof. In particular, optional UI metadata, arbitrary extension functions, and all possible runtime speech acts are not statically verified. Use trusted package code and behavioral tests.
 
 The Solarpolis application still uses direct `AgentCore`/`EnglishLanguage` wiring and its old snapshot format. Its `migrateFrom` mechanism is not the package loader's migration contract. Do not pass its saves to a new package session.
 
@@ -45,7 +45,7 @@ The Solarpolis application still uses direct `AgentCore`/`EnglishLanguage` wirin
 | `version` | Positive integer. Bump when persisted setting semantics change. |
 | `entities` | Record of stable IDs to metadata objects. IDs carry meaning; localized names belong outside the core. Include every NPC and referenced place/object. |
 | `predicates` | Record of relation IDs to `{roles, keyRoles}`. Role types are `entity`, `string`, or `number`. |
-| `characters` | Nonempty array of `{id, name, voice, personality}`. `name` is a host/display label used by the current simulation helper; `voice` is an opaque language-resource key. |
+| `characters` | Nonempty array of `{id, voice, personality}`. Optional host metadata is opaque to the core; localized names come from `language.name(id)`. `voice` is an opaque resource key. |
 | `personality` | `detail`: positive integer answer limit. `testimony`: `strict` or `provisional`. Optional `affiliation`: numeric delivery preference. Other authored traits do not gain behavior automatically. |
 | `facts` | Initial assertions, described below. |
 | `events` | Optional record of host-supplied event definitions. Not fired by dialogue automatically. |
@@ -86,12 +86,12 @@ Rules unify variables such as `{$var:'owner'}` across premises and the conclusio
 
 ## English resources and independence
 
-The shared implementation is `english.mjs`, `english-meaning.mjs`, `english-social.mjs`, generic defaults, `gf/`, and `lexical-index.mjs`. None imports a Solarpolis setting module. Willowbrook loads that same code with a different package. `solarpolis-meaning.mjs` contains Solarpolis-specific constructions, injected only by Solarpolis's resources.
+The English module lives under `dist/languages/en/`, with public entry `index.mjs`. Its reusable parser, realizer, social rules, defaults, compiled GF grammar, and lexical resources do not import Solarpolis data. Setting-specific English resources also live under this directory but are loaded explicitly by their hosts, not by the module entry point. Willowbrook loads that same code with a different package. `solarpolis-meaning.mjs` contains Solarpolis-specific constructions, injected only by Solarpolis's resources.
 
 | Resource | Purpose |
 | --- | --- |
 | `entities[id]` | `{name, type, aliases?}`. Cover each domain entity. Alias ambiguity can yield clarification. Types guide interpretation (`person`, `place`, `event`, etc.); they are not core truth. |
-| `predicates[id]` | Required `positive` and `negative` clause templates. Placeholders match role names. Optional `firstPerson: {positive, negative}` and `evidential: true` to use the voice's source/time wrapper. |
+| `predicates[id]` | Required `positive` and recommended `negative` clause templates (English supplies a generic denial when absent). Placeholders match role names. Optional `firstPerson: {positive, negative}` and `evidential: true` to use the voice's source/time wrapper. |
 | `voices[key]` | Factual/repair style overrides. Every NPC voice key must exist; `{}` uses generic defaults. |
 | `social[key]` | Social voice overrides: wellbeing, activity, interests, identity, follow-up reasons, greeting, repair, farewell, etc. Generic missing fields have fallbacks; author important topics for distinctive people. |
 | `clock.startMinute` | Minute of day at simulation time zero (0..1439; default 0). Core time stays elapsed minutes. Solarpolis sets 960, Willowbrook 480. |
@@ -101,21 +101,22 @@ The shared implementation is `english.mjs`, `english-meaning.mjs`, `english-soci
 
 Other optional English features include `intentQueries` (GF constructor-to-query overrides), `queryFacets`, and `reasonPredicates`. Prefer the simple bindings and explicit construction route for a new minimal setting.
 
-General English is **already in the repository**. Adding a setting means authoring its vocabulary, relation meanings, and voices, not providing an English corpus. The selected WordNet/VerbNet pack is optional: pass `lexicalPack` to enable its approved vocabulary/frame paths. Solarpolis bundles it; the tiny Willowbrook page deliberately does not. Both use the same compiled GF grammar. There is no runtime LLM, English training step, or lexical download.
+General English is **already in the repository**. Adding a setting means authoring its vocabulary, relation meanings, and voices, not providing an English corpus. The selected WordNet/VerbNet pack is optional: pass `languageOptions: {lexicalPack}` to the session factory to enable its approved vocabulary/frame paths. Solarpolis bundles it; the tiny Willowbrook page deliberately does not. Both use the same compiled GF grammar. There is no runtime LLM, English training step, or lexical download.
 
 Supported grammar is bounded. New facts do not teach new syntax. “Who owns the lantern?” is supplied by Willowbrook's small ownership construction; it does not require modifying the shared parser. Inspect `en.mjs` for full noun-phrase matching and explicit ambiguity handling. Unsupported relations in package sessions become clarification instead of crashing on unknown predicates or being stored as evidence. This does not prove that every sentence is correctly interpreted; broad legacy patterns and unseen paraphrases remain limitations.
 
 Interpretation order is social constructions, bounded sentence splitting, injected setting constructions, shared meaning constructions, compiled GF plus selected lexical paraphrases, and bounded fallback patterns. Predicate binding and schema checks run before the act is handed to the core. A compound turn with an unsupported relation is rejected as a whole at this boundary. Voice realization chooses wording after evidence selection; it must not invent factual content. Static social lines are authored characterization and must be updated by the host if their activities cease to apply.
 
-An additional natural language needs a new interpreter/realizer and setting resources using the same semantic IDs. The factory currently accepts only `locale: 'en'` and rejects others explicitly. Translating labels alone is insufficient. No English strings are needed to store or query world atoms, though diagnostic/provenance display labels currently use English defaults.
+An additional natural language implements the [language module contract](language-module-contract.md) and supplies its own setting resources. The factory has no English import, default locale, resource-shape assumption, or fallback. It accepts any compatible injected module. A narrow German test fixture proves the boundary; it is not a shipped German language pack. Core source defaults and decision explanations are now message IDs, localized by the module. Developer errors and host-authored documentary metadata remain separate from conversation generation.
 
 ## Host API and semantic acts
 
 ```js
 import {createSettingSession} from './setting-package.mjs';
+import {englishModule} from './languages/en/index.mjs';
 import {setting} from './settings/willowbrook/setting.mjs';
 
-const session = createSettingSession(setting);
+const session = createSettingSession(setting, {languageModule: englishModule});
 const reply = session.respondText('ada', 'Where is the lantern?');
 console.log(reply.act, reply.plan, reply.text);
 
@@ -123,7 +124,7 @@ console.log(reply.act, reply.plan, reply.text);
 const chosen = session.respondAct('ada', setting.demo.choices[1].act);
 ```
 
-`respondText` supplies that NPC's conversation context and the addressee ID to the English parser. In the low-level parser API, `context.speaker` unfortunately means the NPC addressed as “you”; `act.speaker` means the person making the statement and defaults to `player`. Prefer the wrapper to avoid confusing these names.
+`respondText` supplies neutral context plus `addressee: npcId` to the module. `act.speaker` means the person making the statement and defaults to `player`. English still accepts `context.speaker` as a legacy low-level alias, confined to its own adapter. Core references use `referents.topic`, never English pronoun names.
 
 Common acts (all `function` values are semantic IDs, not localized strings):
 
@@ -173,7 +174,7 @@ For an explicit host-authorized observation, call `core.observe(npcId, fact, sou
 ```js
 import {IndexedDBStorage} from './storage.mjs';
 const storage = new IndexedDBStorage('my-game-my-setting-v1');
-const session = createSettingSession(setting, {saved: await storage.load()});
+const session = createSettingSession(setting, {languageModule: englishModule, saved: await storage.load()});
 // After an interaction/event; serialize asynchronous writes in the host:
 await storage.save(session.snapshot());
 ```

@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {AgentCore} from '../dist/core.mjs';
-import {domain,scenario} from '../dist/solarpolis.mjs';
-import {EnglishLanguage} from '../dist/english.mjs';
-import {resources} from '../dist/solarpolis-en.mjs';
+import {domain} from '../dist/solarpolis.mjs';
+import {scenario} from '../dist/languages/en/solarpolis-presentation.mjs';
+import {EnglishLanguage} from '../dist/languages/en/english.mjs';
+import {resources} from '../dist/languages/en/solarpolis-en.mjs';
 import {simulateNPCConversation,hearResponse,sharePublication} from '../dist/simulation.mjs';
 const language=new EnglishLanguage(resources),goal=scenario.starterQueries[0].act;
 test('NPC dialogue reads current beliefs, shares a real amendment, and preserves player context',()=>{

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createGFParser} from '../dist/gf/adapter.mjs';
+import {createGFParser} from '../dist/languages/en/gf/adapter.mjs';
 const resources={entities:{
   moon:{name:'Selenipolis',aliases:['the Moon']},
   pritt:{name:'Alexander Pritt',aliases:['Pritt']},

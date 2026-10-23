@@ -34,7 +34,7 @@ export function respondSocial(core, actor, act) {
   if(!['repair','greeting','uncertainty','coping','welcome_reason','interest_detail','invitation','greeting_repair','appreciation','user_state','boundary','company','farewell'].includes(topic))state.lastTopic=topic.replace(/_reason$/,'');
   const plan={id:core.next('plan'),holder:actor.id,function:'social',results:[],time:core.state.time,
     social:{move,topic,repeat,count:state.counts[topic],reciprocate:act.reciprocate!==false,prompt,self:clone(actor.social??{}),acknowledgeState:act.disclosure??null,userState:clone(state.userState),focus:context.focus??actor.social?.interestTopic??null,repairCount:state.repairs},
-    decision:topic==='repair'?'Acknowledge an unrecognized turn in character without claiming to understand it.':'Respond to a social act; retain conversational memory separately from factual evidence.'};
+    decision:topic==='repair'?"decision.repair":"decision.social-memory"};
   context.turn++;context.lastAct=act.id??plan.id;
   core.state.history.push({id:core.next('turn'),holder:actor.id,time:core.state.time,act:clone(act),plan:clone(plan)});
   return plan;
